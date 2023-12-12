@@ -31,6 +31,7 @@ public class ProductService {
         pro.setUnitPrice(p.getUnitPrice());
         double subTotal = p.getQty() * p.getUnitPrice();
         pro.setSubTotal(subTotal);
+    
 
         if( file == null ) {
             pro.setImage("default.jpg");

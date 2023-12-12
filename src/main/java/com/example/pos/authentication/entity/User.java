@@ -20,8 +20,27 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Integer id;
 
+    private String token;
+    private String expiredToken;
+
+    public String getExpiredToken() {
+        return expiredToken;
+    }
+
+    public void setExpiredToken(String expired) {
+        this.expiredToken = expired;
+    }
+
     @Column(nullable = false)
     private String fullName;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     @Column(unique = true, length = 100, nullable = false)
     private String email;

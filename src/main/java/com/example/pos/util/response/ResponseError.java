@@ -1,4 +1,4 @@
-package com.example.pos.util.exception.response;
+package com.example.pos.util.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
