@@ -9,9 +9,10 @@ import java.util.*;
 
 @Repository
 public interface SuplierRepository extends JpaRepository<Suplier,Integer> {
-    boolean existsByName(String name);
-     
-    @Query(nativeQuery = true,value = "select * from tb_suplier where status ='1'")
+ 
+    boolean existsByContact(String contact);
+
+    @Query(nativeQuery = true,value = "select * from pos_suplier where status =true and is_deleted=false")
     ArrayList<Suplier> getListSuplier();
 
 }  

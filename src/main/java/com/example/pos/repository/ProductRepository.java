@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
 
-    boolean existsByProName(String name);
+    boolean existsByProNameKh(String name);
+    boolean existsByProNameEn(String name);
 
     @Query(nativeQuery = true,value = "select * from tb_product where status=1")
     ArrayList<Product> getProduct();

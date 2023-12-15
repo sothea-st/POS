@@ -53,7 +53,7 @@ public class ProductController {
     }
 
     @PostMapping("/delete/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") int id , @RequestParam("status") int status){
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") int id , @RequestParam("status") boolean status){
         service.deleteProduct(id,status);
         return JavaResponse.success("delete success");
     }

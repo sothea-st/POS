@@ -4,22 +4,18 @@ import com.example.pos.components.JavaResponse;
 import com.example.pos.entity.Category;
 import com.example.pos.service.CategoryService;
 import jakarta.validation.Valid;
-
-//import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
+// import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
+// import org.springframework.web.bind.annotation.PathVariable;
 
-// import java.util.ArrayList;
-// import java.util.Map;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.RequestParam;
 
+ 
 @RestController
 @RequestMapping("/api/category")
 @Validated
@@ -30,7 +26,6 @@ public class CategoryController {
 	@PostMapping
 	public ResponseEntity<?> saveCategory(@Valid @ModelAttribute Category c) {
 		Category data = service.saveCategory(c);
-
 		return JavaResponse.success(data);
 	}
 
@@ -52,10 +47,12 @@ public class CategoryController {
 		return JavaResponse.success(data);
 	}
 
-	@PostMapping("/{id}")
-	public ResponseEntity<?> deleteCategory(@PathVariable("id") int id, @RequestParam("status") int status) {
-		service.deleteCategory(id, status);
+	@PostMapping("/delete/{id}")
+	public ResponseEntity<?> deleteCategory(@PathVariable("id") int id, @RequestParam("status") boolean status,@RequestParam("isDeleted") boolean isDeleted) {
+		service.deleteCategory(id, status,isDeleted);
 		return JavaResponse.success("delete success");
 	}
+
+ 
 
 }

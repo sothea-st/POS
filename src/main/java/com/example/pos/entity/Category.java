@@ -1,5 +1,9 @@
 package com.example.pos.entity;
 
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.example.pos.constant.JavaMessage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -11,7 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tb_category")
+@Table(name = "pos_category")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,9 +23,26 @@ public class Category  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(nullable = false,unique = true)
     @NotBlank(message =JavaMessage.required)
-    private String catName;
-    @Min(value = 0) //status must be greater than or equal to 1
-    private int status=1;
+    private String catNameKh;
+
+    @Column(nullable = false,unique = true)
+    @NotBlank(message = JavaMessage.required)
+    private String catNameEn;
+
+    @Column(name = "status")
+    private boolean status = true;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+
+    @CreationTimestamp
+    @Column(updatable = false,name = "create_date")
+    private Date createDate;
+
+    @Column(name = "create_by")
+    private int createBy;
+
 }

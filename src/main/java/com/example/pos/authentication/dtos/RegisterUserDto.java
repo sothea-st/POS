@@ -4,6 +4,15 @@ public class RegisterUserDto {
     private String email;
     private String password;
     private String fullName;
+    private String phone;
+
+    public String getPhone(){
+       return phone;
+    }
+     public RegisterUserDto setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
 
     public String getEmail() {
         return email;
@@ -38,6 +47,7 @@ public class RegisterUserDto {
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", fullName='" + fullName + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }

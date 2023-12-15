@@ -1,5 +1,7 @@
 package com.example.pos.util.exception;
 
+import com.example.pos.util.exception.customeException.FieldIsRequiredException;
+import com.example.pos.util.exception.customeException.InValidEmail;
 import com.example.pos.util.exception.customeException.JavaDataAlreadyExists;
 import com.example.pos.util.exception.customeException.JavaNotFoundByIdGiven;
 import com.example.pos.util.response.ResponseError;
@@ -27,7 +29,6 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleSecurityException(Exception exception) {
         ProblemDetail errorDetail = null;
 
- 
         exception.printStackTrace();
 
         if (exception instanceof BadCredentialsException) {
@@ -87,10 +88,16 @@ public class GlobalExceptionHandler {
         return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
     }
 
-    // @ExceptionHandler(value= FieldIsRequiredException.class)
-    // @ResponseStatus(HttpStatus.BAD_REQUEST)
-    // public ErrorResponse fieldIsRequired(FieldIsRequiredException ex){
-    // return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
-    // }
+    @ExceptionHandler(InValidEmail.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseError invalidEmail(InValidEmail ex) {
+        return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(value = FieldIsRequiredException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseError fieldIsRequired(FieldIsRequiredException ex) {
+        return new ResponseError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
 
 }

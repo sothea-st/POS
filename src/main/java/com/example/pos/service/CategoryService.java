@@ -2,10 +2,15 @@ package com.example.pos.service;
 
 import com.example.pos.constant.JavaMessage;
 import com.example.pos.constant.JavaValidation;
+import com.example.pos.constant.SessionData;
 import com.example.pos.entity.Category;
 import com.example.pos.repository.CategoryRepository;
 import com.example.pos.util.exception.customeException.JavaNotFoundByIdGiven;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,46 +21,65 @@ import java.util.Optional;
 public class CategoryService {
     @Autowired
     private CategoryRepository repo;
+    @Autowired
+    private HttpSession httpSession;
 
-    public Category saveCategory(Category c){
-        boolean catName = repo.existsByCatName(c.getCatName());
-        JavaValidation.checkDataAlreadyExists(catName); // check catName already exists or not
+    public Category saveCategory(Category c) {
+        boolean catNameKh = repo.existsByCatNameKh(c.getCatNameKh());
+        boolean catNameEn = repo.existsByCatNameEn(c.getCatNameEn());
+
+        JavaValidation.checkDataAlreadyExists(catNameKh); // check catName already exists or not
+        JavaValidation.checkDataAlreadyExists(catNameEn); // check catName already exists or not
+
+     
+        Object id = httpSession.getAttribute("idUser");
+       
         Category obj = new Category();
-        obj.setCatName(c.getCatName());
+        obj.setCatNameKh(c.getCatNameKh());
+        obj.setCatNameEn(c.getCatNameEn());
+        obj.setCreateBy((Integer)id);
         repo.save(obj);
         return obj;
     }
 
-    public ArrayList<Category> getCategory(){
+    public ArrayList<Category> getCategory() {
         return repo.getCategory();
     }
 
-    public Category updateCategory(int id,Category c){
-       Optional<Category> data = repo.findById(id);
-       Category obj = data.get();
+    public Category updateCategory(int id, Category c) {
+        Optional<Category> data = repo.findById(id);
+        Category obj = data.get();
 
-       if(!Objects.equals(obj.getCatName(),c.getCatName()) ) {
-           boolean isExist = repo.existsByCatName(c.getCatName());
-           JavaValidation.checkDataAlreadyExists(isExist);
-       }
+        if (!Objects.equals(obj.getCatNameKh(), c.getCatNameKh())) {
+            boolean isExist = repo.existsByCatNameKh(c.getCatNameKh());
+            JavaValidation.checkDataAlreadyExists(isExist);
+        }
 
-       obj.setCatName(c.getCatName());
-       repo.save(obj);
-       return  obj;
+        if (!Objects.equals(obj.getCatNameEn(), c.getCatNameEn())) {
+            boolean isExist = repo.existsByCatNameEn(c.getCatNameEn());
+            JavaValidation.checkDataAlreadyExists(isExist);
+        }
+
+        obj.setCatNameKh(c.getCatNameKh());
+        obj.setCatNameEn(c.getCatNameEn());
+
+        repo.save(obj);
+        return obj;
     }
 
-
-    public Category getCategoryById(int id){
+    public Category getCategoryById(int id) {
         Category c = repo.getCategoryById(id);
-        if( c == null ) throw  new JavaNotFoundByIdGiven();
+        if (c == null)
+            throw new JavaNotFoundByIdGiven();
         return c;
     }
 
-    public Category deleteCategory(int id,int status){
+    public Category deleteCategory(int id, boolean status , boolean isDeleted) {
         Optional<Category> data = repo.findById(id);
         Category obj = data.get();
+        obj.setDeleted(isDeleted);
         obj.setStatus(status);
-        return  repo.save(obj);
+        return repo.save(obj);
     }
 
 }
