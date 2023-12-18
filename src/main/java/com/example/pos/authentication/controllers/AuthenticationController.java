@@ -7,10 +7,7 @@ import com.example.pos.authentication.responses.LoginResponse;
 import com.example.pos.authentication.services.AuthenticationService;
 import com.example.pos.authentication.services.JwtService;
 import com.example.pos.components.JavaResponse;
-import com.example.pos.constant.JavaMessage;
 import com.example.pos.constant.JavaValidation;
-import com.example.pos.constant.PasswordConstraintValidator;
-import com.example.pos.constant.SessionData;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -73,6 +70,7 @@ public class AuthenticationController {
         return JavaResponse.success(map);
     }
 
+
     @Autowired
     private HttpSession httpSession;
     @PostMapping("/login")
@@ -81,7 +79,7 @@ public class AuthenticationController {
         String jwtToken = jwtService.generateToken(authenticatedUser);
         LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
         System.out.println("data id : " + authenticatedUser.getId());
-       httpSession.setAttribute("idUser", authenticatedUser.getId());
+        httpSession.setAttribute("idUser", authenticatedUser.getId());
         authenticatedUser.setToken(jwtToken);
         authenticatedUser.setExpiredToken(String.valueOf(loginResponse.getExpiresIn()));
         return ResponseEntity.ok(authenticatedUser);

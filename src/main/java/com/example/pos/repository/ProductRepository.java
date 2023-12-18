@@ -14,12 +14,12 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     boolean existsByProNameKh(String name);
     boolean existsByProNameEn(String name);
 
-    @Query(nativeQuery = true,value = "select * from tb_product where status=1")
+    @Query(nativeQuery = true,value = "select * from pos_product where status=true and is_deleted=false order by id desc")
     ArrayList<Product> getProduct();
 
-    @Query(nativeQuery = true,value = "select count(*) from tb_product where status=1")
+    @Query(nativeQuery = true,value = "select count(*) from pos_product where status=true and is_deleted=false")
     int countRow();
-    @Query(nativeQuery = true,value = "select * from tb_product where status=1 and id=?")
+    @Query(nativeQuery = true,value = "select * from pos_product where status=true and is_deleted=false and id=?")
     Product getProductById(int id);
 
 }

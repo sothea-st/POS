@@ -2,14 +2,12 @@ package com.example.pos.entity;
 
 import java.util.Date;
 
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.example.pos.constant.JavaMessage;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,18 +38,23 @@ public class Product {
     @NotBlank(message = JavaMessage.required)
     private String proNameEn;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal cost;
 
     @Column(precision = 10, scale = 2)
+    @NotNull(message = JavaMessage.required)
+    private BigDecimal cost;
+
+
+    @Column(precision = 10, scale = 2)
+    @NotNull(message = JavaMessage.required)
     private BigDecimal price;
 
     private String image;
-
-    private String codeExpired="#EXPIRED";
-    private String codeAlmostExpired ="#A_EXPIRED";
-    private String codeOutStock = "#OUTSTOCK";
-    private String codeAlmostOutStock = "#A_OUTSTOCK";
+    private String fileName;
+    private String note;
+    private String codeExpired;
+    private String codeAlmostExpired;
+    private String codeOutStock;
+    private String codeAlmostOutStock;
 
   
     @Column(name = "status")

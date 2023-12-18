@@ -1,5 +1,7 @@
 package com.example.pos.controller;
 import java.util.ArrayList;
+
+import com.example.pos.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -36,16 +38,23 @@ public class UnitTypeController {
     }
 
 
-    @PostMapping("/{id}")
-	public ResponseEntity<?> updateUnitType(@PathVariable("id") int id,@RequestParam("nameKh")String nameKh, @RequestParam("nameEn")String nameEn) {
-		UnitType data = service.updateUnitType(id, nameKh , nameEn);
-		return JavaResponse.success(data);
-	}
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUnitType(@PathVariable("id")int id,@Valid @RequestBody UnitType u){
+        UnitType data = service.updateUnitType(id,u);
+        return JavaResponse.success(data);
+    }
 
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUnitType(@PathVariable("id") int id, @RequestParam("status") boolean status , @RequestParam("isDeleted") boolean isDeleted) {
-        service.deleteUnitType(id, status, isDeleted);
-        return JavaResponse.success("delete success");
+//    @PostMapping("/{id}")
+//	public ResponseEntity<?> updateUnitType(@PathVariable("id") int id,@RequestParam("nameKh")String nameKh, @RequestParam("nameEn")String nameEn) {
+//
+//		UnitType data = service.updateUnitType(id, nameKh , nameEn);
+//		return JavaResponse.success(data);
+//	}
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUnityType(@PathVariable("id") int id ,@RequestBody UnitType u){
+        service.deleteUnitType(id,u);
+        return JavaResponse.deleteSuccess(id);
     }
 
 }

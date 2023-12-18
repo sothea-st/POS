@@ -14,11 +14,19 @@ public class JavaStorage {
         return timeName+"."+ext;
     }
 
+    public static String setFileTxt(String fileName){
+        String timeName = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
+//        String ext =   fileName.split("\\.")[1];
+        return timeName+".txt";
+    }
+
 
     public static void storeImage(MultipartFile file) throws IOException {
         byte[] bytes = file.getBytes(); // convert file to byte[]
         String base64 = Base64.getEncoder().encodeToString(bytes); // convert byte[] to base64 as String
         String base64String = "data:image/jpeg;base64,"+base64; // connect "data:image/jpeg;base64," with base64
+
+
         String[] strings = base64String.split(","); // convert base64String to array
 //        switch (strings[0]) {//check image's extension
 //            case "data:image/jpeg;base64":
@@ -31,6 +39,7 @@ public class JavaStorage {
 //                extension = "jpg";
 //                break;
 //        }
+
         //convert base64 string to binary data
         byte[] data =  Base64.getDecoder().decode(strings[1]); // decode strings[1] to byte[]
         String path = "assets\\product\\"+setFileName(file.getOriginalFilename()); // path for store file
@@ -42,5 +51,8 @@ public class JavaStorage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
     }
 }

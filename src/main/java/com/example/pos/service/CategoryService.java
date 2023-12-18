@@ -1,8 +1,6 @@
 package com.example.pos.service;
 
-import com.example.pos.constant.JavaMessage;
 import com.example.pos.constant.JavaValidation;
-import com.example.pos.constant.SessionData;
 import com.example.pos.entity.Category;
 import com.example.pos.repository.CategoryRepository;
 import com.example.pos.util.exception.customeException.JavaNotFoundByIdGiven;
@@ -10,7 +8,6 @@ import com.example.pos.util.exception.customeException.JavaNotFoundByIdGiven;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -74,12 +71,12 @@ public class CategoryService {
         return c;
     }
 
-    public Category deleteCategory(int id, boolean status , boolean isDeleted) {
+    public void deleteCategory(int id,Category c){
         Optional<Category> data = repo.findById(id);
         Category obj = data.get();
-        obj.setDeleted(isDeleted);
-        obj.setStatus(status);
-        return repo.save(obj);
+        obj.setDeleted(c.isDeleted());
+        obj.setStatus(c.isStatus());
+        repo.save(obj);
     }
 
 }

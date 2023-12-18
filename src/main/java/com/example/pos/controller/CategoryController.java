@@ -47,12 +47,10 @@ public class CategoryController {
 		return JavaResponse.success(data);
 	}
 
-	@PostMapping("/delete/{id}")
-	public ResponseEntity<?> deleteCategory(@PathVariable("id") int id, @RequestParam("status") boolean status,@RequestParam("isDeleted") boolean isDeleted) {
-		service.deleteCategory(id, status,isDeleted);
-		return JavaResponse.success("delete success");
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteCategory(@PathVariable("id") int id ,@RequestBody Category c){
+		service.deleteCategory(id,c);
+		return JavaResponse.deleteSuccess(id);
 	}
-
- 
 
 }

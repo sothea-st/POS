@@ -5,6 +5,7 @@ import com.example.pos.entity.Product;
 import com.example.pos.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
+
+import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 
 @RestController
 @RequestMapping("/api/product")
@@ -52,10 +55,20 @@ public class ProductController {
         return JavaResponse.success(data);
     }
 
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") int id , @RequestParam("status") boolean status){
-        service.deleteProduct(id,status);
-        return JavaResponse.success("delete success");
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable("id")int id , @RequestBody Product p){
+        service.deleteProduct(id,p);
+        return JavaResponse.deleteSuccess(id);
+    }
+
+
+    @GetMapping("/readFileById/{id}")
+    public ResponseEntity<byte[]> getFile(@PathVariable String id) throws IOException {
+        byte[] imageData = service.getFile(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf(IMAGE_PNG_VALUE))
+                .body(imageData);
     }
 
 }

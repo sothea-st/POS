@@ -1,15 +1,17 @@
 package com.example.pos.service;
 
 import com.example.pos.components.JavaStorage;
-import com.example.pos.constant.JavaMessage;
 import com.example.pos.constant.JavaValidation;
+import com.example.pos.entity.FileStore;
 import com.example.pos.entity.Product;
+import com.example.pos.repository.FileStoreRepository;
 import com.example.pos.repository.ProductRepository;
 import com.example.pos.util.exception.customeException.JavaNotFoundByIdGiven;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,13 +22,18 @@ import java.util.*;
 public class ProductService {
     @Autowired
     private ProductRepository repo;
-
+    @Autowired
+    private FileStoreRepository fileStore;
+    @Autowired
+    private HttpSession session;
     public Product addProduct(Product p, MultipartFile file) throws IOException {
         boolean proNameKh = repo.existsByProNameKh(p.getProNameKh());
         JavaValidation.checkDataAlreadyExists(proNameKh);
 
         boolean proNameEn = repo.existsByProNameEn(p.getProNameEn());
         JavaValidation.checkDataAlreadyExists(proNameEn);
+
+        Object idUser = session.getAttribute("idUser");
 
         Product pro = new Product();
         pro.setCatId(p.getCatId());
@@ -35,6 +42,8 @@ public class ProductService {
         pro.setProNameEn(p.getProNameEn());
         pro.setCost(p.getCost());
         pro.setPrice(p.getPrice());
+        pro.setNote(p.getNote());
+        pro.setCreateBy((Integer) idUser);
 
         if (file == null) {
             pro.setImage("default.jpg");
@@ -44,8 +53,16 @@ public class ProductService {
             } else {
                 JavaStorage.storeImage(file);
                 pro.setImage(JavaStorage.setFileName(Objects.requireNonNull(file.getOriginalFilename())));
+
+                // save information image to table pos_file
+                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+                FileStore f = new FileStore(JavaStorage.setFileName(file.getOriginalFilename()), fileName, file.getContentType(), file.getBytes());
+                fileStore.save(f);
+                pro.setFileName(JavaStorage.setFileName(file.getOriginalFilename()));
+
             }
         }
+
         repo.save(pro);
         return pro;
     }
@@ -84,6 +101,8 @@ public class ProductService {
             JavaValidation.checkDataAlreadyExists(isExist);
         }
 
+        Object idUser = session.getAttribute("idUser");
+
         if (Objects.equals(fileName, "default.jpg"))
             fileName = "";
         if (file != null && !file.isEmpty()) {
@@ -93,6 +112,13 @@ public class ProductService {
             }
             JavaStorage.storeImage(file);
             previousPro.setImage(JavaStorage.setFileName(Objects.requireNonNull(file.getOriginalFilename())));
+
+            // save information image to table pos_file
+            String fName = StringUtils.cleanPath(file.getOriginalFilename());
+            FileStore f = new FileStore(JavaStorage.setFileName(file.getOriginalFilename()), fName, file.getContentType(), file.getBytes());
+            fileStore.save(f);
+            previousPro.setFileName(JavaStorage.setFileName(file.getOriginalFilename()));
+
         }
         previousPro.setProNameKh(editProduct.getProNameKh());
         previousPro.setProNameEn(editProduct.getProNameEn());
@@ -100,15 +126,23 @@ public class ProductService {
         previousPro.setCost(editProduct.getCost());
         previousPro.setUnitTypeId(editProduct.getUnitTypeId());
         previousPro.setCatId(editProduct.getCatId());
-
+        previousPro.setNote(editProduct.getNote());
+//        previousPro.setCreateBy((Integer) idUser);
         repo.save(previousPro);
         return previousPro;
     }
 
-    public void deleteProduct(int id, boolean status) {
-        Product p = repo.findById(id).get();
-        p.setStatus(status);
-        repo.save(p);
+    public void deleteProduct(int id, Product p) {
+        Optional<Product> data = repo.findById(id);
+        Product obj = data.get();
+        obj.setStatus(p.isStatus());
+        obj.setDeleted(p.isDeleted());
+        repo.save(obj);
+    }
+
+    public byte[] getFile(String id) throws IOException {
+        Optional<FileStore> fileDB = fileStore.findById(id);
+        return fileDB.get().getData();
     }
 
 }

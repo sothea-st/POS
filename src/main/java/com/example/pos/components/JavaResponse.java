@@ -9,4 +9,8 @@ public class JavaResponse {
         return ResponseEntity.ok().body(Map.of("msg","success","data",data));
     }
 
+    public static ResponseEntity<?> deleteSuccess(int id){
+        return ResponseEntity.ok().body(Map.of("msg","delete success at id: "+id,"status",200));
+    }
+
 }

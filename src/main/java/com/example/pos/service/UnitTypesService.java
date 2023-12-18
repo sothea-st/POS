@@ -50,33 +50,53 @@ public class UnitTypesService {
         return data;
     }
 
-    public UnitType updateUnitType(int id, String nameKh, String nameEn) {
-
+    public UnitType updateUnitType(int id, UnitType u) {
         Optional<UnitType> data = repository.findById(id);
         UnitType obj = data.get();
 
-        if (!Objects.equals(obj.getUnitTypeNameEn(), nameEn)) {
-            boolean isExist = repository.existsByUnitTypeNameEn(nameEn);
+        if (!Objects.equals(obj.getUnitTypeNameEn(), u.getUnitTypeNameEn())) {
+            boolean isExist = repository.existsByUnitTypeNameEn(u.getUnitTypeNameEn());
             JavaValidation.checkDataAlreadyExists(isExist);
         }
 
-        if (!Objects.equals(obj.getUnitTypeNameKh(), nameKh)) {
-            boolean isExist = repository.existsByUnitTypeNameKh(nameKh);
+        if (!Objects.equals(obj.getUnitTypeNameKh(), u.getUnitTypeNameKh())) {
+            boolean isExist = repository.existsByUnitTypeNameKh(u.getUnitTypeNameKh());
             JavaValidation.checkDataAlreadyExists(isExist);
         }
 
-        obj.setUnitTypeNameKh(nameKh);
-        obj.setUnitTypeNameKh(nameEn);
+        obj.setUnitTypeNameKh(u.getUnitTypeNameKh());
+        obj.setUnitTypeNameEn(u.getUnitTypeNameEn());
         repository.save(obj);
         return obj;
     }
 
-    public UnitType deleteUnitType(int id,boolean status , boolean isDeleted){
-        Optional<UnitType> u = repository.findById(id);
-        UnitType obj = u.get();
-        obj.setDeleted(isDeleted);
-        obj.setStatus(status);
-        return repository.save(obj);
+//    public UnitType updateUnitType(int id, String nameKh, String nameEn) {
+//        Optional<UnitType> data = repository.findById(id);
+//        UnitType obj = data.get();
+//
+//        if (!Objects.equals(obj.getUnitTypeNameEn(), nameEn)) {
+//            boolean isExist = repository.existsByUnitTypeNameEn(nameEn);
+//            JavaValidation.checkDataAlreadyExists(isExist);
+//        }
+//
+//        if (!Objects.equals(obj.getUnitTypeNameKh(), nameKh)) {
+//            boolean isExist = repository.existsByUnitTypeNameKh(nameKh);
+//            JavaValidation.checkDataAlreadyExists(isExist);
+//        }
+//
+//        obj.setUnitTypeNameKh(nameKh);
+//        obj.setUnitTypeNameEn(nameEn);
+//        repository.save(obj);
+//        return obj;
+//    }
+//
+
+    public void deleteUnitType(int id , UnitType u){
+        Optional<UnitType> data = repository.findById(id);
+        UnitType obj = data.get();
+        obj.setDeleted(u.isDeleted());
+        obj.setStatus(u.isStatus());
+        repository.save(obj);
     }
 
 }

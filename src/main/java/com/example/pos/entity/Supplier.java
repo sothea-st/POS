@@ -1,7 +1,7 @@
 package com.example.pos.entity;
 
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import com.example.pos.constant.JavaMessage;
 
@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,11 +19,11 @@ import lombok.NoArgsConstructor;
 import java.util.*;
 
 @Entity
-@Table(name = "pos_suplier")
+@Table(name = "pos_supplier")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Suplier {
+public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -38,7 +37,10 @@ public class Suplier {
     private String nameEn;
  
 
-    private String address;
+    private String address="N/A";
+
+    @NotNull
+    @NotBlank(message = JavaMessage.required)
     private String contact;
  
     @Column(name = "status")
