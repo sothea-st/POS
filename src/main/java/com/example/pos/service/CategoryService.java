@@ -34,7 +34,8 @@ public class CategoryService {
         Category obj = new Category();
         obj.setCatNameKh(c.getCatNameKh());
         obj.setCatNameEn(c.getCatNameEn());
-        obj.setCreateBy((Integer)id);
+//        obj.setCreateBy((Integer)id);
+        obj.setCreateBy(10);
         repo.save(obj);
         return obj;
     }
