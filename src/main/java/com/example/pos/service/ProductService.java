@@ -1,6 +1,7 @@
 package com.example.pos.service;
 
 import com.example.pos.components.JavaStorage;
+import com.example.pos.constant.JavaConstant;
 import com.example.pos.constant.JavaValidation;
 import com.example.pos.entity.FileStore;
 import com.example.pos.entity.Product;
@@ -33,7 +34,7 @@ public class ProductService {
         boolean proNameEn = repo.existsByProNameEn(p.getProNameEn());
         JavaValidation.checkDataAlreadyExists(proNameEn);
 
-        Object idUser = session.getAttribute("idUser");
+        Object idUser = session.getAttribute(JavaConstant.userId);
 
         Product pro = new Product();
         pro.setCatId(p.getCatId());
@@ -101,7 +102,7 @@ public class ProductService {
             JavaValidation.checkDataAlreadyExists(isExist);
         }
 
-        Object idUser = session.getAttribute("idUser");
+        Object idUser = session.getAttribute(JavaConstant.userId);
 
         if (Objects.equals(fileName, "default.jpg"))
             fileName = "";

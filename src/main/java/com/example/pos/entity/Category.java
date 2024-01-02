@@ -32,6 +32,9 @@ public class Category  {
     @NotBlank(message = JavaMessage.required)
     private String catNameEn;
 
+    @Column(name = "parent_id")
+    private int parentId=0;
+
     @Column(name = "status")
     private boolean status = true;
 

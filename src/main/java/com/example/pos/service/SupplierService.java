@@ -56,7 +56,7 @@ public class SupplierService {
 
         obj.setNameKh(s.getNameKh());
         obj.setNameEn(s.getNameEn());
-        obj.setAddress(s.getAddress().isEmpty() ? "N/A" : s.getAddress());
+        obj.setAddress(s.getAddress());
         obj.setContact(s.getContact());
         repo.save(obj);
         return obj;

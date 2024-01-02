@@ -37,7 +37,7 @@ public class Supplier {
     private String nameEn;
  
 
-    private String address="N/A";
+    private String address;
 
     @NotNull
     @NotBlank(message = JavaMessage.required)

@@ -10,12 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
-// import org.springframework.web.bind.annotation.PutMapping;
-// import org.springframework.web.bind.annotation.RequestBody;
-// import org.springframework.web.bind.annotation.PathVariable;
+import java.util.List;
 
 
- 
 @RestController
 @RequestMapping("/api/category")
 @Validated
@@ -29,9 +26,9 @@ public class CategoryController {
 		return JavaResponse.success(data);
 	}
 
-	@GetMapping
-	public ResponseEntity<?> getCategory() {
-		ArrayList<Category> data = service.getCategory();
+	@GetMapping("/parentId/{parentId}")
+	public ResponseEntity<?> getCategory(@PathVariable("parentId") int parentId) {
+		ArrayList<Category> data = service.getCategory(parentId);
 		return JavaResponse.success(data);
 	}
 

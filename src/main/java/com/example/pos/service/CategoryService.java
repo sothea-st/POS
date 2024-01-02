@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,20 +29,19 @@ public class CategoryService {
         JavaValidation.checkDataAlreadyExists(catNameKh); // check catName already exists or not
         JavaValidation.checkDataAlreadyExists(catNameEn); // check catName already exists or not
 
-     
         Object id = httpSession.getAttribute("idUser");
-       
+
         Category obj = new Category();
         obj.setCatNameKh(c.getCatNameKh());
         obj.setCatNameEn(c.getCatNameEn());
-//        obj.setCreateBy((Integer)id);
-        obj.setCreateBy(10);
+        obj.setCreateBy((Integer)id);
+        obj.setParentId(c.getParentId());
         repo.save(obj);
         return obj;
     }
 
-    public ArrayList<Category> getCategory() {
-        return repo.getCategory();
+    public ArrayList<Category> getCategory(int parentId) {
+        return repo.getCategory(parentId);
     }
 
     public Category updateCategory(int id, Category c) {
@@ -60,6 +60,7 @@ public class CategoryService {
 
         obj.setCatNameKh(c.getCatNameKh());
         obj.setCatNameEn(c.getCatNameEn());
+        obj.setParentId(c.getParentId());
 
         repo.save(obj);
         return obj;
@@ -79,5 +80,6 @@ public class CategoryService {
         obj.setStatus(c.isStatus());
         repo.save(obj);
     }
+
 
 }

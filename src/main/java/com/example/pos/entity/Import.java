@@ -10,58 +10,59 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "pos_employee")
-@AllArgsConstructor
+@Table(name = "pos_import")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class Employee {
+public class Import {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = JavaMessage.required)
+    @Column(name = "imp_no")
     @NotNull(message = JavaMessage.required)
-    @Column(name = "name_kh")
-    private String nameKh;
-
     @NotBlank(message = JavaMessage.required)
-    @NotNull(message = JavaMessage.required)
-    @Column(name = "name_en")
-    private String nameEn;
+    private String impNo;
 
+    @Column(name = "emp_id")
+    @Min(0)
+    private int empId;
+
+    @Column(name = "sub_id")
+    @Min(0)
+    private int subId;
+
+    @Column(name = "imp_date")
+    @NotNull(message = JavaMessage.required)
     @NotBlank(message = JavaMessage.required)
+    private String impDate;
+
+    @Column(name = "discount",precision = 10,scale = 2)
     @NotNull(message = JavaMessage.required)
-    @Column(name = "gender")
-    private String gender;
+    private BigDecimal discount;
 
-    @NotBlank(message = JavaMessage.required)
+    @Column(name = "total",precision = 10,scale = 2)
     @NotNull(message = JavaMessage.required)
-    @Column(name = "dob")
-    private String dob;
+    private BigDecimal total;
 
-    @Column(name = "start_date")
-    private String startDate;
-
-
-    private String fileName;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ImportDetail> details;
 
 
-    @NotBlank(message = JavaMessage.required)
-    @NotNull(message = JavaMessage.required)
-    @Column(length = 12)
-    private String contact;
 
 
-    private String address;
 
     @Column(name = "create_by")
     private int createBy;
 
     @CreationTimestamp
-    @Column(updatable = false,name = "create_date")
+    @Column(name = "created_date")
     private Date createDate;
 
     @Column(name = "status")
@@ -69,5 +70,6 @@ public class Employee {
 
     @Column(name = "is_deleted")
     private boolean isDeleted=false;
+
 
 }
