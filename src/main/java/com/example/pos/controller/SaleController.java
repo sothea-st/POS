@@ -1,9 +1,8 @@
 package com.example.pos.controller;
 
 import com.example.pos.components.JavaResponse;
-import com.example.pos.entity.Import;
-import com.example.pos.entity.ImportDetail;
-import com.example.pos.service.ImportService;
+import com.example.pos.entity.Sale;
+import com.example.pos.service.SaleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/import")
+@RequestMapping("/api/sale")
 @Validated
-public class ImportController {
+public class SaleController {
     @Autowired
-    private ImportService service;
+    private SaleService service;
 
     @PostMapping
-    public ResponseEntity<?> addImport(@Valid @RequestBody Import i){
-        service.addImport(i);
-        return JavaResponse.success("success insert");
+    public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s) {
+        Sale data = service.saleProduct(s);
+        return JavaResponse.success(data);
     }
 
 }

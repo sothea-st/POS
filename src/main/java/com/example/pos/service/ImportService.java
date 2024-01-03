@@ -21,7 +21,7 @@ public class ImportService {
 
     @Autowired
     private HttpSession session;
-    public Import addImport(Import imp ) {
+    public void addImport(Import imp ) {
         var createBy = session.getAttribute(JavaConstant.userId);
         Import data = new Import();
         data.setImpNo(imp.getImpNo());
@@ -33,26 +33,33 @@ public class ImportService {
         data.setCreateBy((Integer)createBy);
         repo.save(data);
 
-        System.out.println("id = " + data.getId());
-
         List<ImportDetail> listDetail = imp.getDetails();
+
         for( int i = 0 ; i < listDetail.size(); i++ ) {
-            var detail = listDetail.get(i);
+            var value = listDetail.get(i);
+            int productId = value.getProductId();
+            int qtyNew = value.getQtyNew();
             ImportDetail details = new ImportDetail();
-            details.setProductId(details.getProductId());
+            ImportDetail getImpDetails = repoDetail.getDataImportDetail(productId);
+
+            if( getImpDetails == null ) {
+                details.setQtyOld(qtyNew);
+            } else {
+                int qtyOld = getImpDetails.getQtyOld();
+                int qty = qtyOld + qtyNew;
+                details.setQtyOld(qty);
+            }
             details.setImpId(data.getId());
-            details.setQty(detail.getQty());
-            details.setCost(detail.getCost());
-            details.setAmount(detail.getAmount());
-            details.setExpireDate(detail.getExpireDate());
+            details.setProductId(productId);
+            details.setQtyNew(qtyNew);
+            details.setCost(value.getCost());
+            details.setAmount(value.getAmount());
+            details.setExpireDate(value.getExpireDate());
             details.setCreateBy((Integer)createBy);
             repoDetail.save(details);
         }
 
-        return  data;
+//        return data;
     }
-
-
-
 
 }
