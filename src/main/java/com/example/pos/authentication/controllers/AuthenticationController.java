@@ -39,8 +39,8 @@ public class AuthenticationController {
     public ResponseEntity<?> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
         HashMap<String, Object> error = new HashMap<>();
 
-        String keyEmail     ="email";
-        String email        = JavaValidation.checkEmail(registerUserDto.getEmail());
+//        String keyEmail     ="email";
+//        String email        = JavaValidation.checkEmail(registerUserDto.getEmail());
 
         String keyFullName  ="fullName";
 		String fullName     = JavaValidation.checkField( registerUserDto.getFullName(), keyFullName);
@@ -52,7 +52,7 @@ public class AuthenticationController {
         String phone        = JavaValidation.checkPhone(registerUserDto.getPhone());
 
 
-        if( !email.isEmpty() ) error.put(keyEmail, email);
+//        if( !email.isEmpty() ) error.put(keyEmail, email);
         if( !fullName.isEmpty() ) error.put(keyFullName,fullName);
         if( !password.isEmpty() ) error.put(keyPassword,password);
         if( !phone.isEmpty() ) error.put(keyPhone,phone);

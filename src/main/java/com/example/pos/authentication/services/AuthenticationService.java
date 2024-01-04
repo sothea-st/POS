@@ -45,8 +45,20 @@ public class AuthenticationService {
 	 
 		boolean isExistPhone = userRepository.existsByPhone(input.getPhone());
 		JavaValidation.phoneAlreadyExist(isExistPhone);
-		 
 
+
+		int userId = userRepository.userID();
+		String userIdStr = "";
+		userId++;
+		if( userId < 10 ) {
+			userIdStr="000"+userIdStr;
+		} else if ( userId < 100 ) {
+			userIdStr="00"+userIdStr;
+		} else if ( userId < 1000 ) {
+			userIdStr="0"+userIdStr;
+		} else {
+			userIdStr="0"+userIdStr;
+		}
 
 		var user = new User()
 				.setFullName(input.getFullName())
@@ -64,6 +76,7 @@ public class AuthenticationService {
 						input.getPassword()));
 
 		return userRepository.findByEmail(input.getEmail()).orElseThrow();
+
 	}
 
 	public List<User> allUsers() {

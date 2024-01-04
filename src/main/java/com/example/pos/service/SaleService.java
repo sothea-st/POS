@@ -32,13 +32,13 @@ public class SaleService {
     public Sale saleProduct(Sale s) {
         var createBy = session.getAttribute(JavaConstant.userId);
 
-        Sale data = new Sale();
-        data.setEmpId(s.getEmpId());
-        data.setSaleDate(s.getSaleDate());
-        data.setDiscount(s.getDiscount());
-        data.setTotal(s.getTotal());
-        data.setCreateBy((Integer)createBy);
-        repo.save(data);
+        Sale sale = new Sale();
+        sale.setEmpId(s.getEmpId());
+        sale.setSaleDate(s.getSaleDate());
+        sale.setDiscount(s.getDiscount());
+        sale.setTotal(s.getTotal());
+        sale.setCreateBy((Integer)createBy);
+        repo.save(sale);
 
         List<SaleDetail> details = s.getDataSale();
 
@@ -48,7 +48,7 @@ public class SaleService {
             int qtyNew = detail.getQty();
 
             SaleDetail dataDetail = new SaleDetail();
-            dataDetail.setSaleId(data.getId());
+            dataDetail.setSaleId(sale.getId());
             dataDetail.setProductId(productId);
             dataDetail.setQty(qtyNew);
             dataDetail.setAmount(detail.getAmount());
@@ -58,13 +58,12 @@ public class SaleService {
             ImportDetail getQtyOld = repoImp.getDataImportDetail(productId);
             int qtyOld = getQtyOld.getQtyOld();
             int qty = qtyOld - qtyNew;
-            System.out.println("data id = " + data.getId());
-//            Optional<ImportDetail> dataDetail =
-
+            Optional<ImportDetail> getImportDetail = repoImp.findByImpId(productId);
+            ImportDetail obj = getImportDetail.get();
+            obj.setQtyOld(qty);
+            repoImp.save(obj);
         }
-
-
-        return data;
+        return sale;
     }
 
 }

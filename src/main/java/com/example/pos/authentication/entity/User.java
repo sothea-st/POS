@@ -48,7 +48,7 @@ public class User implements UserDetails {
     }
 
     @Column(unique = true, length = 100, nullable = false)
-    @Email(message = JavaMessage.invalidEmail)
+//    @Email(message = JavaMessage.invalidEmail)
     @NotBlank(message = JavaMessage.required)
     private String email;
  
