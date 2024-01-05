@@ -20,6 +20,12 @@ public class JavaValidation {
         return "";
     }
 
+    public static String checkRole(String field, String key) {
+        if (field.trim().isEmpty())
+            return "The field " + key + " is requred!";
+        return "";
+    }
+
     public static String checkEmail(String field) {
         if (field.trim().isBlank() || field.trim().isEmpty())
             return "The field email is requred!";

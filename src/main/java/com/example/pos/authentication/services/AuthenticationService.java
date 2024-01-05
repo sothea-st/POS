@@ -39,43 +39,37 @@ public class AuthenticationService {
 
 	public User signup(RegisterUserDto input) {
 
-		boolean isExist = userRepository.existsByEmail(input.getEmail());
-		JavaValidation.emailAlreadyExist(isExist);
-
-	 
-		boolean isExistPhone = userRepository.existsByPhone(input.getPhone());
-		JavaValidation.phoneAlreadyExist(isExistPhone);
-
-
-		int userId = userRepository.userID();
+		int userCount = userRepository.userCount();
+		System.out.println("user count = " + userCount);
 		String userIdStr = "";
-		userId++;
-		if( userId < 10 ) {
-			userIdStr="000"+userIdStr;
-		} else if ( userId < 100 ) {
-			userIdStr="00"+userIdStr;
-		} else if ( userId < 1000 ) {
-			userIdStr="0"+userIdStr;
+		userCount++;
+		System.out.println("user count after= " + userCount);
+		if( userCount < 10 ) {
+			userIdStr="000"+userCount;
+		} else if ( userCount < 100 ) {
+			userIdStr="00"+userCount;
+		} else if ( userCount < 1000 ) {
+			userIdStr="0"+userCount;
 		} else {
-			userIdStr="0"+userIdStr;
+			userIdStr="0"+userCount;
 		}
+
 
 		var user = new User()
 				.setFullName(input.getFullName())
-				.setEmail(input.getEmail())
+				.setUserCode(userIdStr)
 				.setPassword(passwordEncoder.encode(input.getPassword()));
-		user.setPhone(input.getPhone());
-
+				user.setRole(input.getRole());
 		return userRepository.save(user);
 	}
 
 	public User authenticate(LoginUserDto input) {
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
-						input.getEmail(),
+						input.getUserCode(),
 						input.getPassword()));
 
-		return userRepository.findByEmail(input.getEmail()).orElseThrow();
+		return userRepository.findByUserCode(input.getUserCode()).orElseThrow();
 
 	}
 

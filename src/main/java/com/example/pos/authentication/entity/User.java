@@ -2,9 +2,11 @@ package com.example.pos.authentication.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Table(name = "pos_user")
 @Entity
+
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +30,16 @@ public class User implements UserDetails {
 
     private String token;
     private String expiredToken;
+
+    private String empId;
+
+    public String getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
 
     public String getExpiredToken() {
         return expiredToken;
@@ -50,6 +63,10 @@ public class User implements UserDetails {
     @Column(unique = true, length = 100, nullable = false)
 //    @Email(message = JavaMessage.invalidEmail)
     @NotBlank(message = JavaMessage.required)
+    private String userCode;
+
+    @Column(unique = true, length = 100)
+    @Email(message = JavaMessage.invalidEmail)
     private String email;
  
     @Column(nullable = false)
@@ -58,25 +75,27 @@ public class User implements UserDetails {
     // @ValidPassword
     private String password;
 
-    @Column(unique = true,name = "phone",length = 12)
-    private String phone;
+//    @Column(unique = true,name = "phone",length = 12)
+//    private String phone;
 
-    public void setPhone(String phone){
-        this.phone =phone;
-    }
+//    public void setPhone(String phone){
+//        this.phone =phone;
+//    }
+//
+//    public String getPhone(){
+//        return phone;
+//    }
 
-    public String getPhone(){
-        return phone;
-    }
 
-
-    @Column(name = "role")
-    private int role=0;
-    public void setRole(int role){
+    @Column(name = "role_id")
+    @NotNull(message = JavaMessage.required)
+    @NotBlank(message = JavaMessage.required)
+    private String role;
+    public void setRole(String role){
         this.role=role;
     }
 
-    public int getRole(){
+    public String getRole(){
         return role;
     }
 
@@ -100,7 +119,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return userCode;
     }
 
     @Override
@@ -141,12 +160,12 @@ public class User implements UserDetails {
         return this;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public User setEmail(String email) {
-        this.email = email;
+    public User setUserCode(String userCode) {
+        this.userCode = userCode;
         return this;
     }
 
@@ -178,7 +197,7 @@ public class User implements UserDetails {
         return "User{" +
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
+                ", userCode='" + userCode + '\'' +
                 ", password='" + password + '\'' +
                 // ", createdAt=" + createdAt +
                 // ", updatedAt=" + updatedAt +
@@ -191,6 +210,14 @@ public class User implements UserDetails {
 
     @Column(name = "is_deleted")
     private boolean isDeleted=false;
+
+    public int getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(int createBy) {
+        this.createBy = createBy;
+    }
 
     @CreationTimestamp
     @Column(updatable = false,name = "create_date")

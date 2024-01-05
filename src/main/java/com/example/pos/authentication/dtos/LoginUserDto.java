@@ -1,15 +1,15 @@
 package com.example.pos.authentication.dtos;
 
 public class LoginUserDto {
-    private String email;
+    private String userCode;
     private String password;
 
-    public String getEmail() {
-        return email;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public LoginUserDto setEmail(String email) {
-        this.email = email;
+    public LoginUserDto setUserCode(String userCode) {
+        this.userCode = userCode;
         return this;
     }
 
@@ -25,7 +25,7 @@ public class LoginUserDto {
     @Override
     public String toString() {
         return "LoginUserDto{" +
-                "email='" + email + '\'' +
+                "userCode='" + userCode + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

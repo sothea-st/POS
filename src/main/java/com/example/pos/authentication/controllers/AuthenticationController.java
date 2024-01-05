@@ -48,14 +48,19 @@ public class AuthenticationController {
         String keyPassword  ="password";
 		String password     = JavaValidation.checkPassword(registerUserDto.getPassword());
 
-        String keyPhone     ="phone";
-        String phone        = JavaValidation.checkPhone(registerUserDto.getPhone());
+//        String keyRole      ="role";
+//        String role         = JavaValidation.checkRole(""+registerUserDto.getRole() , keyRole);
+
+
+//        String keyPhone     ="phone";
+//        String phone        = JavaValidation.checkPhone(registerUserDto.getPhone());
 
 
 //        if( !email.isEmpty() ) error.put(keyEmail, email);
+//        if( !role.isEmpty() ) error.put(keyRole,role);
         if( !fullName.isEmpty() ) error.put(keyFullName,fullName);
         if( !password.isEmpty() ) error.put(keyPassword,password);
-        if( !phone.isEmpty() ) error.put(keyPhone,phone);
+//        if( !phone.isEmpty() ) error.put(keyPhone,phone);
         if( !error.isEmpty() )  return ResponseEntity.status(500).body(error);
 
         User registeredUser = authenticationService.signup(registerUserDto);
@@ -63,9 +68,9 @@ public class AuthenticationController {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", registeredUser.getId());
         map.put("name", registeredUser.getFullName());
-        map.put("email", registeredUser.getEmail());
+        map.put("userCode", registeredUser.getUserCode());
         map.put("password", registeredUser.getPassword());
-        map.put("phone", registeredUser.getPhone());
+//        map.put("phone", registeredUser.getPhone());
         map.put("role", registeredUser.getRole());
         // return ResponseEntity.ok(registeredUser);
         return JavaResponse.success(map);

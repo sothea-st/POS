@@ -1,25 +1,36 @@
 package com.example.pos.authentication.dtos;
 
 public class RegisterUserDto {
-    private String email;
+    private String userCode;
     private String password;
     private String fullName;
-    private String phone;
 
-    public String getPhone(){
-       return phone;
-    }
-     public RegisterUserDto setPhone(String phone) {
-        this.phone = phone;
-        return this;
+    private String role;
+//    private String phone;
+
+//    public String getPhone(){
+//       return phone;
+//    }
+//     public RegisterUserDto setPhone(String phone) {
+//        this.phone = phone;
+//        return this;
+//    }
+
+
+    public String getRole() {
+        return role;
     }
 
-    public String getEmail() {
-        return email;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public RegisterUserDto setEmail(String email) {
-        this.email = email;
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public RegisterUserDto setUserCode(String userCode) {
+        this.userCode = userCode;
         return this;
     }
 
@@ -44,10 +55,10 @@ public class RegisterUserDto {
     @Override
     public String toString() {
         return "RegisterUserDto{" +
-                "email='" + email + '\'' +
+                "email='" + userCode + '\'' +
                 ", password='" + password + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", phone='" + phone + '\'' +
+                ", phone='" + role + '\'' +
                 '}';
     }
 }

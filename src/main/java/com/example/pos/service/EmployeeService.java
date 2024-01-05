@@ -1,5 +1,7 @@
 package com.example.pos.service;
 
+import com.example.pos.authentication.entity.User;
+import com.example.pos.authentication.repositories.UserRepository;
 import com.example.pos.components.JavaStorage;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.constant.JavaValidation;
@@ -9,6 +11,7 @@ import com.example.pos.repository.EmployeeRepository;
 import com.example.pos.repository.FileStoreRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +31,15 @@ public class EmployeeService {
 
     @Autowired
     private FileStoreRepository fileStore;
+
+    @Autowired
+    private UserRepository userRepo;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public EmployeeService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Employee addEmployee(Employee e , MultipartFile file) throws IOException {
         var createdBy = session.getAttribute(JavaConstant.userId);
@@ -59,11 +71,36 @@ public class EmployeeService {
                 FileStore f = new FileStore(JavaStorage.setFileName(file.getOriginalFilename()), fileName, file.getContentType(), file.getBytes());
                 fileStore.save(f);
                 emp.setFileName(JavaStorage.setFileName(file.getOriginalFilename()));
-
             }
         }
 
         repo.save(emp);
+
+
+        int userCount = userRepo.userCount();
+        String userCountRow = "";
+        userCount++;
+
+        if( userCount < 10 ) {
+            userCountRow="000"+userCount;
+        } else if ( userCount < 100 ) {
+            userCountRow="00"+userCount;
+        } else if ( userCount < 1000 ) {
+            userCountRow="0"+userCount;
+        } else {
+            userCountRow="0"+userCount;
+        }
+
+        System.out.println("emp id = " + emp.getId());
+        User user = new User();
+        user.setFullName(emp.getNameEn());
+        JavaConstant password = new JavaConstant();
+        user.setPassword(passwordEncoder.encode(password.getDefaultPassword()));
+        user.setRole("No Role");
+        user.setUserCode(userCountRow);
+        user.setEmpId(emp.getId()+"");
+        user.setCreateBy((Integer)createdBy);
+        userRepo.save(user);
         return emp;
     }
 

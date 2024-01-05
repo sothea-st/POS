@@ -37,6 +37,8 @@ public class EmployeeController {
             return ResponseEntity.status(500).body(err);
         }
         Employee data = service.addEmployee(e,file);
+
+
         return JavaResponse.success(data);
     }
 
