@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface FileStoreRepository extends JpaRepository<FileStore, String> {
 
-
 }
