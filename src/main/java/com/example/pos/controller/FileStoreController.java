@@ -1,5 +1,6 @@
 package com.example.pos.controller;
 
+import com.example.pos.components.JavaResponse;
 import com.example.pos.service.FileStoreService;
 import com.example.pos.util.response.ResponseFile;
 import com.example.pos.util.response.ResponseMessage;
@@ -56,12 +57,10 @@ public class FileStoreController {
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
-    @GetMapping("/readFileById/{id}")
-    public ResponseEntity<byte[]> getFile(@PathVariable String id) throws IOException {
+    @GetMapping("/api/imageData/readFileById/{id}")
+    public ResponseEntity<?> getFile(@PathVariable String id) throws IOException {
         byte[] imageData = storageService.getFile(id);
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf(IMAGE_PNG_VALUE))
-                .body(imageData);
+        return JavaResponse.imageSuccess(imageData);
     }
 
 

@@ -1,0 +1,2 @@
+  String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss a").format(Calendar.getInstance().getTime()); // get current date and time with type am or pm
+  

@@ -46,22 +46,17 @@ public class ProductService {
         pro.setNote(p.getNote());
         pro.setCreateBy((Integer) idUser);
 
-        if (file == null) {
-            pro.setImage("default.jpg");
+        if (file == null || file.isEmpty()) {
+            pro.setImage(JavaConstant.defaultNameImage);
         } else {
-            if (file.isEmpty()) {
-                pro.setImage("default.jpg");
-            } else {
-                JavaStorage.storeImage(file);
-                pro.setImage(JavaStorage.setFileName(Objects.requireNonNull(file.getOriginalFilename())));
-
-                // save information image to table pos_file
-                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-                FileStore f = new FileStore(JavaStorage.setFileName(file.getOriginalFilename()), fileName, file.getContentType(), file.getBytes());
-                fileStore.save(f);
-                pro.setFileName(JavaStorage.setFileName(file.getOriginalFilename()));
-
-            }
+             // JavaStorage.storeImage(file); for save image to path assests/product in project
+            String fileName = JavaStorage.setFileName(file.getOriginalFilename());
+            pro.setImage(fileName);
+            // save information image to table pos_file
+            // String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            FileStore f = new FileStore(fileName, fileName, file.getContentType(), file.getBytes());
+            fileStore.save(f);
+            pro.setFileName(fileName);
         }
 
         repo.save(pro);
