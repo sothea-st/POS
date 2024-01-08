@@ -41,8 +41,8 @@ public class ProductService {
         pro.setUnitTypeId(p.getUnitTypeId());
         pro.setProNameKh(p.getProNameKh());
         pro.setProNameEn(p.getProNameEn());
-        pro.setCost(p.getCost());
-        pro.setPrice(p.getPrice());
+        // pro.setCost(p.getCost());
+        // pro.setPrice(p.getPrice());
         pro.setNote(p.getNote());
         pro.setCreateBy((Integer) idUser);
 
@@ -119,7 +119,7 @@ public class ProductService {
         previousPro.setProNameKh(editProduct.getProNameKh());
         previousPro.setProNameEn(editProduct.getProNameEn());
         previousPro.setPrice(editProduct.getPrice());
-        previousPro.setCost(editProduct.getCost());
+        // previousPro.setCost(editProduct.getCost());
         previousPro.setUnitTypeId(editProduct.getUnitTypeId());
         previousPro.setCatId(editProduct.getCatId());
         previousPro.setNote(editProduct.getNote());

@@ -22,13 +22,20 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    @NotBlank(message = JavaMessage.required)
-    private String catId;
+    @Column(name = "cat_id")
+    private int catId;
 
-    @Column(nullable = false)
-    @NotBlank(message = JavaMessage.required)
-    private String unitTypeId;
+    @Column(name = "barcode")
+    private String barcode;
+
+    @Column(name = "flag")
+    private String flag;
+
+    @Column(name="weight")
+    private String weight;
+
+    @Column(name = "unit_type_id")
+    private int unitTypeId;
 
     @Column(nullable = false, unique = true)
     @NotBlank(message = JavaMessage.required)
@@ -45,7 +52,6 @@ public class Product {
 
 
     @Column(precision = 10, scale = 2)
-    @NotNull(message = JavaMessage.required)
     private BigDecimal price;
 
     private String image;
