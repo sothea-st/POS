@@ -15,4 +15,7 @@ public interface CompanyRepository extends JpaRepository<Company,Integer> {
      @Query(nativeQuery = true , value = "select * from pos_company pc where status = true and is_deleted = false and id = ?")
      Company getCompanyById(int id);
 
+     @Query(nativeQuery = true , value = "select * from pos_company where status = true and is_deleted = false")
+     Company getInfoCompany();
+
 }

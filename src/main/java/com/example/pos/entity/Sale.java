@@ -1,6 +1,8 @@
 package com.example.pos.entity;
 
 import com.example.pos.constant.JavaMessage;
+import com.example.pos.entity.payment.Payment;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -45,6 +47,9 @@ public class Sale {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<SaleDetail> dataSale;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Payment dataPay;
 
 
     @Column(name = "create_by")

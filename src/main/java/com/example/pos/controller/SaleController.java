@@ -21,7 +21,7 @@ public class SaleController {
 
     @PostMapping
     public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s) {
-        Sale data = service.saleProduct(s);
+       var data = service.saleProduct(s);
         return JavaResponse.success(data);
     }
 

@@ -31,13 +31,13 @@ public class User implements UserDetails {
     private String token;
     private String expiredToken;
 
-    private String empId;
+    private Integer empId;
 
-    public String getEmpId() {
+    public Integer getEmpId() {
         return empId;
     }
 
-    public void setEmpId(String empId) {
+    public void setEmpId(Integer empId) {
         this.empId = empId;
     }
 

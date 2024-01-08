@@ -19,12 +19,14 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
 //    boolean existsByPhone(String phone);
 
-
-
     @Query(nativeQuery = true,value = "select count(*) from pos_user")
     int userCount();
 
+    @Query(nativeQuery = true , value = "select pe.name_en  from pos_user pu inner join pos_employee pe on pu.emp_id = pe.id  where pe.status =true and pe.is_deleted =false and pu.status = true and pu.is_deleted =false and pu.id = ?")
+    String getNameEmp(int id);
 
 
+
+ 
 
 }

@@ -26,8 +26,6 @@ public class Import {
     private int id;
 
     @Column(name = "imp_no")
-    @NotNull(message = JavaMessage.required)
-    @NotBlank(message = JavaMessage.required)
     private String impNo;
 
     @Column(name = "emp_id")

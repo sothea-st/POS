@@ -24,7 +24,24 @@ public class ImportService {
     public void addImport(Import imp ) {
         var createBy = session.getAttribute(JavaConstant.userId);
         Import data = new Import();
-        data.setImpNo(imp.getImpNo());
+
+        int count = repo.countRecord();
+        count++;
+        String impNo = "";
+        if( count < 10 ) {
+            impNo ="0000"+count;
+        } else if ( count < 100 ) {
+            impNo ="000"+count;
+        } else if ( count < 1000 ) {
+            impNo ="00"+count;
+        } else if ( count < 10000 ) {
+            impNo ="0"+count;
+        } else {
+            impNo =""+count;
+        }
+
+        data.setImpNo(impNo);
+
         data.setEmpId(imp.getEmpId());
         data.setSubId(imp.getSubId());
         data.setImpDate(imp.getImpDate());

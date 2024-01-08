@@ -97,7 +97,7 @@ public class EmployeeService {
         user.setPassword(passwordEncoder.encode(password.getDefaultPassword()));
         user.setRole("No Role");
         user.setUserCode(userCountRow);
-        user.setEmpId(emp.getId()+"");
+        user.setEmpId(emp.getId());
         user.setCreateBy((Integer)createdBy);
         userRepo.save(user);
         return emp;

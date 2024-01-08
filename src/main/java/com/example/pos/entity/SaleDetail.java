@@ -20,7 +20,7 @@ public class SaleDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Min(0)
+
     @Column(name = "sale_id")
     private int saleId;
 
@@ -28,9 +28,11 @@ public class SaleDetail {
     @Column(name = "pro_id")
     private int productId;
 
-
     @Column(name = "qty")
     private int qty=0;
+
+    @Column(name = "price" , precision = 10 , scale = 2)
+    private BigDecimal price;
 
     @Column(name = "amount" , precision = 10 , scale = 2)
     private BigDecimal amount;

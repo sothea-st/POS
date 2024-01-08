@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class Payment {
      private String paymentNo;
 
      @Column(name = "sale_id")
-     private String saleId;
+     private int saleId;
 
      @Column(name = "total_usd",precision = 10 , scale = 2)
      private BigDecimal totalUsd;
@@ -43,15 +44,15 @@ public class Payment {
      @NotBlank(message = JavaMessage.required)
      private String totalKhr;
 
-     @Column(name = "reserve_usd",precision = 10 , scale = 2)
-     private BigDecimal reserveUsd;
+     @Column(name = "receive_usd",precision = 10 , scale = 2, nullable = false)
+     private BigDecimal receiveUsd;
 
-     @Column(name = "reserve_khr")
+     @Column(name = "receive_khr")
      @NotNull(message = JavaMessage.required)
      @NotBlank(message = JavaMessage.required)
-     private String reserveKhr;
+     private String receiveKhr;
 
-     @Column(name = "remaining_usd",precision = 10 , scale = 2)
+     @Column(name = "remaining_usd",precision = 10 , scale = 2 ,nullable = true)
      private BigDecimal remainingUsd;
 
      @Column(name = "remaining_khr")
@@ -73,14 +74,10 @@ public class Payment {
      private String paymentType;
 
      @Column(name = "customer_type_id")
-     @NotNull(message = JavaMessage.required)
-     @NotBlank(message = JavaMessage.required)
-     private String customerTypeId;
+     private int customerTypeId;
 
      @Column(name = "source_id")
-     @NotNull(message = JavaMessage.required)
-     @NotBlank(message = JavaMessage.required)
-     private String sourceId;
+     private int sourceId;
 
      @Column(name = "create_by")
      private int createBy;
