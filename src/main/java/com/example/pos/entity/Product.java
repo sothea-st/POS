@@ -50,6 +50,7 @@ public class Product {
     @Column(precision = 10, scale = 2,name = "price_usd")
     private BigDecimal priceUsd;
 
+
     @Column(name = "product_status")
     private String productStatus;
    
