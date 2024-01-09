@@ -1,11 +1,8 @@
 package com.example.pos.entity;
 
 import java.util.Date;
-
 import jakarta.validation.constraints.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import com.example.pos.constant.JavaMessage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,15 +21,16 @@ public class Product {
 
     @Column(name = "cat_id")
     private int catId;
-
-    @Column(name = "barcode")
-    private String barcode;
-
-    @Column(name = "flag")
+ 
     private String flag;
-
-    @Column(name="weight")
     private String weight;
+    private String costKhr;
+    private String fileName;
+    private String note;
+    private String codeExpired;
+    private String codeOutStock;
+    private String priceKhr;
+    private String barcode;
 
     @Column(name = "unit_type_id")
     private int unitTypeId;
@@ -45,24 +43,20 @@ public class Product {
     @NotBlank(message = JavaMessage.required)
     private String proNameEn;
 
-
-    @Column(precision = 10, scale = 2)
-    @NotNull(message = JavaMessage.required)
-    private BigDecimal cost;
+    @Column(precision = 10, scale = 2,name = "cost_usd")
+    private BigDecimal costUsd;
 
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal price;
+    @Column(precision = 10, scale = 2,name = "price_usd")
+    private BigDecimal priceUsd;
 
-    private String image;
-    private String fileName;
-    private String note;
-    private String codeExpired;
-    private String codeAlmostExpired;
-    private String codeOutStock;
-    private String codeAlmostOutStock;
+    @Column(name = "product_status")
+    private String productStatus;
+   
 
-  
+    private BigDecimal discount;
+   
+
     @Column(name = "status")
     private boolean status = true;
 

@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 @Repository
 public interface SaleDetailsRepository extends JpaRepository<SaleDetail,Integer> {
-    @Query(nativeQuery = true , value = "select psd.qty ,psd.price ,psd.amount,pp.pro_name_en  from pos_sale_details psd inner join pos_product pp on pp.id = psd.pro_id  where psd.sale_id = ?")
+    @Query(nativeQuery = true , value = "select pp.barcode,psd.qty ,psd.price ,psd.amount,pp.pro_name_en  from pos_sale_details psd inner join pos_product pp on pp.id = psd.pro_id  where psd.sale_id = ?")
     List<SaleDetailProjection> getDataDetail(int saleId);
+
+
+    // @Query(nativeQuery = true , value = "select * from pos_sale_details psd where sale_id = ?")
+    // List<SaleDetail> getSaleDetails(int saleId);
+
 }

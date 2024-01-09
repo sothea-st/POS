@@ -2,6 +2,7 @@ package com.example.pos.entity;
 
 import com.example.pos.constant.JavaMessage;
 import com.example.pos.entity.payment.Payment;
+import com.example.pos.entity.people.Customer;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -39,9 +40,11 @@ public class Sale {
     @NotNull(message = JavaMessage.required)
     private BigDecimal discount;
 
-    @Column(name = "total" , precision = 10 , scale = 2)
-    @NotNull(message = JavaMessage.required)
-    private BigDecimal total;
+    @Column(name = "total_usd" , precision = 10 , scale = 2)
+    private BigDecimal totalUsd;
+
+    @Column(name = "total_khr" )
+    private String totalKhr;
 
 
 
@@ -50,6 +53,9 @@ public class Sale {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Payment dataPay;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Customer customer;
 
 
     @Column(name = "create_by")

@@ -8,12 +8,15 @@ import com.example.pos.entity.ImportDetail;
 import com.example.pos.entity.Sale;
 import com.example.pos.entity.SaleDetail;
 import com.example.pos.entity.payment.Payment;
+import com.example.pos.entity.people.Customer;
 import com.example.pos.entity.projection.SaleDetailProjection;
 import com.example.pos.repository.ImportDetailRepository;
 import com.example.pos.repository.SaleDetailsRepository;
 import com.example.pos.repository.SaleRepository;
 import com.example.pos.repository.companyRepository.CompanyRepository;
 import com.example.pos.repository.paymentRepository.PaymentRepository;
+import com.example.pos.repository.peopleRepository.CustomerRepository;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,19 +46,21 @@ public class SaleService {
     @Autowired
     private UserRepository repoUser;
 
- 
- 
+    @Autowired
+    private CustomerRepository cusRepo;
 
-    public HashMap<String, Object> saleProduct(Sale s) {
+    public HashMap<String, Object> saleProduct(Sale s, Customer c) {
         var createBy = session.getAttribute(JavaConstant.userId);
+        int userId  = (Integer)createBy;
         HashMap<String, Object> map = new HashMap<>();
 
         Sale sale = new Sale();
         sale.setEmpId(s.getEmpId());
         sale.setSaleDate(s.getSaleDate());
         sale.setDiscount(s.getDiscount());
-        sale.setTotal(s.getTotal());
-        sale.setCreateBy((Integer) createBy);
+        sale.setTotalKhr(s.getTotalKhr());
+        sale.setTotalUsd(s.getTotalUsd());
+        sale.setCreateBy(userId);
         repo.save(sale);
 
         int saleId = sale.getId();
@@ -75,7 +80,7 @@ public class SaleService {
             dataDetail.setDiscount(detail.getDiscount());
             dataDetail.setCreateBy((Integer) createBy);
             repoDetail.save(dataDetail);
-            
+
             ImportDetail getQtyOld = repoImp.getDataImportDetail(productId);
             int qtyOld = getQtyOld.getQtyOld();
             int qty = qtyOld - qtyNew;
@@ -90,11 +95,65 @@ public class SaleService {
         int count = payRepo.countRecord();
         count++;
         String paymentNo = paymentNo(count);
+        addPayment(paymentNo,s.getId(),p,userId);
+        
+        Customer cus = s.getCustomer();
+        if( cus != null ) {
+            addCustomer(cus);
+        }
+
+        Company companyInfo = repoCompany.getInfoCompany();
+        map.put("companyName", companyInfo.getCompanyName());
+        map.put("companyContact", companyInfo.getContact());
+        map.put("companyAddress", companyInfo.getAddress());
+        map.put("companyLogo", companyInfo.getPhoto());
+        String empName = repoUser.getNameEmp((Integer) createBy);
+        map.put("empName", empName);
+        map.put("saleDate", s.getSaleDate());
+        map.put("invoidNO", paymentNo);
+        map.put("totalUsd", s.getTotalUsd());
+        map.put("totalKhr", s.getTotalKhr());
+        map.put("receiveUsd", p.getReceiveUsd());
+        map.put("receiveKhr", p.getReceiveKhr());
+        map.put("changeUSd", p.getChangeUsd());
+        map.put("changeKhr", p.getChangeKhr());
+        List<SaleDetailProjection> listProjection = repoDetail.getDataDetail(saleId);
+        map.put("saleDetails", listProjection);
+        return map;
+    }
+
+    public void addCustomer(Customer cus) {
+        String cusId = "";
+        int countId = cusRepo.countRecord();
+        countId++;
+        if (countId < 10) {
+            cusId = "000" + countId;
+        } else if (countId < 100) {
+            cusId = "00" + countId;
+        } else if (countId < 1000) {
+            cusId = "0" + countId;
+        } else {
+            cusId = "" + countId;
+        }
+
+        Customer cusData = new Customer();
+        cusData.setCusName(cus.getCusName());
+        cusData.setContact(cus.getContact());
+        cusData.setEarning(cus.getEarning());
+        cusData.setEmail(cus.getEmail());
+        cusData.setCoupon(cus.getCoupon());
+        cusData.setGender(cus.getGender());
+        cusData.setNationality(cus.getNationality());
+        cusData.setCustomerId(cusId);
+        cusRepo.save(cusData);
+    }
+
+    public void addPayment(String paymentNo, int saleId,Payment p , int createBy){
         Payment data = new Payment();
         data.setPaymentNo(paymentNo);
         data.setSaleId(saleId);
-        data.setTotalUsd(p.getTotalUsd());
-        data.setTotalKhr(p.getTotalKhr());
+        // data.setTotalUsd(p.getTotalUsd());
+        // data.setTotalKhr(p.getTotalKhr());
         data.setReceiveKhr(p.getReceiveKhr());
         data.setReceiveUsd(p.getReceiveUsd());
         data.setRemainingKhr(p.getRemainingKhr());
@@ -104,31 +163,8 @@ public class SaleService {
         data.setPaymentType(p.getPaymentType());
         data.setCustomerTypeId(p.getCustomerTypeId());
         data.setSourceId(p.getSourceId());
-        data.setCreateBy((Integer) createBy);
+        data.setCreateBy(createBy);
         payRepo.save(data);
-
-        Company companyInfo = repoCompany.getInfoCompany();
-        map.put("companyName", companyInfo.getCompanyName());
-        map.put("companyContact", companyInfo.getContact());
-        map.put("companyAddress", companyInfo.getAddress());
-        map.put("companyLogo", companyInfo.getPhoto());
-
-        String empName = repoUser.getNameEmp((Integer) createBy);
-        map.put("empName", empName);
-        map.put("saleDate", s.getSaleDate());
-        map.put("invoidNO", paymentNo);
-        map.put("totalUsd", p.getTotalUsd());
-        map.put("totalKhr", p.getTotalKhr());
-        map.put("receiveUsd", p.getReceiveUsd());
-        map.put("receiveKhr", p.getReceiveKhr());
-        map.put("changeUSd", p.getChangeUsd());
-        map.put("changeKhr", p.getChangeKhr());
- 
-        List<SaleDetailProjection> listProjection = repoDetail.getDataDetail(saleId);
-       
-        map.put("saleDetails", listProjection);
-
-        return map;
     }
 
     String paymentNo(int count) {

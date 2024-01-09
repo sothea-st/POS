@@ -36,13 +36,13 @@ public class Payment {
      @Column(name = "sale_id")
      private int saleId;
 
-     @Column(name = "total_usd",precision = 10 , scale = 2)
-     private BigDecimal totalUsd;
+     // @Column(name = "total_usd",precision = 10 , scale = 2)
+     // private BigDecimal totalUsd;
 
-     @Column(name = "total_khr")
-     @NotNull(message = JavaMessage.required)
-     @NotBlank(message = JavaMessage.required)
-     private String totalKhr;
+     // @Column(name = "total_khr")
+     // @NotNull(message = JavaMessage.required)
+     // @NotBlank(message = JavaMessage.required)
+     // private String totalKhr;
 
      @Column(name = "receive_usd",precision = 10 , scale = 2, nullable = false)
      private BigDecimal receiveUsd;

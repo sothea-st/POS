@@ -25,9 +25,11 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<?> addProduct(@Valid @ModelAttribute Product product ,
-                                        @RequestParam(value = "file",required = false)MultipartFile file) throws IOException {
+                                        @RequestParam(value = "flagFile",required = false)MultipartFile flagFile,
+                                        @RequestParam(value = "file",required = false)MultipartFile file
+                                        ) throws IOException {
 
-        Product data = service.addProduct(product,file);
+        Product data = service.addProduct(product,file,flagFile);
         return JavaResponse.success(data);
     }
     // get image from path assets\\product\\imageName
@@ -44,8 +46,10 @@ public class ProductController {
 
     @PostMapping("/{id}")
     public ResponseEntity<?> editProduct(@PathVariable("id") int id , @ModelAttribute Product p,
-                                         @RequestParam(value = "file",required = false) MultipartFile file) throws IOException {
-        Product pro =  service.editProduct(id,p,file);
+                                         @RequestParam(value = "file",required = false) MultipartFile file,
+                                         @RequestParam(value = "flagFile" ,required = false) MultipartFile flagFile
+                                         ) throws IOException {
+        Product pro =  service.editProduct(id,p,file,flagFile);
         return JavaResponse.success(pro);
     }
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,19 +24,17 @@ public class PaymentController {
     @Autowired
     private PaymentService service;
 
-    @PostMapping
-    public ResponseEntity<?> payment(@Valid  @RequestBody Payment p){
-        Payment data = service.payment(p);
+
+    @GetMapping("/{paymentNo}")
+    public ResponseEntity<?> getData(@PathVariable("paymentNo") String paymentNo){
+        var data = service.readData(paymentNo);
         return JavaResponse.success(data);
     }
 
-
-    @GetMapping
+    @GetMapping 
     public ResponseEntity<?> getData(){
-        HashMap<String,Object> map = new HashMap<>();
-        var data = service.readData();
-        map.put("company", data);
-        return JavaResponse.success(service.readData());
+        var data = service.readData("");
+        return JavaResponse.success(data);
     }
 
 }

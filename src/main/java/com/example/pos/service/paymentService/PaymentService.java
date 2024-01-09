@@ -2,16 +2,16 @@ package com.example.pos.service.paymentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.pos.authentication.entity.User;
 import com.example.pos.authentication.repositories.UserRepository;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.Company;
 import com.example.pos.entity.payment.Payment;
+import com.example.pos.entity.projection.PaymentProjection;
+import com.example.pos.entity.projection.SaleDetailProjection;
+import com.example.pos.repository.SaleDetailsRepository;
 import com.example.pos.repository.companyRepository.CompanyRepository;
 import com.example.pos.repository.paymentRepository.PaymentRepository;
 import java.util.*;
-
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -28,70 +28,39 @@ public class PaymentService {
     @Autowired
     private UserRepository userRepo;
 
-    public Payment payment(Payment p) {
+    @Autowired
+    private SaleDetailsRepository saleDetailRepo;
+ 
+    public HashMap<String, Object> readData(String paymentNo) {
         var createBy = session.getAttribute(JavaConstant.userId);
-        int count = repo.countRecord();
-        count++;
-        String paymentNo = paymentNo(count);
-        Payment data = new Payment();
-        data.setPaymentNo(paymentNo);
-        data.setSaleId(p.getSaleId());
-        data.setTotalUsd(p.getTotalUsd());
-        data.setTotalKhr(p.getTotalKhr());
-        data.setReceiveKhr(p.getReceiveKhr());
-        data.setReceiveUsd(p.getReceiveUsd());
-        data.setRemainingKhr(p.getRemainingKhr());
-        data.setRemainingUsd(p.getRemainingUsd());
-        data.setChangeKhr(p.getChangeKhr());
-        data.setChangeUsd(p.getChangeUsd());
-        data.setPaymentType(p.getPaymentType());
-        data.setCustomerTypeId(p.getCustomerTypeId());
-        data.setSourceId(p.getSourceId());
-        data.setCreateBy((Integer)createBy);
-        repo.save(data);
-        return data;
-    }
-
-    String paymentNo(int count) {
-        String paymentNo = "";
-        if (count < 10) {
-            paymentNo = "00000000" + count;
-        } else if (count < 100) {
-            paymentNo = "0000000" + count;
-        } else if (count < 1000) {
-            paymentNo = "000000" + count;
-        } else if (count < 10000) {
-            paymentNo = "00000" + count;
-        } else if (count < 100000) {
-            paymentNo = "0000" + count;
-        } else if (count < 1000000) {
-            paymentNo = "000" + count;
-        } else if (count < 10000000) {
-            paymentNo = "00" + count;
-        } else if (count < 100000000) {
-            paymentNo = "0" + count;
-        } else if (count < 1000000000) {
-            paymentNo = "" + count;
-        }
-        return paymentNo;
-    }
-
-
-    public HashMap<String,Object> readData(){
-        var createBy = session.getAttribute(JavaConstant.userId);
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         Company c = companyRepo.getInfoCompany();
         map.put("companyName", c.getCompanyName());
         map.put("companyAddres", c.getAddress());
         map.put("companyContact", c.getContact());
         map.put("companyLogo", c.getPhoto());
-
-        String empName = userRepo.getNameEmp((Integer)createBy);
+        PaymentProjection paymentData=null;
+        if( paymentNo.isEmpty() ) {
+            paymentData = repo.getPaymentDataWithoutPaymentNo();
+        } else {
+            paymentData = repo.getPaymentDataWithPaymentNo(paymentNo);
+        }
+        map.put("totalKhr", paymentData.getTotal_khr());
+        map.put("totalUsd", paymentData.getTotal_usd());
+        map.put("receiveKhr", paymentData.getReceive_khr());
+        map.put("receiveUsd", paymentData.getReceive_usd());
+        map.put("changeUsd", paymentData.getChange_usd());
+        map.put("changeKhr", paymentData.getChange_khr());
+        map.put("remainingUsd", paymentData.getRemaining_usd());
+        map.put("remainingKhr", paymentData.getRemaining_khr());
+        map.put("paymentNo", paymentData.getPayment_no());  
+        map.put("saleData", paymentData.getSale_date());
+        map.put("customerType", paymentData.getCustomer_type());
+        List<SaleDetailProjection> dataSaleDetails = saleDetailRepo.getDataDetail(paymentData.getSale_id());
+        map.put("saleDetails", dataSaleDetails);
+        String empName = userRepo.getNameEmp((Integer) createBy);
         map.put("empName", empName);
-
         return map;
     }
-    
-    
 
 }

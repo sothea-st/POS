@@ -2,6 +2,7 @@ package com.example.pos.controller;
 
 import com.example.pos.components.JavaResponse;
 import com.example.pos.entity.Sale;
+import com.example.pos.entity.people.Customer;
 import com.example.pos.service.SaleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class SaleController {
     private SaleService service;
 
     @PostMapping
-    public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s) {
-       var data = service.saleProduct(s);
+    public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s , @RequestBody(required = false) Customer c) {
+       var data = service.saleProduct(s,c);
         return JavaResponse.success(data);
     }
 

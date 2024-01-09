@@ -27,7 +27,8 @@ public class ProductService {
     private FileStoreRepository fileStore;
     @Autowired
     private HttpSession session;
-    public Product addProduct(Product p, MultipartFile file) throws IOException {
+
+    public Product addProduct(Product p, MultipartFile file , MultipartFile flagFile) throws IOException {
         boolean proNameKh = repo.existsByProNameKh(p.getProNameKh());
         JavaValidation.checkDataAlreadyExists(proNameKh);
 
@@ -41,22 +42,35 @@ public class ProductService {
         pro.setUnitTypeId(p.getUnitTypeId());
         pro.setProNameKh(p.getProNameKh());
         pro.setProNameEn(p.getProNameEn());
-        // pro.setCost(p.getCost());
-        // pro.setPrice(p.getPrice());
+        pro.setCostUsd(p.getCostUsd());
+        pro.setPriceUsd(p.getPriceUsd());
+        pro.setCostKhr(p.getCostKhr());
+        pro.setPriceKhr(p.getPriceKhr());
         pro.setNote(p.getNote());
         pro.setCreateBy((Integer) idUser);
-
+        pro.setWeight(p.getWeight());
+        pro.setBarcode(p.getBarcode());
+        pro.setDiscount(p.getDiscount());
+        pro.setProductStatus(p.getProductStatus());
         if (file == null || file.isEmpty()) {
-            pro.setImage(JavaConstant.defaultNameImage);
+            pro.setFileName(JavaConstant.defaultNameImage);
         } else {
-             // JavaStorage.storeImage(file); for save image to path assests/product in project
+            // JavaStorage.storeImage(file); for save image to path assests/product in project
             String fileName = JavaStorage.setFileName(file.getOriginalFilename());
-            pro.setImage(fileName);
+ 
             // save information image to table pos_file
-            // String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             FileStore f = new FileStore(fileName, fileName, file.getContentType(), file.getBytes());
             fileStore.save(f);
             pro.setFileName(fileName);
+        }
+
+        if( flagFile == null || flagFile.isEmpty() ) {
+            pro.setFlag(JavaConstant.defaultNameImage);
+        } else {
+            String flagName = JavaStorage.setFileName(flagFile.getOriginalFilename());
+            pro.setFlag(flagName);
+            FileStore f = new FileStore(flagName, flagName, flagFile.getContentType(), flagFile.getBytes());
+            fileStore.save(f);
         }
 
         repo.save(pro);
@@ -83,9 +97,10 @@ public class ProductService {
         return map;
     }
 
-    public Product editProduct(int id, Product editProduct, MultipartFile file) throws IOException {
+    public Product editProduct(int id, Product editProduct, MultipartFile file , MultipartFile flag) throws IOException {
         Product previousPro = repo.findById(id).get();
-        String fileName = previousPro.getImage();
+        String fileName = previousPro.getFileName();
+        String flagName = previousPro.getFlag();
 
         if (!Objects.equals(previousPro.getProNameKh(), editProduct.getProNameKh())) {
             boolean isExist = repo.existsByProNameKh(editProduct.getProNameKh());
@@ -99,31 +114,39 @@ public class ProductService {
 
         Object idUser = session.getAttribute(JavaConstant.userId);
 
-        if (Objects.equals(fileName, "default.jpg"))
+        if (Objects.equals(fileName, JavaConstant.defaultNameImage))
             fileName = "";
-        if (file != null && !file.isEmpty()) {
-            if (!fileName.isEmpty()) {
-                Path fileDelete = Paths.get("assets\\product\\" + fileName);
-                Files.delete(fileDelete);
-            }
-            JavaStorage.storeImage(file);
-            previousPro.setImage(JavaStorage.setFileName(Objects.requireNonNull(file.getOriginalFilename())));
-
+        if (file != null && !file.isEmpty() ) {
             // save information image to table pos_file
-            String fName = StringUtils.cleanPath(file.getOriginalFilename());
-            FileStore f = new FileStore(JavaStorage.setFileName(file.getOriginalFilename()), fName, file.getContentType(), file.getBytes());
+            String fName = JavaStorage.setFileName(file.getOriginalFilename());
+            FileStore f = new FileStore(fName, fName,file.getContentType(), file.getBytes());
             fileStore.save(f);
-            previousPro.setFileName(JavaStorage.setFileName(file.getOriginalFilename()));
-
+            previousPro.setFileName(fName);
         }
+
+        if( Objects.equals(flagName,JavaConstant.defaultNameImage) ) flagName ="";
+
+        if( flag != null && !flag.isEmpty() ) {
+            String fName = JavaStorage.setFileName(flag.getOriginalFilename());
+            FileStore f = new FileStore(fName, fName,flag.getContentType(), flag.getBytes());
+            fileStore.save(f);
+            previousPro.setFlag(fName);
+        }
+
         previousPro.setProNameKh(editProduct.getProNameKh());
         previousPro.setProNameEn(editProduct.getProNameEn());
-        previousPro.setPrice(editProduct.getPrice());
-        // previousPro.setCost(editProduct.getCost());
+        previousPro.setCostKhr(editProduct.getCostKhr());
+        previousPro.setCostUsd(editProduct.getCostUsd());
+        previousPro.setPriceKhr(editProduct.getPriceKhr());
+        previousPro.setPriceUsd(editProduct.getPriceUsd());
+        previousPro.setWeight(editProduct.getWeight());
+        previousPro.setBarcode(editProduct.getBarcode());
+        previousPro.setDiscount(editProduct.getDiscount());
+        previousPro.setProductStatus(editProduct.getProductStatus());
         previousPro.setUnitTypeId(editProduct.getUnitTypeId());
         previousPro.setCatId(editProduct.getCatId());
         previousPro.setNote(editProduct.getNote());
-//        previousPro.setCreateBy((Integer) idUser);
+        // previousPro.setCreateBy((Integer) idUser);
         repo.save(previousPro);
         return previousPro;
     }

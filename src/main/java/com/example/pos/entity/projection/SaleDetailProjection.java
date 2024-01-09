@@ -5,4 +5,5 @@ public interface SaleDetailProjection {
     BigDecimal getPrice();
     BigDecimal getAmount();
     String getPro_name_en(); // pro_name_en is column from table product 
+    String getBarcode();
 }  
