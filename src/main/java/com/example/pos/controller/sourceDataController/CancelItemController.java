@@ -2,6 +2,7 @@ package com.example.pos.controller.sourceDataController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,9 @@ public class CancelItemController {
      @Autowired
      private CancelItemService service;
 
-     @PostMapping
-     public ResponseEntity<?> cancelItem(@RequestBody CancelItem c) {
-          service.cancelAndDeleteItem(c);
+     @PostMapping("/{type}")
+     public ResponseEntity<?> cancelItem(@PathVariable("type")String type, @RequestBody CancelItem c) {
+          service.cancelAndDeleteItem(c,type);
           return JavaResponse.success("succes delelte item");
      }
 }

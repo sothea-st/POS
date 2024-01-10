@@ -20,7 +20,7 @@ import com.example.pos.repository.peopleRepository.CustomerRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.text.*;
 import java.util.*;
 
 @Service
@@ -51,16 +51,28 @@ public class SaleService {
 
     public HashMap<String, Object> saleProduct(Sale s, Customer c) {
         var createBy = session.getAttribute(JavaConstant.userId);
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+
         int userId  = (Integer)createBy;
         HashMap<String, Object> map = new HashMap<>();
 
         Sale sale = new Sale();
         sale.setEmpId(s.getEmpId());
-        sale.setSaleDate(s.getSaleDate());
+        sale.setSaleDate(currentDate);
         sale.setDiscount(s.getDiscount());
         sale.setTotalKhr(s.getTotalKhr());
         sale.setTotalUsd(s.getTotalUsd());
         sale.setCreateBy(userId);
+
+        Customer cus = s.getCustomer();
+        String cusId = null;
+        int countId = cusRepo.countRecord();
+        countId++;
+        if( cus != null ) {
+            cusId = customerId(countId);
+            addCustomer(cus,cusId);
+            sale.setCusId(cusId); 
+        }
         repo.save(sale);
 
         int saleId = sale.getId();
@@ -95,12 +107,8 @@ public class SaleService {
         int count = payRepo.countRecord();
         count++;
         String paymentNo = paymentNo(count);
-        addPayment(paymentNo,s.getId(),p,userId);
-        
-        Customer cus = s.getCustomer();
-        if( cus != null ) {
-            addCustomer(cus);
-        }
+ 
+        addPayment(paymentNo,saleId,p,userId);
 
         Company companyInfo = repoCompany.getInfoCompany();
         map.put("companyName", companyInfo.getCompanyName());
@@ -122,20 +130,7 @@ public class SaleService {
         return map;
     }
 
-    public void addCustomer(Customer cus) {
-        String cusId = "";
-        int countId = cusRepo.countRecord();
-        countId++;
-        if (countId < 10) {
-            cusId = "000" + countId;
-        } else if (countId < 100) {
-            cusId = "00" + countId;
-        } else if (countId < 1000) {
-            cusId = "0" + countId;
-        } else {
-            cusId = "" + countId;
-        }
-
+    public void addCustomer(Customer cus,String cusId) {
         Customer cusData = new Customer();
         cusData.setCusName(cus.getCusName());
         cusData.setContact(cus.getContact());
@@ -146,6 +141,21 @@ public class SaleService {
         cusData.setNationality(cus.getNationality());
         cusData.setCustomerId(cusId);
         cusRepo.save(cusData);
+    }
+
+
+    public String customerId(int countId){
+        String cusId = "";
+        if (countId < 10) {
+            cusId = "000" + countId;
+        } else if (countId < 100) {
+            cusId = "00" + countId;
+        } else if (countId < 1000) {
+            cusId = "0" + countId;
+        } else {
+            cusId = "" + countId;
+        }
+        return cusId;
     }
 
     public void addPayment(String paymentNo, int saleId,Payment p , int createBy){

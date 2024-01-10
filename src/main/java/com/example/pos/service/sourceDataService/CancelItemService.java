@@ -25,13 +25,13 @@ public class CancelItemService {
      @Autowired
      private CancelItemDetialsRepository repoDetails;
 
-     public void cancelAndDeleteItem(CancelItem c){
+     public void cancelAndDeleteItem(CancelItem c, String type){
           var createBy = session.getAttribute(JavaConstant.userId);
           String time = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss a").format(Calendar.getInstance().getTime());
           String date = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-          String code = c.getListCancelDetail().size() == 1 ?  "delete" : "cancel";
+          // String code = c.getListCancelDetail().size() == 1 ?  "delete" : "cancel";
           CancelItem data = new CancelItem();
-          data.setCode(code);
+          data.setCode(type);
           data.setReasonId(c.getReasonId());
           data.setCreateBy((Integer)createBy);
           data.setCancelTime(time);

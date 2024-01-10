@@ -11,7 +11,7 @@ import com.example.pos.entity.projection.PaymentProjection;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment,Integer> {
-    @Query(nativeQuery = true , value = " select count(*) from pos_payment pp")
+    @Query(nativeQuery = true , value = "select count(*) from pos_payment pp")
     int countRecord();
  
 
@@ -41,6 +41,9 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
             "order by pp.id desc limit 1")
     PaymentProjection getPaymentDataWithoutPaymentNo();
 
+
+    @Query(nativeQuery = true , value = "select pp2.payment_no from pos_payment pp2 where sale_id = ?")
+    String getPaymentNo(int saleId);
 
 
 }

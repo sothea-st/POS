@@ -46,6 +46,9 @@ public class Sale {
     @Column(name = "total_khr" )
     private String totalKhr;
 
+    @Column(name = "cus_id")
+    private String cusId;
+
 
 
     @OneToMany(cascade = CascadeType.ALL)
