@@ -57,10 +57,10 @@ public class CloseShiftController {
         return JavaResponse.success(data);
     }
 
-    @GetMapping("/cashierReport")
-    public ResponseEntity<?> getCashierReport(){
-        return JavaResponse.success(service.cashierReport());
-    }
+    // @GetMapping("/cashierReport")
+    // public ResponseEntity<?> getCashierReport(){
+    //     return JavaResponse.success(service.cashierReport());
+    // }
 
 
 }

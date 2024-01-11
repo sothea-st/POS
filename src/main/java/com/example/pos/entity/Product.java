@@ -56,6 +56,10 @@ public class Product {
    
 
     private BigDecimal discount;
+
+    @Column(name = "discount_percentag")
+    private int discountPercentag=0;
+
    
 
     @Column(name = "status")

@@ -23,6 +23,7 @@ public class ReasonService {
           Reason data = new Reason();
           var createBy = session.getAttribute(JavaConstant.userId);
           data.setReason(r.getReason());
+          data.setCode(r.getCode());
           data.setCreateBy((Integer)createBy);
           repo.save(data);
           return data;
@@ -50,10 +51,9 @@ public class ReasonService {
           Optional<Reason> data = repo.findById(id);
           Reason obj = data.get();
           obj.setReason(r.getReason());
+          obj.setCode(r.getCode());
           repo.save(obj);
           return obj;
      }
-
-
 
 }

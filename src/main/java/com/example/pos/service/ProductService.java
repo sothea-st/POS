@@ -51,6 +51,7 @@ public class ProductService {
         pro.setWeight(p.getWeight());
         pro.setBarcode(p.getBarcode());
         pro.setDiscount(p.getDiscount());
+        pro.setDiscountPercentag(p.getDiscountPercentag());
         pro.setProductStatus(p.getProductStatus());
         if (file == null || file.isEmpty()) {
             pro.setFileName(JavaConstant.defaultNameImage);
@@ -133,6 +134,7 @@ public class ProductService {
             previousPro.setFlag(fName);
         }
 
+
         previousPro.setProNameKh(editProduct.getProNameKh());
         previousPro.setProNameEn(editProduct.getProNameEn());
         previousPro.setCostKhr(editProduct.getCostKhr());
@@ -146,6 +148,7 @@ public class ProductService {
         previousPro.setUnitTypeId(editProduct.getUnitTypeId());
         previousPro.setCatId(editProduct.getCatId());
         previousPro.setNote(editProduct.getNote());
+        previousPro.setDiscountPercentag(editProduct.getDiscountPercentag());
         // previousPro.setCreateBy((Integer) idUser);
         repo.save(previousPro);
         return previousPro;

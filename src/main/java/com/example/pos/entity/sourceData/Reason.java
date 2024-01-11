@@ -31,6 +31,8 @@ public class Reason {
      @NotNull(message = JavaMessage.required)
      private String reason;
 
+     private String code;
+
      private int createBy;
 
      @CreationTimestamp

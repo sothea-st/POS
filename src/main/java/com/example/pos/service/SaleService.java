@@ -90,6 +90,7 @@ public class SaleService {
             dataDetail.setPrice(detail.getPrice());
             dataDetail.setAmount(detail.getAmount());
             dataDetail.setDiscount(detail.getDiscount());
+            dataDetail.setDiscountPercentag(detail.getDiscountPercentag());
             dataDetail.setCreateBy((Integer) createBy);
             repoDetail.save(dataDetail);
 

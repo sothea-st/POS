@@ -1,15 +1,15 @@
 package com.example.pos.entity.models;
 import java.math.*;
-public class SummerySale {
+public class SummeryCashierReport {
     private String title;
     private int qty;
     private BigDecimal total;
 
-    public SummerySale(){
+    public SummeryCashierReport(){
 
     }
 
-    public SummerySale(String title , int qty , BigDecimal total) {
+    public SummeryCashierReport(String title , int qty , BigDecimal total) {
         this.title = title;
         this.qty = qty ;
         this.total = total;
