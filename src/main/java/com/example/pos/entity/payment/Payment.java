@@ -79,8 +79,13 @@ public class Payment {
      @Column(name = "source_id")
      private int sourceId;
 
+
+     @Column(name = "is_return")
+     private String isReturn;
+
      @Column(name = "create_by")
      private int createBy;
+
 
      @CreationTimestamp
      @Column(name = "create_date")

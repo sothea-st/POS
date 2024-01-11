@@ -1,5 +1,7 @@
 package com.example.pos.entity.sourceData;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,5 +31,12 @@ public class ReturnDetails {
 
     @Column(name = "qty")
     private int qty;
+
+    @Column(name="price",scale = 2,precision = 10)
+    private BigDecimal price;
+
+    @Column(name="amount",scale = 2,precision = 10)
+    private BigDecimal amount;
+ 
 
 }

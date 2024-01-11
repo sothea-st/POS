@@ -37,17 +37,17 @@ public class ReturnProductService {
         r.setReasonId(re.getReasonId());
         repo.save(r);
 
-        List<ReturnDetails> listDetail = r.getDataDetails();
-        System.out.println("data = "+ listDetail);
+        List<ReturnDetails> listDetail = re.getDataDetails();
 
-
-        // for( int i = 0 ; i < listDetail.size() ; i++ ) {
-        //     ReturnDetails obj = new ReturnDetails();
-        //     obj.setProId(listDetail.get(i).getProId());
-        //     obj.setQty(listDetail.get(i).getQty());
-        //     obj.setReturnId(r.getId());
-        //     repoDetail.save(obj);
-        // }
+        for( int i = 0 ; i < listDetail.size() ; i++ ) {
+            ReturnDetails obj = new ReturnDetails();
+            obj.setProId(listDetail.get(i).getProId());
+            obj.setQty(listDetail.get(i).getQty());
+            obj.setReturnId(r.getId());
+            obj.setPrice(listDetail.get(i).getPrice());
+            obj.setAmount(listDetail.get(i).getAmount());
+            repoDetail.save(obj);
+        }
 
     }
 

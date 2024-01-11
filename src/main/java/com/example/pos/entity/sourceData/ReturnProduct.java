@@ -40,14 +40,15 @@ public class ReturnProduct {
     @Column(name = "return_time")
     private String returnTime;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<ReturnDetails> dataDetails;
 
     @Column(name = "reason_id")
     @NotBlank(message = JavaMessage.required)
     @NotNull(message = JavaMessage.required)
     private String reasonId;
 
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ReturnDetails> dataDetails;
 
     @Column(name = "create_by")
     private int createBy;
