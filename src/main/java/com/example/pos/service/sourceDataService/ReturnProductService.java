@@ -51,4 +51,16 @@ public class ReturnProductService {
 
     }
 
+
+    // step 1 
+    // when return table import_details will be update qty 
+    // step 2
+    // table payment will update column is_return to verify this row returned
+    // step 3 
+    // table return_product and return_detail will hava data that return
+    // step 4
+    // add data to payment table one more
+    // step 5 
+    // 
+
 }

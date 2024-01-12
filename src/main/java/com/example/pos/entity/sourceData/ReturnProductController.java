@@ -20,7 +20,6 @@ public class ReturnProductController {
 
     @PostMapping
     public ResponseEntity<?> returnProduct(@Valid @RequestBody ReturnProduct r) {
-        System.out.println("data details = " + r);
         service.returnProduct(r);
         return JavaResponse.success("return product success");
     }

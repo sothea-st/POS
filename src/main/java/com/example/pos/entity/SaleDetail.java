@@ -30,11 +30,17 @@ public class SaleDetail {
     @Column(name = "qty")
     private int qty=0;
 
-    @Column(name = "price" , precision = 10 , scale = 2)
-    private BigDecimal price;
+    @Column(name = "price_usd" , precision = 10 , scale = 2)
+    private BigDecimal priceUsd;
 
-    @Column(name = "amount" , precision = 10 , scale = 2)
-    private BigDecimal amount;
+    @Column(name = "price_khr" , precision = 10)
+    private BigDecimal priceKhr;
+
+    @Column(name = "amount_usd" , precision = 10 , scale = 2)
+    private BigDecimal amountUsd;
+
+    @Column(name = "amount_khr" , precision = 10 , scale = 2)
+    private BigDecimal amountKhr;
 
     @Column(name = "discount" , precision = 10 , scale = 2)
     private BigDecimal discount;

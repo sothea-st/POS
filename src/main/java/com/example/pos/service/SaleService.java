@@ -53,7 +53,7 @@ public class SaleService {
         var createBy = session.getAttribute(JavaConstant.userId);
         String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 
-        int userId  = (Integer)createBy;
+        int userId = (Integer) createBy;
         HashMap<String, Object> map = new HashMap<>();
 
         Sale sale = new Sale();
@@ -68,10 +68,10 @@ public class SaleService {
         String cusId = null;
         int countId = cusRepo.countRecord();
         countId++;
-        if( cus != null ) {
+        if (cus != null) {
             cusId = customerId(countId);
-            addCustomer(cus,cusId);
-            sale.setCusId(cusId); 
+            addCustomer(cus, cusId);
+            sale.setCusId(cusId);
         }
         repo.save(sale);
 
@@ -87,8 +87,10 @@ public class SaleService {
             dataDetail.setSaleId(saleId);
             dataDetail.setProductId(productId);
             dataDetail.setQty(qtyNew);
-            dataDetail.setPrice(detail.getPrice());
-            dataDetail.setAmount(detail.getAmount());
+            dataDetail.setPriceUsd(detail.getPriceUsd());
+            dataDetail.setPriceKhr(detail.getPriceKhr());
+            dataDetail.setAmountKhr(detail.getAmountKhr());
+            dataDetail.setAmountUsd(detail.getAmountUsd());
             dataDetail.setDiscount(detail.getDiscount());
             dataDetail.setDiscountPercentag(detail.getDiscountPercentag());
             dataDetail.setCreateBy((Integer) createBy);
@@ -108,8 +110,8 @@ public class SaleService {
         int count = payRepo.countRecord();
         count++;
         String paymentNo = paymentNo(count);
- 
-        addPayment(paymentNo,saleId,p,userId);
+
+        addPayment(paymentNo, saleId, p, userId);
 
         Company companyInfo = repoCompany.getInfoCompany();
         map.put("companyName", companyInfo.getCompanyName());
@@ -131,7 +133,7 @@ public class SaleService {
         return map;
     }
 
-    public void addCustomer(Customer cus,String cusId) {
+    public void addCustomer(Customer cus, String cusId) {
         Customer cusData = new Customer();
         cusData.setCusName(cus.getCusName());
         cusData.setContact(cus.getContact());
@@ -144,8 +146,7 @@ public class SaleService {
         cusRepo.save(cusData);
     }
 
-
-    public String customerId(int countId){
+    public String customerId(int countId) {
         String cusId = "";
         if (countId < 10) {
             cusId = "000" + countId;
@@ -159,7 +160,7 @@ public class SaleService {
         return cusId;
     }
 
-    public void addPayment(String paymentNo, int saleId,Payment p , int createBy){
+    public void addPayment(String paymentNo, int saleId, Payment p, int createBy) {
         Payment data = new Payment();
         data.setPaymentNo(paymentNo);
         data.setSaleId(saleId);

@@ -2,10 +2,6 @@ package com.example.pos.service.cashierReport;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,8 +79,8 @@ public class CashierReportService {
         // get closeCash, closeDate from CloseShift
         CloseShift closeShift = closeShiftRepo.getCloseShift((Integer) userId, currentDate);
 
-        double closeCash = openShift.getReserveUsd().doubleValue() + closeShift.getCashUsd().doubleValue();
-        map.put("closeCash", closeCash);
+        // double closeCash = openShift.getReserveUsd().doubleValue() + closeShift.getCashUsd().doubleValue();
+        map.put("closeCash", closeShift.getCashUsd());
         map.put("closeDate", closeShift.getCloseTime());
 
         List<Sale> listId = repoSale.getSale(user.getEmpId(), currentDate);
@@ -94,10 +90,13 @@ public class CashierReportService {
             listInt.add(ind);
         }
 
+        List<Integer> listIdUsd = repoSale.getSaleIdByUsd(user.getEmpId(), currentDate);
+     
+        List<Integer> listIdKhr = repoSale.getSaleIdByKhr(user.getEmpId(), currentDate);
         // Sale summery
         SummeryCashierReport(listId, currentDate, map, listInt);
         // payment summery
-        paymentSummery(listInt, map);
+        paymentSummery(listIdUsd,listIdKhr,map);
         // discount summery
         discountSummery(listInt, map);
         return map;
@@ -129,44 +128,40 @@ public class CashierReportService {
         map.put("discountSummery", discount);
     }
 
-    public void paymentSummery(List<Integer> listInt, HashMap<String, Object> map) {
+    public void paymentSummery(List<Integer> listIntUsd,List<Integer> listIntKhr, HashMap<String, Object> map) {
         int sumQtyPaymentByUsd = 0;
-        String sumQtyPaymentByUsdStr = repoSaleDetail.sumQtyPaymentByUsd(listInt);
+        String sumQtyPaymentByUsdStr = repoSaleDetail.sumQtyPaymentByUsd(listIntUsd);
         if (sumQtyPaymentByUsdStr != null)
             sumQtyPaymentByUsd = Integer.valueOf(sumQtyPaymentByUsdStr);
 
         double sumAmountPaymentByUsd = 0;
-        String sumAmountPaymentByUsdStr = repoSaleDetail.sumAmountPaymentByUsd(listInt);
+        String sumAmountPaymentByUsdStr = repoSaleDetail.sumAmountPaymentByUsd(listIntUsd);
         if (sumAmountPaymentByUsdStr != null)
             sumAmountPaymentByUsd = Double.valueOf(sumAmountPaymentByUsdStr);
 
         int sumQtyPaymentByKhr = 0;
-        String sumQtyPaymentByKhrStr = repoSaleDetail.sumQtyPaymentByKhr(listInt);
+        String sumQtyPaymentByKhrStr = repoSaleDetail.sumQtyPaymentByKhr(listIntKhr);
         if (sumQtyPaymentByKhrStr != null)
             sumQtyPaymentByKhr = Integer.valueOf(sumQtyPaymentByKhrStr);
 
+ 
         double sumAmountPaymentByKhr = 0;
-        String sumAmountPaymentByKhrStr = repoSaleDetail.sumAmountPaymentByKhr(listInt);
+        String sumAmountPaymentByKhrStr = repoSaleDetail.sumAmountPaymentByKhr(listIntKhr);
         if (sumAmountPaymentByKhrStr != null)
             sumAmountPaymentByKhr = Double.valueOf(sumAmountPaymentByKhrStr);
 
         ArrayList<SummeryCashierReport> payment = new ArrayList<>();
 
         payment.add(new SummeryCashierReport("RED ANT EXPRESS", 0, BigDecimal.valueOf(0)));
-        payment.add(
-                new SummeryCashierReport("CASH (USD)", sumQtyPaymentByUsd, BigDecimal.valueOf(sumAmountPaymentByUsd)));
-        payment.add(
-                new SummeryCashierReport("CASH (KHR)", sumQtyPaymentByKhr, BigDecimal.valueOf(sumAmountPaymentByKhr)));
+        payment.add(new SummeryCashierReport("CASH (USD)", sumQtyPaymentByUsd, BigDecimal.valueOf(sumAmountPaymentByUsd)));
+        payment.add( new SummeryCashierReport("CASH (KHR)", sumQtyPaymentByKhr, BigDecimal.valueOf(sumAmountPaymentByKhr)));
         payment.add(new SummeryCashierReport("KHQR-MNK", 0, BigDecimal.valueOf(0)));
         payment.add(new SummeryCashierReport("KHQR-ABA", 0, BigDecimal.valueOf(0)));
         payment.add(new SummeryCashierReport("ABA-CREDIT CART", 0, BigDecimal.valueOf(0)));
-
         map.put("summeryPayemnt", payment);
-
     }
 
-    public void SummeryCashierReport(List<Sale> listId, String currentDate, HashMap<String, Object> map,
-            List<Integer> listInt) {
+    public void SummeryCashierReport(List<Sale> listId, String currentDate, HashMap<String, Object> map,List<Integer> listInt) {
         int lastIndex = listId.size() - 1;
         int firstSaleId = listId.get(0).getId();
         int lastSaleId = listId.get(lastIndex).getId();

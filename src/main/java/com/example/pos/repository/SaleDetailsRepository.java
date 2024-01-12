@@ -13,13 +13,13 @@ import java.util.*;
 @Repository
 public interface SaleDetailsRepository extends JpaRepository<SaleDetail,Integer> {
 
-    @Query(nativeQuery = true , value = "select pp.barcode,psd.qty ,psd.price ,psd.amount,pp.pro_name_en,psd.discount_percentag  from pos_sale_details psd inner join pos_product pp on pp.id = psd.pro_id  where psd.sale_id = ?")
+    @Query(nativeQuery = true , value = "select pp.barcode,psd.qty ,psd.price_usd ,psd.amount_usd,pp.pro_name_en,psd.discount_percentag  from pos_sale_details psd inner join pos_product pp on pp.id = psd.pro_id  where psd.sale_id = ?")
     List<SaleDetailProjection> getDataDetail(int saleId);
 
     @Query(nativeQuery = true , value = "select sum(qty) from  pos_sale_details where sale_id in (?)")
     String sumQtySaled(List<Integer> saleId);
 
-    @Query(nativeQuery = true , value = "select sum(amount) from  pos_sale_details where sale_id in (?)")
+    @Query(nativeQuery = true , value = "select sum(amount_usd) from  pos_sale_details where sale_id in (?)")
     String sumAmount(List<Integer> saleId);
 
     @Query(nativeQuery = true , value = "select sum(qty) from  pos_sale_details where sale_id in (?) and discount > 0")
@@ -32,11 +32,11 @@ public interface SaleDetailsRepository extends JpaRepository<SaleDetail,Integer>
     @Query(nativeQuery = true , value = "select sum(psd.qty) from pos_sale ps inner join pos_sale_details psd on ps.id = psd.sale_id  where ps.id in (?) and ps.total_usd > 0")
     String sumQtyPaymentByUsd(List<Integer> saleId);
 
-    @Query(nativeQuery = true , value = "select sum(ps.total_usd) from pos_sale ps inner join pos_sale_details psd on ps.id = psd.sale_id  where ps.id in (?) and ps.total_usd > 0")
+    @Query(nativeQuery = true , value = "select sum(amount_usd) from pos_sale_details psd where sale_id in (?)")
     String sumAmountPaymentByUsd(List<Integer> saleId);
 
 
-    @Query(nativeQuery = true , value = "select sum(cast(ps.total_khr as decimal(10,2) ))  from pos_sale ps inner join pos_sale_details psd on ps.id = psd.sale_id  where ps.id in (?) and ps.total_khr != '0'")
+    @Query(nativeQuery = true , value = "select sum(amount_khr) from pos_sale_details psd where sale_id in (?)")
     String sumAmountPaymentByKhr(List<Integer> saleId);
 
     @Query(nativeQuery = true , value = "select sum(psd.qty) from pos_sale ps inner join pos_sale_details psd on ps.id = psd.sale_id  where ps.id in (?) and ps.total_khr != '0'")
