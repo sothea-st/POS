@@ -21,4 +21,8 @@ public class JavaResponse {
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf(IMAGE_JPEG_VALUE)).body(imageData);
     }
 
+    public static ResponseEntity<?> error(Object data){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(data);
+    }
+
 }

@@ -5,24 +5,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.pos.components.JavaResponse;
-import com.example.pos.entity.payment.Payment;
-import com.example.pos.service.paymentService.PaymentService;
-import java.util.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.DecimalMin;
+import com.example.pos.service.paymentService.ReprintService;
+ 
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/api/reprint")
 @Validated
-public class PaymentController {
+public class ReprintController {
     @Autowired
-    private PaymentService service;
+    private ReprintService service;
 
 
     @GetMapping("/{paymentNo}")

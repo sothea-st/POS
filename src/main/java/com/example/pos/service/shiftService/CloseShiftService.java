@@ -37,6 +37,9 @@ public class CloseShiftService {
     @Autowired
     private HttpSession session;
 
+    @Autowired
+    private OpenShiftRepository repoOpen;
+
     public CloseShift closeShift(CloseShift c) {
         var createBy = session.getAttribute(JavaConstant.userId);
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss a").format(Calendar.getInstance().getTime());
@@ -53,6 +56,11 @@ public class CloseShiftService {
         data.setCreditCard(c.getCreditCard());
         data.setCreateBy((Integer) createBy);
         repo.save(data);
+
+        Optional<OpenShift> open = repoOpen.getNumberOpenShift((Integer)createBy,closeDate);
+        OpenShift obj = open.get();
+        obj.setNumberOpenShift(0);
+        repoOpen.save(obj);
         return data;
     }
 

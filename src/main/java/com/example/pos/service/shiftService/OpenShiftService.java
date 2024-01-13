@@ -44,6 +44,7 @@ public class OpenShiftService {
           data.setOpenTime(timeStamp);
           data.setDate(currentDate);
           data.setCreateBy((Integer)userId);
+          data.setNumberOpenShift(1);
           repo.save(data);
           return data;
           

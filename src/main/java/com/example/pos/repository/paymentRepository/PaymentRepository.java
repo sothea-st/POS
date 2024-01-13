@@ -16,7 +16,7 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
  
 
     @Query(nativeQuery = true , value = "select \r\n" + //
-            "pp.total_usd,pp.total_khr,\r\n" + //
+            "ps.total_usd,ps.total_khr,\r\n" + //
             "pp.receive_usd,pp.receive_khr,\r\n" + //
             "pp.change_usd,pp.change_khr,\r\n" + //
             "pp.remaining_usd,pp.remaining_khr,\r\n" + //
@@ -30,7 +30,7 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
 
 
     @Query(nativeQuery = true , value = "select \r\n" + //
-            "pp.total_usd,pp.total_khr,\r\n" + //
+            "ps.total_usd,ps.total_khr,\r\n" + //
             "pp.receive_usd,pp.receive_khr,\r\n" + //
             "pp.change_usd,pp.change_khr,\r\n" + //
             "pp.remaining_usd,pp.remaining_khr,\r\n" + //

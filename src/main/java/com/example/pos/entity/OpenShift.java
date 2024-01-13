@@ -47,6 +47,9 @@ public class OpenShift {
      @Column(name = "reserve_khr",precision = 10,scale = 2)
      private String reserveKhr;
 
+     
+     private Integer numberOpenShift=0;
+
      @Column(name="create_by")
      private int createBy;
 

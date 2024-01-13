@@ -16,7 +16,6 @@ import com.example.pos.repository.SaleRepository;
 import com.example.pos.repository.companyRepository.CompanyRepository;
 import com.example.pos.repository.paymentRepository.PaymentRepository;
 import com.example.pos.repository.peopleRepository.CustomerRepository;
-
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,8 +47,8 @@ public class SaleService {
 
     @Autowired
     private CustomerRepository cusRepo;
-
-    public HashMap<String, Object> saleProduct(Sale s, Customer c) {
+    // this function will return invoice
+    public HashMap<String, Object> saleProduct(Sale s) {
         var createBy = session.getAttribute(JavaConstant.userId);
         String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 

@@ -15,7 +15,7 @@ import java.util.*;
 import jakarta.servlet.http.HttpSession;
 
 @Service
-public class PaymentService {
+public class ReprintService {
     @Autowired
     private PaymentRepository repo;
 

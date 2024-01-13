@@ -1,10 +1,8 @@
 package com.example.pos.service.sourceDataService;
 
 import java.text.SimpleDateFormat;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.sourceData.ReturnDetails;
 import com.example.pos.entity.sourceData.ReturnProduct;
