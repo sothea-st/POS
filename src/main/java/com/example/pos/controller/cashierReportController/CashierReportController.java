@@ -33,15 +33,13 @@ public class CashierReportController {
 
     @GetMapping()
     public ResponseEntity<?> getCashierReport(){
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+        HashMap<String,Object> map = new HashMap<>();
         var userId = session.getAttribute(JavaConstant.userId);
-        HashMap<String,String> map = new HashMap<>();
-
-        int countOpenShift = repoOpen.countOpenShift((Integer) userId, currentDate);
-        int countCloseShift = repoClose.countCloseShift((Integer) userId, currentDate);
-        // protect whenever user trying to open cashier report but user does not close shift yet
-        if( countOpenShift == 0 || countCloseShift == 0) {
-            map.put("message", JavaConstant.messageCashierReport);
+        // OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userId, JavaConstant.currenDate);
+        CloseShift closeShift = repoClose.getCloseShift((Integer) userId, JavaConstant.currentDate);
+        // protect when user try to processing sale but user does not open shift first
+        if (closeShift == null) {
+            map.put(JavaConstant.message, JavaConstant.msgCloseShift);
             return JavaResponse.error(map);
         }
 

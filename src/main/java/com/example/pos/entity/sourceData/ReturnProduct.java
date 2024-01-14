@@ -18,6 +18,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 import java.util.*;
 @Entity
 @Table(name = "pos_return_product")
@@ -40,11 +42,14 @@ public class ReturnProduct {
     @Column(name = "return_time")
     private String returnTime;
 
-
     @Column(name = "reason_id")
-    @NotBlank(message = JavaMessage.required)
-    @NotNull(message = JavaMessage.required)
-    private String reasonId;
+    private int reasonId;
+
+    @Column(name = "return_amount_usd",precision = 10,scale = 2)
+    private BigDecimal returnAmountUsd;
+
+    @Column(name = "return_amount_khr",precision = 10,scale = 0)
+    private BigDecimal returnAmountKhr;
 
 
     @OneToMany(cascade = CascadeType.ALL)

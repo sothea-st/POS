@@ -33,6 +33,7 @@ public class ReprintService {
  
     public HashMap<String, Object> readData(String paymentNo) {
         var createBy = session.getAttribute(JavaConstant.userId);
+        int id = (Integer)createBy;
         HashMap<String, Object> map = new HashMap<>();
         Company c = companyRepo.getInfoCompany();
         map.put("companyName", c.getCompanyName());
@@ -41,9 +42,9 @@ public class ReprintService {
         map.put("companyLogo", c.getPhoto());
         PaymentProjection paymentData=null;
         if( paymentNo.isEmpty() ) {
-            paymentData = repo.getPaymentDataWithoutPaymentNo();
+            paymentData = repo.getPaymentDataWithoutPaymentNo(id,JavaConstant.currentDate);
         } else {
-            paymentData = repo.getPaymentDataWithPaymentNo(paymentNo);
+            paymentData = repo.getPaymentDataWithPaymentNo(id,JavaConstant.currentDate,paymentNo);
         }
         map.put("totalKhr", paymentData.getTotal_khr());
         map.put("totalUsd", paymentData.getTotal_usd());

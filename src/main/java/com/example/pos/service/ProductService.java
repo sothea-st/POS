@@ -29,6 +29,7 @@ public class ProductService {
     private HttpSession session;
 
     public Product addProduct(Product p, MultipartFile file , MultipartFile flagFile) throws IOException {
+      
         boolean proNameKh = repo.existsByProNameKh(p.getProNameKh());
         JavaValidation.checkDataAlreadyExists(proNameKh);
 
@@ -51,7 +52,7 @@ public class ProductService {
         pro.setWeight(p.getWeight());
         pro.setBarcode(p.getBarcode());
         pro.setDiscount(p.getDiscount());
-        pro.setDiscountPercentag(p.getDiscountPercentag());
+        pro.setDiscountPercentag(p.getDiscountPercentag().isEmpty() ? "0" : p.getDiscountPercentag());
         pro.setProductStatus(p.getProductStatus());
         if (file == null || file.isEmpty()) {
             pro.setFileName(JavaConstant.defaultNameImage);

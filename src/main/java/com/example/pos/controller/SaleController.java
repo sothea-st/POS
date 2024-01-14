@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 @RestController
 @RequestMapping("/api/sale")
 @Validated
@@ -33,17 +34,17 @@ public class SaleController {
     @PostMapping
     public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s) {
         var userId = session.getAttribute(JavaConstant.userId);
-        String currenDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-        int countOpenShift = repoOpen.countOpenShift((Integer)userId, currenDate);
-        HashMap<String,String> map = new HashMap<>();
-        // protect when user try to processing sale but user does not open shift first 
-        if( countOpenShift == 0 ) {
+        OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userId, JavaConstant.currentDate);
+        HashMap<String, String> map = new HashMap<>();
+        // protect when user try to processing sale but user does not open shift first
+        if (countOpenShift == null || countOpenShift.getNumberOpenShift() == 0) {
             map.put(JavaConstant.message, JavaConstant.openShift);
             return JavaResponse.error(map);
         }
-
         var data = service.saleProduct(s);
         return JavaResponse.success(data);
     }
+
+ 
 
 }

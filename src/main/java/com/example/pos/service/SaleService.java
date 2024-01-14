@@ -47,17 +47,18 @@ public class SaleService {
 
     @Autowired
     private CustomerRepository cusRepo;
+
     // this function will return invoice
     public HashMap<String, Object> saleProduct(Sale s) {
         var createBy = session.getAttribute(JavaConstant.userId);
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-
+  
         int userId = (Integer) createBy;
+        // System.out.println("user id = " + userId);
         HashMap<String, Object> map = new HashMap<>();
 
         Sale sale = new Sale();
-        sale.setEmpId(s.getEmpId());
-        sale.setSaleDate(currentDate);
+        sale.setUserId(userId);
+        sale.setSaleDate(JavaConstant.currentDate);
         sale.setDiscount(s.getDiscount());
         sale.setTotalKhr(s.getTotalKhr());
         sale.setTotalUsd(s.getTotalUsd());
@@ -78,6 +79,7 @@ public class SaleService {
         List<SaleDetail> details = s.getDataSale();
 
         for (int i = 0; i < details.size(); i++) {
+
             var detail = details.get(i);
             int productId = detail.getProductId();
             int qtyNew = detail.getQty();
@@ -98,6 +100,7 @@ public class SaleService {
             ImportDetail getQtyOld = repoImp.getDataImportDetail(productId);
             int qtyOld = getQtyOld.getQtyOld();
             int qty = qtyOld - qtyNew;
+
             Optional<ImportDetail> getImportDetail = repoImp.findByImpId(productId);
             ImportDetail obj = getImportDetail.get();
             obj.setQtyOld(qty);

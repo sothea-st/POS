@@ -53,11 +53,13 @@ public class CashierReportService {
 
     @Autowired
     private SaleDetailsRepository repoSaleDetail;
-     public HashMap<String, Object> cashierReport() {
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-        HashMap<String, Object> map = new HashMap<>();
-        var userId = session.getAttribute(JavaConstant.userId);
 
+    private  HashMap<String, Object> map = new HashMap<>();
+
+
+     public HashMap<String, Object> cashierReport() {
+        var userId = session.getAttribute(JavaConstant.userId);
+        int id = (Integer)userId;
         // get company info
         Company company = repoCompany.getInfoCompany();
         map.put("companyName", company.getCompanyName());
@@ -66,43 +68,32 @@ public class CashierReportService {
         map.put("companyLogo", company.getPhoto());
 
         // get user name
-        User user = repoUser.getUserById((Integer) userId);
+        User user = repoUser.getUserById(id);
         Employee employee = repoEmp.getEmployeeById(user.getEmpId());
         map.put("userName", employee.getNameEn());
 
         // get posId, openDate , openCash from openShift
-        OpenShift openShift = reposOpenShift.getDataOpenShift((Integer) userId, currentDate);
+        OpenShift openShift = reposOpenShift.getDataOpenShift(id, JavaConstant.currentDate);
         map.put("posId", openShift.getPosId());
         map.put("openDate", openShift.getOpenTime());
         map.put("openCash", openShift.getReserveUsd());
 
         // get closeCash, closeDate from CloseShift
-        CloseShift closeShift = closeShiftRepo.getCloseShift((Integer) userId, currentDate);
-
-        // double closeCash = openShift.getReserveUsd().doubleValue() + closeShift.getCashUsd().doubleValue();
+        CloseShift closeShift = closeShiftRepo.getCloseShift(id, JavaConstant.currentDate);
         map.put("closeCash", closeShift.getCashUsd());
         map.put("closeDate", closeShift.getCloseTime());
 
-        List<Sale> listId = repoSale.getSale(user.getEmpId(), currentDate);
-        ArrayList<Integer> listInt = new ArrayList<>();
-        for (int i = 0; i < listId.size(); i++) {
-            int ind = listId.get(i).getId();
-            listInt.add(ind);
-        }
-
-        List<Integer> listIdUsd = repoSale.getSaleIdByUsd(user.getEmpId(), currentDate);
-     
-        List<Integer> listIdKhr = repoSale.getSaleIdByKhr(user.getEmpId(), currentDate);
         // Sale summery
-        SummeryCashierReport(listId, currentDate, map, listInt);
+        SummeryCashierReport(id);
         // payment summery
-        paymentSummery(listIdUsd,listIdKhr,map);
+        paymentSummery(id);
         // discount summery
-        discountSummery(listInt, map);
+        discountSummery(id);
+
         return map;
     }
 
-    public void discountSummery(List<Integer> listInt, HashMap<String, Object> map) {
+    public void discountSummery(int userId) {
         List<Integer> listDiscount = new ArrayList<>();
         listDiscount.add(10);
         listDiscount.add(15);
@@ -111,89 +102,122 @@ public class CashierReportService {
         listDiscount.add(50);
         List<SummeryCashierReport> discount = new ArrayList<>();
         for (int i = 0; i < listDiscount.size(); i++) {
-            int sumQtyDiscountPercentag = 0;
-            String sumQtyDiscountPercentagStr = repoSaleDetail.sumQtyDiscountPercentag(listInt, listDiscount.get(i));
-            if (sumQtyDiscountPercentagStr != null)
-                sumQtyDiscountPercentag = Integer.valueOf(sumQtyDiscountPercentagStr);
+            int disQty = 0;
+            String disStr = repoSaleDetail.totalQty(userId,JavaConstant.currentDate,listDiscount.get(i));
+            if (disStr != null) disQty = Integer.valueOf(disStr);
 
-            double discountAmount = 0;
-            String sumQtyDiscountAmountStr = repoSaleDetail.sumAmountDiscountPercentag(listInt, listDiscount.get(i));
-            if (sumQtyDiscountAmountStr != null)
-                discountAmount = Double.valueOf(sumQtyDiscountAmountStr);
-
-            discount.add(new SummeryCashierReport(listDiscount.get(i) + "%", sumQtyDiscountPercentag,
-                    BigDecimal.valueOf(discountAmount)));
+            double disAmount = 0;
+            String disAmountStr = repoSaleDetail.totalAmount(userId,JavaConstant.currentDate,listDiscount.get(i));
+            if (disAmountStr != null) disAmount = Double.valueOf(disAmountStr);
+            discount.add(new SummeryCashierReport(listDiscount.get(i) + "%", disQty ,BigDecimal.valueOf(disAmount)));
         }
 
         map.put("discountSummery", discount);
     }
 
-    public void paymentSummery(List<Integer> listIntUsd,List<Integer> listIntKhr, HashMap<String, Object> map) {
-        int sumQtyPaymentByUsd = 0;
-        String sumQtyPaymentByUsdStr = repoSaleDetail.sumQtyPaymentByUsd(listIntUsd);
-        if (sumQtyPaymentByUsdStr != null)
-            sumQtyPaymentByUsd = Integer.valueOf(sumQtyPaymentByUsdStr);
+    public void paymentSummery(int userId) {
+        int qtyUsd = 0;
+        String qtyUsdStr = repoSale.sumQtySaledByUsd(userId, JavaConstant.currentDate);
+        if (qtyUsdStr != null) qtyUsd = Integer.valueOf(qtyUsdStr);
 
-        double sumAmountPaymentByUsd = 0;
-        String sumAmountPaymentByUsdStr = repoSaleDetail.sumAmountPaymentByUsd(listIntUsd);
-        if (sumAmountPaymentByUsdStr != null)
-            sumAmountPaymentByUsd = Double.valueOf(sumAmountPaymentByUsdStr);
+        double amountPayUsd = 0;
+        String amountPayUsdStr = repoSale.sumAmountSaledByUsd(userId, JavaConstant.currentDate);
+        if (amountPayUsdStr != null) amountPayUsd = Double.valueOf(amountPayUsdStr);
 
-        int sumQtyPaymentByKhr = 0;
-        String sumQtyPaymentByKhrStr = repoSaleDetail.sumQtyPaymentByKhr(listIntKhr);
-        if (sumQtyPaymentByKhrStr != null)
-            sumQtyPaymentByKhr = Integer.valueOf(sumQtyPaymentByKhrStr);
-
+        int qtyKhr = 0;
+        String qtyKhrStr = repoSale.sumQtySaledByKhr(userId, JavaConstant.currentDate);
+        if( qtyKhrStr != null ) qtyKhr = Integer.valueOf(qtyKhrStr);
  
-        double sumAmountPaymentByKhr = 0;
-        String sumAmountPaymentByKhrStr = repoSaleDetail.sumAmountPaymentByKhr(listIntKhr);
-        if (sumAmountPaymentByKhrStr != null)
-            sumAmountPaymentByKhr = Double.valueOf(sumAmountPaymentByKhrStr);
+        double amountPayKhr = 0;
+        String amountPayKhrStr = repoSale.sumAmountSaledByKhr(userId, JavaConstant.currentDate);
+        if (amountPayKhrStr != null) amountPayKhr = Double.valueOf(amountPayKhrStr);
+
+
+        // ============================================================
+        int qtyAba = 0;
+        String qtyAbaStr = repoSale.totalCountQtyABA(userId, JavaConstant.currentDate);
+        if( qtyAbaStr != null ) qtyAba = Integer.valueOf(qtyAbaStr);
+
+        double amountAba = 0;
+        String amountAbaStr = repoSale.totalAmountABA(userId, JavaConstant.currentDate);
+        if (amountAbaStr != null) amountAba = Double.valueOf(amountAbaStr);
+
+        int qtyMnk= 0;
+        String qtyMnkStr = repoSale.totalCountQtyMNK(userId, JavaConstant.currentDate);
+        if( qtyMnkStr != null ) qtyMnk = Integer.valueOf(qtyMnkStr);
+
+        double amountMnk = 0;
+        String amountMnkStr = repoSale.totalAmountMNK(userId, JavaConstant.currentDate);
+        if (amountMnkStr != null) amountMnk = Double.valueOf(amountMnkStr);
+
+        // ===============================================================
+
+        int qtyExpress= 0;
+        String qtyExpressStr = repoSale.totalCountQtyExpress(userId, JavaConstant.currentDate);
+        if( qtyExpressStr != null ) qtyExpress = Integer.valueOf(qtyExpressStr);
+
+        double amountExpress = 0;
+        String amountExpressStr = repoSale.totalAmountExpress(userId, JavaConstant.currentDate);
+        if (amountExpressStr != null) amountExpress = Double.valueOf(amountExpressStr);
+
+
+        int qtyCredit= 0;
+        String qtyCreditStr = repoSale.totalCountQtyCredit(userId, JavaConstant.currentDate);
+        if( qtyCreditStr != null ) qtyCredit = Integer.valueOf(qtyCreditStr);
+
+        double amountCredit = 0;
+        String amountCreditStr = repoSale.totalAmountCredit(userId, JavaConstant.currentDate);
+        if (amountCreditStr != null) amountCredit = Double.valueOf(amountCreditStr);
 
         ArrayList<SummeryCashierReport> payment = new ArrayList<>();
-
-        payment.add(new SummeryCashierReport("RED ANT EXPRESS", 0, BigDecimal.valueOf(0)));
-        payment.add(new SummeryCashierReport("CASH (USD)", sumQtyPaymentByUsd, BigDecimal.valueOf(sumAmountPaymentByUsd)));
-        payment.add( new SummeryCashierReport("CASH (KHR)", sumQtyPaymentByKhr, BigDecimal.valueOf(sumAmountPaymentByKhr)));
-        payment.add(new SummeryCashierReport("KHQR-MNK", 0, BigDecimal.valueOf(0)));
-        payment.add(new SummeryCashierReport("KHQR-ABA", 0, BigDecimal.valueOf(0)));
-        payment.add(new SummeryCashierReport("ABA-CREDIT CART", 0, BigDecimal.valueOf(0)));
+        payment.add(new SummeryCashierReport("RED ANT EXPRESS", qtyExpress, BigDecimal.valueOf(amountExpress)));
+        payment.add(new SummeryCashierReport("CASH (USD)", qtyUsd, BigDecimal.valueOf(amountPayUsd)));
+        payment.add( new SummeryCashierReport("CASH (KHR)", qtyKhr, BigDecimal.valueOf(amountPayKhr)));
+        payment.add(new SummeryCashierReport("KHQR-MNK", qtyMnk, BigDecimal.valueOf(amountMnk)));
+        payment.add(new SummeryCashierReport("KHQR-ABA", qtyAba, BigDecimal.valueOf(amountAba)));
+        payment.add(new SummeryCashierReport("ABA-CREDIT CART", qtyCredit, BigDecimal.valueOf(amountCredit)));
         map.put("summeryPayemnt", payment);
     }
 
-    public void SummeryCashierReport(List<Sale> listId, String currentDate, HashMap<String, Object> map,List<Integer> listInt) {
-        int lastIndex = listId.size() - 1;
-        int firstSaleId = listId.get(0).getId();
-        int lastSaleId = listId.get(lastIndex).getId();
-        String paymentNoFirst = repoPay.getPaymentNo(firstSaleId);
-        String paymentNoLast = repoPay.getPaymentNo(lastSaleId);
+    public void SummeryCashierReport(int userId) {
+ 
+        String paymentNoFirst = repoPay.getFirstPaymentNumber(userId,JavaConstant.currentDate);
+        String paymentNoLast = repoPay.getLastPaymentNumber(userId,JavaConstant.currentDate);
         map.put("paymentNoFirst", paymentNoFirst);
         map.put("paymentNoLast", paymentNoLast);
 
         int qtyDiscount = 0;
-        String qtyDiscountStr = repoSaleDetail.sumQtyDiscount(listInt);
+        String qtyDiscountStr = repoSaleDetail.totalQtyDiscount(userId,JavaConstant.currentDate);
         if (qtyDiscountStr != null)
             qtyDiscount = Integer.valueOf(qtyDiscountStr);
 
         double amountDiscount = 0.00;
-        String amountDiscountStr = repoSaleDetail.sumAmontDiscount(listInt);
+        String amountDiscountStr = repoSaleDetail.totalAmountDiscount(userId,JavaConstant.currentDate);
         if (amountDiscountStr != null)
             amountDiscount = Double.valueOf(amountDiscountStr);
 
         int qtySale = 0;
-        String qtySaleStr = repoSaleDetail.sumQtySaled(listInt);
+        String qtySaleStr = repoSaleDetail.totalQtySale(userId,JavaConstant.currentDate);
         if (qtySaleStr != null)
             qtySale = Integer.valueOf(qtySaleStr);
 
         double amount = 0;
-        String amountStr = repoSaleDetail.sumAmount(listInt);
+        String amountStr = repoSaleDetail.totalAmount(userId,JavaConstant.currentDate);
         if (amountStr != null)
             amount = Double.valueOf(amountStr);
+
+        int returnQty=0;
+        String returnQtyStr = repoSaleDetail.totalReturnQty(userId,JavaConstant.currentDate);
+        if( returnQtyStr != null ) returnQty = Integer.valueOf(returnQtyStr);
+
+        double returnAmount=0;
+        String returnAmountStr = repoSaleDetail.totalReturnAmount(userId,JavaConstant.currentDate);
+        if( returnAmountStr != null ) returnAmount = Double.valueOf(returnAmountStr);
 
         ArrayList<SummeryCashierReport> summery = new ArrayList<>();
 
         summery.add(new SummeryCashierReport("Sales", qtySale, BigDecimal.valueOf(amount)));
-        summery.add(new SummeryCashierReport("Returns/Refunds", 0, BigDecimal.valueOf(0)));
+        summery.add(new SummeryCashierReport("Returns/Refunds", returnQty, BigDecimal.valueOf(returnAmount)));
         summery.add(new SummeryCashierReport("Disounts", qtyDiscount, BigDecimal.valueOf(amountDiscount)));
         map.put("SummerySale", summery);
     }

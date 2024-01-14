@@ -53,14 +53,11 @@ public class Product {
 
     @Column(name = "product_status")
     private String productStatus;
-   
 
     private BigDecimal discount;
 
-    @Column(name = "discount_percentag")
-    private int discountPercentag=0;
-
-   
+    @Column(name = "discount_percentag",length = 20)
+    private String discountPercentag;
 
     @Column(name = "status")
     private boolean status = true;

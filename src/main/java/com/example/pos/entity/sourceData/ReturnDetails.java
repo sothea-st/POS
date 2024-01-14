@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,17 +25,21 @@ public class ReturnDetails {
     @Column(name = "return_id")
     private int returnId;
 
-    @Column(name = "pro_id")
+    @Column(name = "return_pro_id")
     private int proId;
 
-    @Column(name = "qty")
+    @Column(name = "retur_qty")
     private int qty;
 
-    @Column(name="price",scale = 2,precision = 10)
-    private BigDecimal price;
+    @Column(name="return_price_usd",scale = 2,precision = 10)
+    private BigDecimal priceUsd;
 
-    @Column(name="amount",scale = 2,precision = 10)
-    private BigDecimal amount;
- 
+    @Column(name="return_price_khr",scale = 0,precision = 10)
+    private BigDecimal priceKhr;
 
+    @Column(name="return_amount_usd",scale = 2,precision = 10)
+    private BigDecimal amountUsd;
+
+    @Column(name="return_amount_khr",scale = 0,precision = 10)
+    private BigDecimal amountKhr;
 }

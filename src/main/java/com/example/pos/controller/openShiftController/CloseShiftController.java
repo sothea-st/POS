@@ -11,6 +11,7 @@ import com.example.pos.components.JavaResponse;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.constant.JavaValidation;
 import com.example.pos.entity.CloseShift;
+import com.example.pos.entity.OpenShift;
 import com.example.pos.repository.shiftRepository.CloseShiftRepository;
 import com.example.pos.repository.shiftRepository.OpenShiftRepository;
 import com.example.pos.service.shiftService.CloseShiftService;
@@ -20,13 +21,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/closeShiftTime")
 public class CloseShiftController {
     @Autowired
     private CloseShiftService service;
 
     @Autowired
-    private HttpSession seesSession;
+    private HttpSession session;
 
     @Autowired
     private CloseShiftRepository repoClose;
@@ -35,47 +36,18 @@ public class CloseShiftController {
     private OpenShiftRepository repoOpen;
 
 
-    @PostMapping("/closeShiftTime")
+    @PostMapping
     public ResponseEntity<?> closeShift(@RequestBody CloseShift c) {
         HashMap<String,Object> map = new HashMap<>();
-        var userId = seesSession.getAttribute(JavaConstant.userId);
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+        var userId = session.getAttribute(JavaConstant.userId);
+        OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userId, JavaConstant.currentDate);
 
-        int countOpenShift = repoOpen.countOpenShift((Integer)userId, currentDate);
-        System.out.println("open shift count = " + countOpenShift + " date = " +currentDate)
-        if( countOpenShift == 0 ) {
-            map.put(JavaConstant.message, JavaConstant.msgCloseShift);
+        // protect when user try to processing sale but user does not open shift first
+        if (countOpenShift == null || countOpenShift.getNumberOpenShift() == 0) {
+            map.put(JavaConstant.message, JavaConstant.closeOpenShfitFirst);
             return JavaResponse.error(map);
         }
-
-        // String expressKey = "express";
-        // String express = JavaValidation.checkField(""+c.getExpress(), expressKey);
-
-        // String khqrMnkKey = "khqrMnk";
-        // String khqrMnk = JavaValidation.checkField(""+c.getKhqrMnk(), khqrMnkKey);
-
-        // String khqrAbaKey = "khqrAba";
-        // String khqrAba = JavaValidation.checkField(""+c.getKhqrAba(), khqrAbaKey);
-
-        // String creditCardKey = "creditCard";
-        // String creditCard = JavaValidation.checkField(""+c.getCreditCard(), creditCardKey);
-
-        // String cashKhrKey = "cashKhr";
-        // String cashKhr = JavaValidation.checkField(""+c.getCashKhr(), cashKhrKey);
-
-        // String cashUsdKey = "cashUsd";
-        // String cashUsd = JavaValidation.checkField(""+c.getCashUsd(), cashUsdKey);
-
-      
-        // if( !express.isEmpty() )  map.put(expressKey, express);
-        // if( !khqrMnk.isEmpty() )  map.put(khqrMnkKey, khqrMnk);
-        // if( !khqrAba.isEmpty() )  map.put(khqrAbaKey, khqrAba);
-        // if( !creditCard.isEmpty() )  map.put(creditCardKey, creditCard);
-        // if( !cashKhr.isEmpty() )  map.put(cashKhrKey, cashKhr);
-        // if( !cashUsd.isEmpty() )  map.put(cashUsdKey, cashUsd);
-
-        // if( !map.isEmpty() ) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
-
+        
         CloseShift data = service.closeShift(c);
         return JavaResponse.success(data);
     }

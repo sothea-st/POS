@@ -27,9 +27,9 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "emp_id")
+    @Column(name = "user_id")
     @Min(0)
-    private int empId;
+    private int userId;
 
     @Column(name = "sale_date")
     @NotNull(message = JavaMessage.required)

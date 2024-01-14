@@ -4,8 +4,12 @@ import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.pos.constant.JavaConstant;
+import com.example.pos.entity.ImportDetail;
+import com.example.pos.entity.payment.Payment;
 import com.example.pos.entity.sourceData.ReturnDetails;
 import com.example.pos.entity.sourceData.ReturnProduct;
+import com.example.pos.repository.ImportDetailRepository;
+import com.example.pos.repository.paymentRepository.PaymentRepository;
 import com.example.pos.repository.sourceDataRepository.ReturnDetailsRepository;
 import com.example.pos.repository.sourceDataRepository.ReturnProductRepository;
 import java.util.*;
@@ -17,48 +21,57 @@ public class ReturnProductService {
     private ReturnProductRepository repo;
     @Autowired
     private HttpSession session;
-
     @Autowired
     private ReturnDetailsRepository repoDetail;
 
-    public void returnProduct(ReturnProduct re){
-        var createBy = session.getAttribute(JavaConstant.userId);
+    @Autowired
+    private PaymentRepository repoPayment;
 
+    @Autowired
+    private ImportDetailRepository repoImport;
+
+    public void returnProduct(ReturnProduct re) {
+        var createBy = session.getAttribute(JavaConstant.userId);
+        int id = (Integer) createBy;
         String time = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a").format(Calendar.getInstance().getTime());
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 
         ReturnProduct r = new ReturnProduct();
-        r.setCreateBy((Integer)createBy);
+        r.setCreateBy(id);
         r.setPaymentNo(re.getPaymentNo());
         r.setReturnTime(time);
-        r.setReturnDate(date);
+        r.setReturnDate(JavaConstant.currentDate);
         r.setReasonId(re.getReasonId());
+        r.setReturnAmountKhr(re.getReturnAmountKhr());
+        r.setReturnAmountUsd(re.getReturnAmountUsd());
         repo.save(r);
+
+        // update payment is_return by payment no
+        Optional<Payment> data = repoPayment.getDataPayment(re.getPaymentNo());
+        Payment pay = data.get();
+        pay.setIsReturn("returned");
+        repoPayment.save(pay);
 
         List<ReturnDetails> listDetail = re.getDataDetails();
 
-        for( int i = 0 ; i < listDetail.size() ; i++ ) {
+        for (int i = 0; i < listDetail.size(); i++) {
+            int proId = listDetail.get(i).getProId();
+            int qtyReturn = listDetail.get(i).getQty();
             ReturnDetails obj = new ReturnDetails();
             obj.setProId(listDetail.get(i).getProId());
             obj.setQty(listDetail.get(i).getQty());
             obj.setReturnId(r.getId());
-            obj.setPrice(listDetail.get(i).getPrice());
-            obj.setAmount(listDetail.get(i).getAmount());
+            obj.setPriceUsd(listDetail.get(i).getPriceUsd());
+            obj.setPriceKhr(listDetail.get(i).getPriceKhr());
+            obj.setAmountUsd(listDetail.get(i).getAmountUsd());
+            obj.setAmountKhr(listDetail.get(i).getAmountKhr());
             repoDetail.save(obj);
+
+            // restock qty back
+            Optional<ImportDetail> dataImp = repoImport.findByImpId(proId);
+            ImportDetail impDetail = dataImp.get();
+            int restockQty = qtyReturn + impDetail.getQtyOld();
+            impDetail.setQtyOld(restockQty);
+            repoImport.save(impDetail);
         }
-
     }
-
-
-    // step 1 
-    // when return table import_details will be update qty 
-    // step 2
-    // table payment will update column is_return to verify this row returned
-    // step 3 
-    // table return_product and return_detail will hava data that return
-    // step 4
-    // add data to payment table one more
-    // step 5 
-    // 
-
 }
