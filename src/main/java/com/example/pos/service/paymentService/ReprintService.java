@@ -46,8 +46,8 @@ public class ReprintService {
         } else {
             paymentData = repo.getPaymentDataWithPaymentNo(id,JavaConstant.currentDate,paymentNo);
         }
-        map.put("totalKhr", paymentData.getTotal_khr());
-        map.put("totalUsd", paymentData.getTotal_usd());
+        // map.put("totalKhr", paymentData.getTotal_khr());
+        map.put("total", paymentData.getTotal());
         map.put("receiveKhr", paymentData.getReceive_khr());
         map.put("receiveUsd", paymentData.getReceive_usd());
         map.put("changeUsd", paymentData.getChange_usd());
@@ -57,7 +57,7 @@ public class ReprintService {
         map.put("paymentNo", paymentData.getPayment_no());  
         map.put("saleData", paymentData.getSale_date());
         map.put("customerType", paymentData.getCustomer_type());
-        List<SaleDetailProjection> dataSaleDetails = saleDetailRepo.getDataDetail(paymentData.getSale_id());
+        List<SaleDetailProjection> dataSaleDetails = saleDetailRepo.getDataDetail(id,JavaConstant.currentDate,paymentData.getSale_id());
         map.put("saleDetails", dataSaleDetails);
         String empName = userRepo.getNameEmp((Integer) createBy);
         map.put("empName", empName);

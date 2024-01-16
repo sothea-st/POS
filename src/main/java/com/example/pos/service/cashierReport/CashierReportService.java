@@ -15,6 +15,7 @@ import com.example.pos.entity.Employee;
 import com.example.pos.entity.OpenShift;
 import com.example.pos.entity.Sale;
 import com.example.pos.entity.models.SummeryCashierReport;
+import com.example.pos.entity.projection.CalculateDiscountProjection;
 import com.example.pos.repository.EmployeeRepository;
 import com.example.pos.repository.SaleDetailsRepository;
 import com.example.pos.repository.SaleRepository;
@@ -192,9 +193,13 @@ public class CashierReportService {
             qtyDiscount = Integer.valueOf(qtyDiscountStr);
 
         double amountDiscount = 0.00;
-        String amountDiscountStr = repoSaleDetail.totalAmountDiscount(userId,JavaConstant.currentDate);
-        if (amountDiscountStr != null)
-            amountDiscount = Double.valueOf(amountDiscountStr);
+        List<CalculateDiscountProjection> listDiscountQty = repoSaleDetail.totalAmountDiscount(userId,JavaConstant.currentDate);
+        for ( int i = 0 ; i < listDiscountQty.size() ; i++ ) {
+            var data = listDiscountQty.get(i);
+            double sum = (data.getQty()*data.getPrice().doubleValue())/100;
+            amountDiscount += sum;
+        }
+    
 
         int qtySale = 0;
         String qtySaleStr = repoSaleDetail.totalQtySale(userId,JavaConstant.currentDate);

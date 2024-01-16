@@ -19,45 +19,52 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "cat_id")
+    @Column(name = "cat_id",length = 30)
     private int catId;
- 
+    
+    @Column(name = "flag" , length = 150)
     private String flag;
+
+    @Column(name = "weight" , length = 50)
     private String weight;
-    private String costKhr;
-    private String fileName;
+
+    @Column(name = "pro_image_name" , length = 255)
+    private String proImageName;
+
+    @Column(name = "node" , length = 500)
     private String note;
+
+    @Column(name = "code_expired" , length = 30)
     private String codeExpired;
+
+    @Column(name = "code_out_stock" , length = 30)
     private String codeOutStock;
-    private String priceKhr;
+
+    @Column(name = "barcode",length = 100)
     private String barcode;
 
-    @Column(name = "unit_type_id")
-    private int unitTypeId;
+    // @Column(name = "unit_type_id",length = 30)
+    // private int unitTypeId;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "pro_name_kh",length = 150 ,unique = true)
     @NotBlank(message = JavaMessage.required)
     private String proNameKh;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "pro_name_en",length = 150 , unique = true)
     @NotBlank(message = JavaMessage.required)
     private String proNameEn;
 
-    @Column(precision = 10, scale = 2,name = "cost_usd")
-    private BigDecimal costUsd;
+    @Column(precision = 10, scale = 2,name = "cost")
+    private BigDecimal cost = new BigDecimal(0);
 
+    @Column(precision = 10, scale = 2,name = "price")
+    private BigDecimal price = new BigDecimal(0);
 
-    @Column(precision = 10, scale = 2,name = "price_usd")
-    private BigDecimal priceUsd;
-
-
-    @Column(name = "product_status")
+    @Column(name = "product_status",length = 30)
     private String productStatus;
 
-    private BigDecimal discount;
-
-    @Column(name = "discount_percentag",length = 20)
-    private String discountPercentag;
+    @Column(name = "discount",length = 30)
+    private int discount=0;
 
     @Column(name = "status")
     private boolean status = true;

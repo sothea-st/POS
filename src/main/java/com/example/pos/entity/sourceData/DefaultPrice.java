@@ -30,17 +30,14 @@ public class DefaultPrice {
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private int id;
 
-     
      @Column(name = "user_id")
      private int userId;
 
      @Column(name = "default_price_usd",precision = 10 , scale = 2)
-     private BigDecimal defaultPriceUsd;
+     private BigDecimal defaultPriceUsd= BigDecimal.ZERO;
 
-     @Column(name = "defautl_price_khr")
-     @NotNull(message = JavaMessage.required)
-     @NotBlank(message = JavaMessage.required)
-     private String defaultPriceKhr;
+     @Column(name = "defautl_price_khr",precision = 10 , scale = 0)
+     private BigDecimal defaultPriceKhr= BigDecimal.ZERO;
 
      @Column(name = "status")
      private boolean status = true;

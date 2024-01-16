@@ -66,6 +66,7 @@ public class ImportService {
                 int qty = qtyOld + qtyNew;
                 details.setQtyOld(qty);
             }
+            
             details.setImpId(data.getId());
             details.setProductId(productId);
             details.setQtyNew(qtyNew);
@@ -75,8 +76,5 @@ public class ImportService {
             details.setCreateBy((Integer)createBy);
             repoDetail.save(details);
         }
-
-//        return data;
     }
-
 }

@@ -36,23 +36,13 @@ public class Payment {
      @Column(name = "sale_id")
      private int saleId;
 
-     // @Column(name = "total_usd",precision = 10 , scale = 2)
-     // private BigDecimal totalUsd;
-
-     // @Column(name = "total_khr")
-     // @NotNull(message = JavaMessage.required)
-     // @NotBlank(message = JavaMessage.required)
-     // private String totalKhr;
-
-     @Column(name = "receive_usd",precision = 10 , scale = 2, nullable = false)
+     @Column(name = "receive_usd",precision = 10 , scale = 2)
      private BigDecimal receiveUsd;
 
-     @Column(name = "receive_khr")
-     @NotNull(message = JavaMessage.required)
-     @NotBlank(message = JavaMessage.required)
-     private String receiveKhr;
+     @Column(name = "receive_khr",precision = 10 , scale = 0)
+     private BigDecimal receiveKhr;
 
-     @Column(name = "remaining_usd",precision = 10 , scale = 2 ,nullable = true)
+     @Column(name = "remaining_usd",precision = 10 , scale = 2)
      private BigDecimal remainingUsd;
 
      @Column(name = "remaining_khr")
@@ -63,10 +53,8 @@ public class Payment {
      @Column(name = "change_usd",precision = 10 , scale = 2)
      private BigDecimal changeUsd;
 
-     @Column(name = "change_khr")
-     @NotNull(message = JavaMessage.required)
-     @NotBlank(message = JavaMessage.required)
-     private String changeKhr;
+     @Column(name = "change_khr",precision = 10 , scale = 0)
+     private BigDecimal changeKhr ;
 
      @Column(name = "payment_type")
      @NotNull(message = JavaMessage.required)
@@ -79,13 +67,11 @@ public class Payment {
      @Column(name = "source_id")
      private int sourceId;
 
-
-     @Column(name = "is_return")
+     @Column(name = "is_return",length = 20)
      private String isReturn;
 
      @Column(name = "create_by")
      private int createBy;
-
 
      @CreationTimestamp
      @Column(name = "create_date")

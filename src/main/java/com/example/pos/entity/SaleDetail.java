@@ -23,33 +23,22 @@ public class SaleDetail {
     @Column(name = "sale_id")
     private int saleId;
 
-    @Min(0)
     @Column(name = "pro_id")
     private int productId;
 
     @Column(name = "qty")
     private int qty=0;
 
-    @Column(name = "price_usd" , precision = 10 , scale = 2)
-    private BigDecimal priceUsd;
+    @Column(name = "price" , precision = 10 , scale = 2)
+    private BigDecimal price ;
 
-    @Column(name = "price_khr" , precision = 10)
-    private BigDecimal priceKhr;
+    @Column(name = "amount" , precision = 10 , scale = 2)
+    private BigDecimal amount ;
 
-    @Column(name = "amount_usd" , precision = 10 , scale = 2)
-    private BigDecimal amountUsd;
-
-    @Column(name = "amount_khr" , precision = 10 , scale = 2)
-    private BigDecimal amountKhr;
-
-    @Column(name = "discount" , precision = 10 , scale = 2)
-    private BigDecimal discount;
-
-    @Column(name = "discount_percentag")
-    private int discountPercentag=0;
+    @Column(name = "discount")
+    private int discount=0;
 
     @Column(name = "create_by")
-    @Min(0)
     private int createBy;
 
     @CreationTimestamp

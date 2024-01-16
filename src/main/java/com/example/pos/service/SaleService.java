@@ -60,8 +60,7 @@ public class SaleService {
         sale.setUserId(userId);
         sale.setSaleDate(JavaConstant.currentDate);
         sale.setDiscount(s.getDiscount());
-        sale.setTotalKhr(s.getTotalKhr());
-        sale.setTotalUsd(s.getTotalUsd());
+        sale.setTotal(s.getTotal());
         sale.setCreateBy(userId);
 
         Customer cus = s.getCustomer();
@@ -88,13 +87,10 @@ public class SaleService {
             dataDetail.setSaleId(saleId);
             dataDetail.setProductId(productId);
             dataDetail.setQty(qtyNew);
-            dataDetail.setPriceUsd(detail.getPriceUsd());
-            dataDetail.setPriceKhr(detail.getPriceKhr());
-            dataDetail.setAmountKhr(detail.getAmountKhr());
-            dataDetail.setAmountUsd(detail.getAmountUsd());
+            dataDetail.setPrice(detail.getPrice());
+            dataDetail.setAmount(detail.getAmount());
             dataDetail.setDiscount(detail.getDiscount());
-            dataDetail.setDiscountPercentag(detail.getDiscountPercentag());
-            dataDetail.setCreateBy((Integer) createBy);
+            dataDetail.setCreateBy(userId);
             repoDetail.save(dataDetail);
 
             ImportDetail getQtyOld = repoImp.getDataImportDetail(productId);
@@ -112,25 +108,23 @@ public class SaleService {
         int count = payRepo.countRecord();
         count++;
         String paymentNo = paymentNo(count);
-
         addPayment(paymentNo, saleId, p, userId);
-
         Company companyInfo = repoCompany.getInfoCompany();
         map.put("companyName", companyInfo.getCompanyName());
         map.put("companyContact", companyInfo.getContact());
         map.put("companyAddress", companyInfo.getAddress());
         map.put("companyLogo", companyInfo.getPhoto());
-        String empName = repoUser.getNameEmp((Integer) createBy);
+        String empName = repoUser.getNameEmp(userId);
         map.put("empName", empName);
         map.put("saleDate", s.getSaleDate());
         map.put("invoidNO", paymentNo);
-        map.put("totalUsd", s.getTotalUsd());
-        map.put("totalKhr", s.getTotalKhr());
+        map.put("totalUsd", s.getTotal());
+        map.put("totalKhr", s.getTotal());
         map.put("receiveUsd", p.getReceiveUsd());
         map.put("receiveKhr", p.getReceiveKhr());
         map.put("changeUSd", p.getChangeUsd());
         map.put("changeKhr", p.getChangeKhr());
-        List<SaleDetailProjection> listProjection = repoDetail.getDataDetail(saleId);
+        List<SaleDetailProjection> listProjection = repoDetail.getDataDetail(userId,JavaConstant.currentDate,saleId);
         map.put("saleDetails", listProjection);
         return map;
     }

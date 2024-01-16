@@ -3,8 +3,7 @@ package com.example.pos.entity.projection;
 import java.math.BigDecimal;
 
 public interface PaymentProjection {
-    BigDecimal getTotal_usd();
-    String getTotal_khr();
+    BigDecimal getTotal();
     BigDecimal getReceive_usd();
     String getReceive_khr();
     BigDecimal getChange_usd();

@@ -19,8 +19,10 @@ import jakarta.servlet.http.HttpSession;
 public class ReturnProductService {
     @Autowired
     private ReturnProductRepository repo;
+    
     @Autowired
     private HttpSession session;
+
     @Autowired
     private ReturnDetailsRepository repoDetail;
 
@@ -41,8 +43,7 @@ public class ReturnProductService {
         r.setReturnTime(time);
         r.setReturnDate(JavaConstant.currentDate);
         r.setReasonId(re.getReasonId());
-        r.setReturnAmountKhr(re.getReturnAmountKhr());
-        r.setReturnAmountUsd(re.getReturnAmountUsd());
+        r.setReturnAmount(re.getReturnAmount());
         repo.save(r);
 
         // update payment is_return by payment no
@@ -60,10 +61,8 @@ public class ReturnProductService {
             obj.setProId(listDetail.get(i).getProId());
             obj.setQty(listDetail.get(i).getQty());
             obj.setReturnId(r.getId());
-            obj.setPriceUsd(listDetail.get(i).getPriceUsd());
-            obj.setPriceKhr(listDetail.get(i).getPriceKhr());
-            obj.setAmountUsd(listDetail.get(i).getAmountUsd());
-            obj.setAmountKhr(listDetail.get(i).getAmountKhr());
+            obj.setPrice(listDetail.get(i).getPrice());
+            obj.setAmount(listDetail.get(i).getAmount());
             repoDetail.save(obj);
 
             // restock qty back

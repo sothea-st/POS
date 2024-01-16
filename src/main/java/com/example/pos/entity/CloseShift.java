@@ -33,29 +33,29 @@ public class CloseShift {
      @Column(name = "user_id")
      private int userId;
 
-     @Column(name = "close_time")
+     @Column(name = "close_time",length = 50)
      private String closeTime;
 
-     @Column(name = "close_date")
+     @Column(name = "close_date",length = 20)
      private String closeDate;
 
      @Column(name = "express", precision = 10, scale = 2)
-     private BigDecimal express;
+     private BigDecimal express=BigDecimal.ZERO;
 
      @Column(name = "khqr_mnk", precision = 10, scale = 2)
-     private BigDecimal khqrMnk;
+     private BigDecimal khqrMnk = BigDecimal.ZERO;
 
      @Column(name = "khqr_aba", precision = 10, scale = 2)
-     private BigDecimal khqrAba;
+     private BigDecimal khqrAba = BigDecimal.ZERO;
 
      @Column(name = "credit_card", precision = 10, scale = 2)
-     private BigDecimal creditCard;
+     private BigDecimal creditCard = BigDecimal.ZERO;
 
-     @Column(name = "cash_khr")
-     private String cashKhr;
+     @Column(name = "cash_khr",precision = 10,scale = 0)
+     private BigDecimal cashKhr=BigDecimal.ZERO;
 
      @Column(name = "cash_usd", precision = 10, scale = 2)
-     private BigDecimal cashUsd;
+     private BigDecimal cashUsd = BigDecimal.ZERO;
 
      @Column(name = "create_by")
      private int createBy;

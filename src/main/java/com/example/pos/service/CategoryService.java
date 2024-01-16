@@ -31,11 +31,15 @@ public class CategoryService {
 
         Object id = httpSession.getAttribute("idUser");
 
+        int count = repo.countLengthRow();
+        count++;
+
         Category obj = new Category();
         obj.setCatNameKh(c.getCatNameKh());
         obj.setCatNameEn(c.getCatNameEn());
         obj.setCreateBy((Integer)id);
         obj.setParentId(c.getParentId());
+        obj.setMovePosition(count);
         repo.save(obj);
         return obj;
     }
@@ -61,7 +65,7 @@ public class CategoryService {
         obj.setCatNameKh(c.getCatNameKh());
         obj.setCatNameEn(c.getCatNameEn());
         obj.setParentId(c.getParentId());
-
+        obj.setMovePosition(c.getMovePosition());
         repo.save(obj);
         return obj;
     }

@@ -28,7 +28,6 @@ public class Sale {
     private int id;
 
     @Column(name = "user_id")
-    @Min(0)
     private int userId;
 
     @Column(name = "sale_date")
@@ -38,18 +37,13 @@ public class Sale {
 
     @Column(name = "discount" , precision = 10, scale = 2)
     @NotNull(message = JavaMessage.required)
-    private BigDecimal discount;
+    private BigDecimal discount ;
 
-    @Column(name = "total_usd" , precision = 10 , scale = 2)
-    private BigDecimal totalUsd;
-
-    @Column(name = "total_khr" )
-    private String totalKhr;
+    @Column(name = "total" , precision = 10 , scale = 2)
+    private BigDecimal total;
 
     @Column(name = "cus_id")
     private String cusId;
-
-
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<SaleDetail> dataSale;
@@ -60,9 +54,7 @@ public class Sale {
     @OneToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
-
     @Column(name = "create_by")
-    @Min(0)
     private int createBy;
 
     @CreationTimestamp

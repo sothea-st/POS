@@ -42,7 +42,7 @@ public class OpenShiftService {
           data.setReserveUsd(s.getReserveUsd());
           data.setReserveKhr(s.getReserveKhr());
           data.setOpenTime(timeStamp);
-          data.setDate(currentDate);
+          data.setOpenDate(currentDate);
           data.setCreateBy((Integer)userId);
           data.setNumberOpenShift(1);
           repo.save(data);

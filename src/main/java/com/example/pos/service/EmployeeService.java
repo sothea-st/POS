@@ -60,21 +60,18 @@ public class EmployeeService {
         if (file == null || file.isEmpty()) {
             emp.setFileName(JavaConstant.defaultNameImage);
         } else {
-           
-                // JavaStorage.storeImage(file); for save image to path assests/product in project
-                String fileName = JavaStorage.setFileName(file.getOriginalFilename());
-                emp.setFileName(fileName);
+            // JavaStorage.storeImage(file); for save image to path assests/product in project
+            String fileName = JavaStorage.setFileName(file.getOriginalFilename());
+            emp.setFileName(fileName);
 
-                // save information image to table pos_file
-                // String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-                FileStore f = new FileStore(fileName, fileName, file.getContentType(), file.getBytes());
-                fileStore.save(f);
-                emp.setFileName(fileName);
-            
+            // save information image to table pos_file
+            // String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            FileStore f = new FileStore(fileName, fileName, file.getContentType(), file.getBytes());
+            fileStore.save(f);
+            emp.setFileName(fileName);
         }
 
         repo.save(emp);
-
 
         int userCount = userRepo.userCount();
         String userCountRow = "";
@@ -90,7 +87,6 @@ public class EmployeeService {
             userCountRow="0"+userCount;
         }
 
-        System.out.println("emp id = " + emp.getId());
         User user = new User();
         user.setFullName(emp.getNameEn());
         JavaConstant password = new JavaConstant();

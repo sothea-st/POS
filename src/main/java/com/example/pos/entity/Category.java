@@ -35,6 +35,9 @@ public class Category  {
     @Column(name = "parent_id")
     private int parentId=0;
 
+    @Column(name = "move_position")
+    private int movePosition;
+
     @Column(name = "status")
     private boolean status = true;
 

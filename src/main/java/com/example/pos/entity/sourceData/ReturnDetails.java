@@ -31,15 +31,11 @@ public class ReturnDetails {
     @Column(name = "retur_qty")
     private int qty;
 
-    @Column(name="return_price_usd",scale = 2,precision = 10)
-    private BigDecimal priceUsd;
+    @Column(name="return_price",scale = 2,precision = 10)
+    private BigDecimal price = BigDecimal.ZERO;
 
-    @Column(name="return_price_khr",scale = 0,precision = 10)
-    private BigDecimal priceKhr;
+    @Column(name="return_amount",scale = 2,precision = 10)
+    private BigDecimal amount= BigDecimal.ZERO;
 
-    @Column(name="return_amount_usd",scale = 2,precision = 10)
-    private BigDecimal amountUsd;
-
-    @Column(name="return_amount_khr",scale = 0,precision = 10)
-    private BigDecimal amountKhr;
+   
 }

@@ -25,36 +25,29 @@ public class Import {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "imp_no")
+    @Column(name = "imp_no",length = 50)
     private String impNo;
 
-    @Column(name = "emp_id")
-    @Min(0)
+    @Column(name = "emp_id",length = 20)
     private int empId;
 
-    @Column(name = "sub_id")
-    @Min(0)
+    @Column(name = "sub_id",length = 20)
     private int subId;
 
-    @Column(name = "imp_date")
+    @Column(name = "imp_date",length = 50)
     @NotNull(message = JavaMessage.required)
     @NotBlank(message = JavaMessage.required)
     private String impDate;
 
-    @Column(name = "discount",precision = 10,scale = 2)
-    @NotNull(message = JavaMessage.required)
-    private BigDecimal discount;
+    @Column(name = "discount",length = 20)
+    private int discount=0;
 
     @Column(name = "total",precision = 10,scale = 2)
     @NotNull(message = JavaMessage.required)
-    private BigDecimal total;
+    private BigDecimal total = BigDecimal.ZERO;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ImportDetail> details;
-
-
-
-
 
     @Column(name = "create_by")
     private int createBy;

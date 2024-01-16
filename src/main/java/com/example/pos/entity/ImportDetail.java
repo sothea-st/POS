@@ -22,26 +22,25 @@ public class ImportDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "pro_id")
-    @Min(0)
+    @Column(name = "pro_id",length = 30)
     private int productId;
 
-    @Column(name = "imp_id")
-    @Min(0)
+    @Column(name = "imp_id",length = 30)
     private int impId;
 
-    @Column(name = "qty_new")
+    @Column(name = "qty_new",length = 30)
     private int qtyNew=0;
 
-    @Column(name = "qty_old")
+    @Column(name = "qty_old",length = 30)
     private int qtyOld=0;
 
     @Column(name = "cost",precision = 10,scale = 2)
-    private BigDecimal cost;
+    private BigDecimal cost = BigDecimal.ZERO;
 
     @Column(name = "amount",precision = 10,scale = 2)
-    private BigDecimal amount;
+    private BigDecimal amount = BigDecimal.ZERO;
 
+    @Column(name = "expired_date",length = 30)
     private String expireDate;
 
     @Column(name = "create_by")

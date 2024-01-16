@@ -8,9 +8,6 @@ import java.util.*;
 
 @Repository
 public interface SaleRepository extends JpaRepository<Sale, Integer> {
-        // @Query(nativeQuery = true , value = "select ps.id from pos_sale ps where
-        // ps.user_id = ? and ps.sale_date = ? order by id asc")
-        // List<Integer> getListSaleId(int empId,String date);
 
         @Query(nativeQuery = true, value = "select sum(psd.qty) from pos_sale ps \r\n" + //
                         "inner join pos_payment pp on pp.sale_id = ps.id \r\n" + //

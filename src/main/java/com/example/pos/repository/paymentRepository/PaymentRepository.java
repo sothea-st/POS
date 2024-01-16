@@ -15,7 +15,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
         int countRecord();
 
         @Query(nativeQuery = true, value = "select \r\n" + //
-                        "ps.total_usd,ps.total_khr,\r\n" + //
+                        "ps.total,\r\n" + //
                         "pp.receive_usd,pp.receive_khr,\r\n" + //
                         "pp.change_usd,pp.change_khr,\r\n" + //
                         "pp.remaining_usd,pp.remaining_khr,\r\n" + //
@@ -26,16 +26,14 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
                         "where ps.user_id = ? and ps.sale_date=? and pp.payment_no =?")
         PaymentProjection getPaymentDataWithPaymentNo(int userId ,String date,String paymentNo);
 
-        @Query(nativeQuery = true, value = "select \r\n" + //
-                        "ps.total_usd,ps.total_khr,\r\n" + //
-                        "pp.receive_usd,pp.receive_khr,\r\n" + //
+        @Query(nativeQuery = true, value = "select ps.total,pp.receive_usd,pp.receive_khr,\r\n" + //
                         "pp.change_usd,pp.change_khr,\r\n" + //
                         "pp.remaining_usd,pp.remaining_khr,\r\n" + //
                         "pp.payment_no,ps.sale_date,\r\n" + //
                         "pct.name as customer_type,pp.sale_id\r\n" + //
                         "from pos_payment pp inner join pos_sale ps on ps.id = pp.sale_id \r\n" + //
                         "inner join pos_customer_type pct on pct.id = pp.customer_type_id\r\n" + //
-                        "where ps.user_id = ? and ps.sale_date=?  order by pp.id desc limit 1")
+                        "where ps.user_id = ? and ps.sale_date=? order by pp.id desc limit  1")
         PaymentProjection getPaymentDataWithoutPaymentNo(int userId,String date);
 
  

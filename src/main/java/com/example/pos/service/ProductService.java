@@ -40,22 +40,22 @@ public class ProductService {
 
         Product pro = new Product();
         pro.setCatId(p.getCatId());
-        pro.setUnitTypeId(p.getUnitTypeId());
+        // pro.setUnitTypeId(p.getUnitTypeId());
         pro.setProNameKh(p.getProNameKh());
         pro.setProNameEn(p.getProNameEn());
-        pro.setCostUsd(p.getCostUsd());
-        pro.setPriceUsd(p.getPriceUsd());
-        pro.setCostKhr(p.getCostKhr());
-        pro.setPriceKhr(p.getPriceKhr());
+        pro.setCost(p.getCost());
+        pro.setPrice(p.getPrice());
+        // pro.setCostKhr(p.getCostKhr());
+        // pro.setPriceKhr(p.getPriceKhr());
         pro.setNote(p.getNote());
         pro.setCreateBy((Integer) idUser);
         pro.setWeight(p.getWeight());
         pro.setBarcode(p.getBarcode());
         pro.setDiscount(p.getDiscount());
-        pro.setDiscountPercentag(p.getDiscountPercentag().isEmpty() ? "0" : p.getDiscountPercentag());
-        pro.setProductStatus(p.getProductStatus());
+        // pro.setDiscountPercentag(p.getDiscountPercentag().isEmpty() ? "0" : p.getDiscountPercentag());
+        pro.setProductStatus(p.getProductStatus()); // for detail product in or out stock
         if (file == null || file.isEmpty()) {
-            pro.setFileName(JavaConstant.defaultNameImage);
+            pro.setProImageName(JavaConstant.defaultNameImage);
         } else {
             // JavaStorage.storeImage(file); for save image to path assests/product in project
             String fileName = JavaStorage.setFileName(file.getOriginalFilename());
@@ -63,7 +63,7 @@ public class ProductService {
             // save information image to table pos_file
             FileStore f = new FileStore(fileName, fileName, file.getContentType(), file.getBytes());
             fileStore.save(f);
-            pro.setFileName(fileName);
+            pro.setProImageName(fileName);
         }
 
         if( flagFile == null || flagFile.isEmpty() ) {
@@ -101,7 +101,7 @@ public class ProductService {
 
     public Product editProduct(int id, Product editProduct, MultipartFile file , MultipartFile flag) throws IOException {
         Product previousPro = repo.findById(id).get();
-        String fileName = previousPro.getFileName();
+        String fileName = previousPro.getProImageName();
         String flagName = previousPro.getFlag();
 
         if (!Objects.equals(previousPro.getProNameKh(), editProduct.getProNameKh())) {
@@ -123,7 +123,7 @@ public class ProductService {
             String fName = JavaStorage.setFileName(file.getOriginalFilename());
             FileStore f = new FileStore(fName, fName,file.getContentType(), file.getBytes());
             fileStore.save(f);
-            previousPro.setFileName(fName);
+            previousPro.setProImageName(fName);
         }
 
         if( Objects.equals(flagName,JavaConstant.defaultNameImage) ) flagName ="";
@@ -138,18 +138,18 @@ public class ProductService {
 
         previousPro.setProNameKh(editProduct.getProNameKh());
         previousPro.setProNameEn(editProduct.getProNameEn());
-        previousPro.setCostKhr(editProduct.getCostKhr());
-        previousPro.setCostUsd(editProduct.getCostUsd());
-        previousPro.setPriceKhr(editProduct.getPriceKhr());
-        previousPro.setPriceUsd(editProduct.getPriceUsd());
+        // previousPro.setCostKhr(editProduct.getCostKhr());
+        previousPro.setCost(editProduct.getCost());
+        // previousPro.setPriceKhr(editProduct.getPriceKhr());
+        previousPro.setPrice(editProduct.getPrice());
         previousPro.setWeight(editProduct.getWeight());
         previousPro.setBarcode(editProduct.getBarcode());
         previousPro.setDiscount(editProduct.getDiscount());
-        previousPro.setProductStatus(editProduct.getProductStatus());
-        previousPro.setUnitTypeId(editProduct.getUnitTypeId());
+        previousPro.setProductStatus(editProduct.getProductStatus());  // for detail product in or out stock
+        // previousPro.setUnitTypeId(editProduct.getUnitTypeId());
         previousPro.setCatId(editProduct.getCatId());
         previousPro.setNote(editProduct.getNote());
-        previousPro.setDiscountPercentag(editProduct.getDiscountPercentag());
+        // previousPro.setDiscountPercentag(editProduct.getDiscountPercentag());
         // previousPro.setCreateBy((Integer) idUser);
         repo.save(previousPro);
         return previousPro;
