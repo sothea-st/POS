@@ -34,7 +34,7 @@ public interface SaleDetailsRepository extends JpaRepository<SaleDetail, Integer
                         "where ps2.user_id = ? and ps2.sale_date = ?")
         String totalQtySale(int userId, String date);
 
-        @Query(nativeQuery = true, value = "select sum(psd.amount) from pos_sale ps\r\n" + //
+        @Query(nativeQuery = true, value = "select sum(ps.total) from pos_sale ps\r\n" + //
                         "inner join pos_sale_details psd on psd.sale_id = ps.id \r\n" + //
                         "where ps.user_id = ? and ps.sale_date = ?")
         String totalAmount(int userId, String date);
