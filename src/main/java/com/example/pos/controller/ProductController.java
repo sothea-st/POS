@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
-
+import java.util.*;
 import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 
 @RestController
@@ -36,6 +36,12 @@ public class ProductController {
     @GetMapping(value = "/image/{imageName}",produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getImage(@PathVariable("imageName") String imageName) throws IOException {
         return service.getImage(imageName);
+    }
+
+    @GetMapping("/getProductByCatId/{catId}")
+    public ResponseEntity<?> getProductByCatId(@PathVariable("catId") int catId) {
+        List<Product> data = service.getProductByCatId(catId);
+        return JavaResponse.success(data);
     }
 
     @GetMapping

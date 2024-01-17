@@ -104,6 +104,8 @@ public class ProductService {
         String fileName = previousPro.getProImageName();
         String flagName = previousPro.getFlag();
 
+        System.out.println("data 33  " + previousPro.getProNameKh() + "  -- " + editProduct.getProNameKh());
+
         if (!Objects.equals(previousPro.getProNameKh(), editProduct.getProNameKh())) {
             boolean isExist = repo.existsByProNameKh(editProduct.getProNameKh());
             JavaValidation.checkDataAlreadyExists(isExist);
@@ -166,6 +168,10 @@ public class ProductService {
     public byte[] getFile(String id) throws IOException {
         Optional<FileStore> fileDB = fileStore.findById(id);
         return fileDB.get().getData();
+    }
+
+    public List<Product> getProductByCatId(int catId){
+        return repo.getProductByCatId(catId);
     }
 
 }
