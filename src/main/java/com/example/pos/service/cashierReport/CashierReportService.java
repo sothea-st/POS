@@ -1,6 +1,5 @@
 package com.example.pos.service.cashierReport;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,8 @@ import com.example.pos.repository.shiftRepository.CloseShiftRepository;
 import com.example.pos.repository.shiftRepository.OpenShiftRepository;
 import java.util.*;
 import jakarta.servlet.http.HttpSession;
-
+import java.math.*;
+import java.text.DecimalFormat;
 @Service
 public class CashierReportService {
      @Autowired
@@ -57,8 +57,10 @@ public class CashierReportService {
 
     private  HashMap<String, Object> map = new HashMap<>();
 
+   
 
      public HashMap<String, Object> cashierReport() {
+       
         var userId = session.getAttribute(JavaConstant.userId);
         int id = (Integer)userId;
         // get company info
@@ -110,6 +112,8 @@ public class CashierReportService {
             double disAmount = 0;
             String disAmountStr = repoSaleDetail.totalAmount(userId,JavaConstant.currentDate,listDiscount.get(i));
             if (disAmountStr != null) disAmount = Double.valueOf(disAmountStr);
+
+            disAmount =  JavaConstant.getTwoPrecision(disAmount);
             discount.add(new SummeryCashierReport(listDiscount.get(i) + "%", disQty ,BigDecimal.valueOf(disAmount)));
         }
 
@@ -117,6 +121,7 @@ public class CashierReportService {
     }
 
     public void paymentSummery(int userId) {
+       DecimalFormat df = new DecimalFormat("#.##");
         int qtyUsd = 0;
         String qtyUsdStr = repoSale.sumQtySaledByUsd(userId, JavaConstant.currentDate);
         if (qtyUsdStr != null) qtyUsd = Integer.valueOf(qtyUsdStr);
@@ -131,7 +136,7 @@ public class CashierReportService {
  
         double amountPayKhr = 0;
         String amountPayKhrStr = repoSale.sumAmountSaledByKhr(userId, JavaConstant.currentDate);
-        if (amountPayKhrStr != null) amountPayKhr = Double.valueOf(amountPayKhrStr);
+        if (amountPayKhrStr != null) amountPayKhr = Double.valueOf(amountPayKhrStr)*4000;
 
 
         // ============================================================
@@ -170,6 +175,14 @@ public class CashierReportService {
         String amountCreditStr = repoSale.totalAmountCredit(userId, JavaConstant.currentDate);
         if (amountCreditStr != null) amountCredit = Double.valueOf(amountCreditStr);
 
+        amountPayUsd = JavaConstant.getTwoPrecision(amountPayUsd);
+        amountPayKhr = JavaConstant.getTwoPrecision(amountPayKhr);
+        amountMnk = JavaConstant.getTwoPrecision(amountMnk);
+        amountAba = JavaConstant.getTwoPrecision(amountAba);
+        amountExpress = JavaConstant.getTwoPrecision(amountExpress);
+        amountCredit = JavaConstant.getTwoPrecision(amountCredit);
+
+
         ArrayList<SummeryCashierReport> payment = new ArrayList<>();
         payment.add(new SummeryCashierReport("RED ANT EXPRESS", qtyExpress, BigDecimal.valueOf(amountExpress)));
         payment.add(new SummeryCashierReport("CASH (USD)", qtyUsd, BigDecimal.valueOf(amountPayUsd)));
@@ -181,7 +194,6 @@ public class CashierReportService {
     }
 
     public void SummeryCashierReport(int userId) {
- 
         String paymentNoFirst = repoPay.getFirstPaymentNumber(userId,JavaConstant.currentDate);
         String paymentNoLast = repoPay.getLastPaymentNumber(userId,JavaConstant.currentDate);
         map.put("paymentNoFirst", paymentNoFirst);
@@ -221,6 +233,9 @@ public class CashierReportService {
 
         ArrayList<SummeryCashierReport> summery = new ArrayList<>();
 
+        amount = JavaConstant.getTwoPrecision(amount);
+        returnAmount = JavaConstant.getTwoPrecision(returnAmount);
+        amountDiscount = JavaConstant.getTwoPrecision(amountDiscount);
         summery.add(new SummeryCashierReport("Sales", qtySale, BigDecimal.valueOf(amount)));
         summery.add(new SummeryCashierReport("Returns/Refunds", returnQty, BigDecimal.valueOf(returnAmount)));
         summery.add(new SummeryCashierReport("Disounts", qtyDiscount, BigDecimal.valueOf(amountDiscount)));

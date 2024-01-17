@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.http.HttpSession;
-
+import java.math.*;
 public class JavaConstant {
     public static String userId = "idUser";
     private String defaultPassword = "TT@126$kh#";
@@ -23,9 +23,12 @@ public class JavaConstant {
         this.defaultPassword = defaultPassword;
     }
 
-     public static String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+    public static String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 
- 
+    public static double getTwoPrecision(double amount){
+        double value = new BigDecimal(amount).setScale(2, RoundingMode.DOWN).doubleValue();
+        return value;
+    }
  
 
 }
