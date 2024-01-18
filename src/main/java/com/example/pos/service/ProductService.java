@@ -58,7 +58,8 @@ public class ProductService {
             pro.setProImageName(JavaConstant.defaultNameImage);
         } else {
             // JavaStorage.storeImage(file); for save image to path assests/product in project
-            String fileName = JavaStorage.setFileName(file.getOriginalFilename());
+            // String fileName = JavaStorage.setFileName(file.getOriginalFilename());
+            String fileName = file.getOriginalFilename();
  
             // save information image to table pos_file
             FileStore f = new FileStore(fileName, fileName, file.getContentType(), file.getBytes());
@@ -69,7 +70,9 @@ public class ProductService {
         if( flagFile == null || flagFile.isEmpty() ) {
             pro.setFlag(JavaConstant.defaultNameImage);
         } else {
-            String flagName = JavaStorage.setFileName(flagFile.getOriginalFilename());
+            // String flagName = JavaStorage.setFileName(flagFile.getOriginalFilename());
+            String flagName = flagFile.getOriginalFilename();
+
             pro.setFlag(flagName);
             FileStore f = new FileStore(flagName, flagName, flagFile.getContentType(), flagFile.getBytes());
             fileStore.save(f);
@@ -122,18 +125,20 @@ public class ProductService {
             fileName = "";
         if (file != null && !file.isEmpty() ) {
             // save information image to table pos_file
-            String fName = JavaStorage.setFileName(file.getOriginalFilename());
-            FileStore f = new FileStore(fName, fName,file.getContentType(), file.getBytes());
-            fileStore.save(f);
-            previousPro.setProImageName(fName);
+            // String imgName = JavaStorage.setFileName(file.getOriginalFilename());
+            String imgName = file.getOriginalFilename();
+            FileStore f1 = new FileStore(imgName, imgName,file.getContentType(), file.getBytes());
+            fileStore.save(f1);
+            previousPro.setProImageName(imgName);
         }
 
         if( Objects.equals(flagName,JavaConstant.defaultNameImage) ) flagName ="";
 
         if( flag != null && !flag.isEmpty() ) {
-            String fName = JavaStorage.setFileName(flag.getOriginalFilename());
-            FileStore f = new FileStore(fName, fName,flag.getContentType(), flag.getBytes());
-            fileStore.save(f);
+            // String fName = JavaStorage.setFileName(flag.getOriginalFilename());
+            String fName = flag.getOriginalFilename();
+            FileStore f2 = new FileStore(fName, fName,flag.getContentType(), flag.getBytes());
+            fileStore.save(f2);
             previousPro.setFlag(fName);
         }
 

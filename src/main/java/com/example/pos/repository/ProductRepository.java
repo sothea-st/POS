@@ -24,5 +24,5 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     @Query(nativeQuery = true , value = "select * from pos_product where status = true and is_deleted = false and cat_id = ?")
     List<Product> getProductByCatId(int catId);
-
+    
 }

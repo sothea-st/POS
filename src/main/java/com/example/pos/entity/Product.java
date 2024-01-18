@@ -19,7 +19,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "cat_id",length = 30)
+    @Column(name = "cat_id")
     private int catId;
     
     @Column(name = "flag" , length = 150)
