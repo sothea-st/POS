@@ -25,29 +25,19 @@ public class OpenShiftService {
           String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
           String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss a").format(Calendar.getInstance().getTime());
 
-          Optional<List<OpenShift>> list = repo.getPosIdByCurrentDate(currentDate);
-          int count = list.get().size();
-          count++;
-          String posId = "";
-          if( count < 10 ) {
-               posId= "0"+count;
-          } else {
-               posId=""+count;
-          }
-          
+      
           Object userId = session.getAttribute(JavaConstant.userId);
           OpenShift data = new OpenShift();
-          data.setPosId(posId);
-          data.setUserId((Integer)userId);
+          data.setPosId(s.getPosId());
+          data.setUserCode(s.getUserCode());
           data.setReserveUsd(s.getReserveUsd());
           data.setReserveKhr(s.getReserveKhr());
-          data.setOpenTime(timeStamp);
+          data.setOpenTime(s.getOpenTime());
           data.setOpenDate(currentDate);
-          data.setCreateBy((Integer)userId);
+          data.setCreateBy(s.getCreateBy());
           data.setNumberOpenShift(1);
           repo.save(data);
           return data;
-          
      }
 
 }

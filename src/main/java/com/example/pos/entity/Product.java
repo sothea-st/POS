@@ -22,6 +22,9 @@ public class Product {
     @Column(name = "cat_id")
     private int catId;
     
+    @Column(name = "branch_id")
+    private int branchId;
+
     @Column(name = "flag" , length = 150)
     private String flag;
 

@@ -42,6 +42,12 @@ public class Sale {
     @Column(name = "total" , precision = 10 , scale = 2)
     private BigDecimal total;
 
+    @Column(name = "sub_total" , precision = 10 , scale = 2)
+    private BigDecimal subTotal;
+
+    @Column(name = "delivery_fee" , precision = 10 , scale = 2)
+    private BigDecimal deliveryFee;
+
     @Column(name = "cus_id")
     private String cusId;
 

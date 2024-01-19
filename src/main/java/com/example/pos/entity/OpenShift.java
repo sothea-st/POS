@@ -26,8 +26,8 @@ public class OpenShift {
      @Column(name = "pos_id",length = 30)
      private String posId;
 
-     @Column(name = "user_id",length = 30)
-     private int userId;
+     @Column(name = "user_code",length = 30)
+     private String userCode;
 
      @Column(name="open_time",length = 50)
      private String openTime;
