@@ -60,6 +60,8 @@ public class SaleService {
         sale.setUserId(userId);
         sale.setSaleDate(JavaConstant.currentDate);
         sale.setDiscount(s.getDiscount());
+        sale.setSubTotal(s.getSubTotal());
+        sale.setDeliveryFee(s.getDeliveryFee());
         sale.setTotal(s.getTotal());
         sale.setCreateBy(userId);
 

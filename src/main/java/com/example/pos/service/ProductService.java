@@ -52,6 +52,7 @@ public class ProductService {
         pro.setWeight(p.getWeight());
         pro.setBarcode(p.getBarcode());
         pro.setDiscount(p.getDiscount());
+        pro.setBranchId(p.getBranchId());
         // pro.setDiscountPercentag(p.getDiscountPercentag().isEmpty() ? "0" : p.getDiscountPercentag());
         pro.setProductStatus(p.getProductStatus()); // for detail product in or out stock
         if (file == null || file.isEmpty()) {
@@ -68,7 +69,7 @@ public class ProductService {
         }
 
         if( flagFile == null || flagFile.isEmpty() ) {
-            pro.setFlag(JavaConstant.defaultNameImage);
+            pro.setFlag(JavaConstant.defaultFlagNameImage);
         } else {
             // String flagName = JavaStorage.setFileName(flagFile.getOriginalFilename());
             String flagName = flagFile.getOriginalFilename();
@@ -132,7 +133,7 @@ public class ProductService {
             previousPro.setProImageName(imgName);
         }
 
-        if( Objects.equals(flagName,JavaConstant.defaultNameImage) ) flagName ="";
+        if( Objects.equals(flagName,JavaConstant.defaultFlagNameImage) ) flagName ="";
 
         if( flag != null && !flag.isEmpty() ) {
             // String fName = JavaStorage.setFileName(flag.getOriginalFilename());
@@ -152,6 +153,7 @@ public class ProductService {
         previousPro.setWeight(editProduct.getWeight());
         previousPro.setBarcode(editProduct.getBarcode());
         previousPro.setDiscount(editProduct.getDiscount());
+        previousPro.setBranchId(editProduct.getBranchId());
         previousPro.setProductStatus(editProduct.getProductStatus());  // for detail product in or out stock
         // previousPro.setUnitTypeId(editProduct.getUnitTypeId());
         previousPro.setCatId(editProduct.getCatId());

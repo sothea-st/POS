@@ -30,6 +30,16 @@ public class User implements UserDetails {
 
     private String token;
     private String expiredToken;
+    private String posId;
+
+
+    public void setPosId(String posId){
+        this.posId = posId;
+    }
+
+    public String getPosId(){
+        return posId;
+    }
 
     private Integer empId;
 
