@@ -82,7 +82,7 @@ public class AuthenticationController {
     @Autowired
     private HttpSession httpSession;
     @PostMapping("/login")
-    public ResponseEntity<User> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<User> authenticate(@ModelAttribute LoginUserDto loginUserDto) {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser);
         LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
