@@ -89,7 +89,7 @@ public class AuthenticationController {
     private HttpSession httpSession;
 
     @PostMapping("/login")
-    public ResponseEntity<User> authenticate(@ModelAttribute LoginUserDto loginUserDto) {
+    public ResponseEntity<User> authenticate(@RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser);
         LoginResponse loginResponse = new LoginResponse().setToken(jwtToken)
@@ -105,6 +105,8 @@ public class AuthenticationController {
         }
 
         httpSession.setAttribute(JavaConstant.userId, authenticatedUser.getId());
+        httpSession.setAttribute(JavaConstant.userCode, authenticatedUser.getUserCode());
+
         authenticatedUser.setToken(jwtToken);
         authenticatedUser.setPosId(posId);
         authenticatedUser.setExpiredToken(String.valueOf(loginResponse.getExpiresIn()));

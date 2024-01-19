@@ -33,8 +33,8 @@ public class SaleController {
 
     @PostMapping
     public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s) {
-        var userId = session.getAttribute(JavaConstant.userId);
-        OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userId, JavaConstant.currentDate);
+        var userCode = session.getAttribute(JavaConstant.userCode);
+        OpenShift countOpenShift = repoOpen.countOpenShift((String) userCode, JavaConstant.currentDate);
         HashMap<String, String> map = new HashMap<>();
         // protect when user try to processing sale but user does not open shift first
         if (countOpenShift == null || countOpenShift.getNumberOpenShift() == 0) {

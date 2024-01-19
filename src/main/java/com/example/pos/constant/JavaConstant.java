@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import java.math.*;
 public class JavaConstant {
     public static String userId = "idUser";
+    public static String userCode = "userCode";
     private String defaultPassword = "TT@126$kh#";
     public static String defaultNameImage = "default.jpg";
     public static String defaultFlagNameImage = "default-flag.jpg";
