@@ -20,9 +20,6 @@ public class ReprintService {
     private PaymentRepository repo;
 
     @Autowired
-    private HttpSession session;
-
-    @Autowired
     private CompanyRepository companyRepo;
 
     @Autowired
@@ -31,9 +28,8 @@ public class ReprintService {
     @Autowired
     private SaleDetailsRepository saleDetailRepo;
  
-    public HashMap<String, Object> readData(String paymentNo) {
-        var createBy = session.getAttribute(JavaConstant.userId);
-        int id = (Integer)createBy;
+    public HashMap<String, Object> readData(String paymentNo,int userId) {
+     
         HashMap<String, Object> map = new HashMap<>();
         Company c = companyRepo.getInfoCompany();
         map.put("companyName", c.getCompanyName());
@@ -42,11 +38,11 @@ public class ReprintService {
         map.put("companyLogo", c.getPhoto());
         PaymentProjection paymentData=null;
         if( paymentNo.isEmpty() ) {
-            paymentData = repo.getPaymentDataWithoutPaymentNo(id,JavaConstant.currentDate);
+            paymentData = repo.getPaymentDataWithoutPaymentNo(userId,JavaConstant.currentDate);
         } else {
-            paymentData = repo.getPaymentDataWithPaymentNo(id,JavaConstant.currentDate,paymentNo);
+            paymentData = repo.getPaymentDataWithPaymentNo(userId,JavaConstant.currentDate,paymentNo);
         }
-        // map.put("totalKhr", paymentData.getTotal_khr());
+   
         map.put("total", paymentData.getTotal());
         map.put("receiveKhr", paymentData.getReceive_khr());
         map.put("receiveUsd", paymentData.getReceive_usd());
@@ -57,9 +53,9 @@ public class ReprintService {
         map.put("paymentNo", paymentData.getPayment_no());  
         map.put("saleData", paymentData.getSale_date());
         map.put("customerType", paymentData.getCustomer_type());
-        List<SaleDetailProjection> dataSaleDetails = saleDetailRepo.getDataDetail(id,JavaConstant.currentDate,paymentData.getSale_id());
+        List<SaleDetailProjection> dataSaleDetails = saleDetailRepo.getDataDetail(userId,JavaConstant.currentDate,paymentData.getSale_id());
         map.put("saleDetails", dataSaleDetails);
-        String empName = userRepo.getNameEmp((Integer) createBy);
+        String empName = userRepo.getNameEmp(userId);
         map.put("empName", empName);
         return map;
     }
