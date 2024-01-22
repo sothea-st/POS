@@ -52,12 +52,13 @@ public class SaleService {
     public HashMap<String, Object> saleProduct(Sale s) {
         var createBy = session.getAttribute(JavaConstant.userId);
   
-        int userId = (Integer) createBy;
+        int userId = s.getUserId();
         // System.out.println("user id = " + userId);
         HashMap<String, Object> map = new HashMap<>();
 
         Sale sale = new Sale();
         sale.setUserId(userId);
+        sale.setUserCode(s.getUserCode());
         sale.setSaleDate(JavaConstant.currentDate);
         sale.setDiscount(s.getDiscount());
         sale.setSubTotal(s.getSubTotal());

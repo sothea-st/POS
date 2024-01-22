@@ -31,10 +31,12 @@ public class SaleController {
     @Autowired
     private OpenShiftRepository repoOpen;
 
-    @PostMapping
+    @PostMapping 
     public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s) {
         var userCode = session.getAttribute(JavaConstant.userCode);
-        OpenShift countOpenShift = repoOpen.countOpenShift((String) userCode, JavaConstant.currentDate);
+        System.out.println("user code = " + s.getUserCode());
+        System.out.println("user code = " + JavaConstant.currentDate);
+        OpenShift countOpenShift = repoOpen.countOpenShift(s.getUserCode(), JavaConstant.currentDate);
         HashMap<String, String> map = new HashMap<>();
         // protect when user try to processing sale but user does not open shift first
         if (countOpenShift == null || countOpenShift.getNumberOpenShift() == 0) {
@@ -44,7 +46,4 @@ public class SaleController {
         var data = service.saleProduct(s);
         return JavaResponse.success(data);
     }
-
- 
-
 }

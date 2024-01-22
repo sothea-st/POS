@@ -54,4 +54,10 @@ public class ReasonController {
           return JavaResponse.success(data);
      }
 
+     @GetMapping("/getReasonByCode/{code}")
+     public ResponseEntity<?> getReasonByCode(@PathVariable("code") String code) {
+          List<Reason> data = service.getReasonByCode(code);
+          return JavaResponse.success(data);
+     }
+
 }

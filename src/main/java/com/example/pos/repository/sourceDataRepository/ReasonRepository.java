@@ -14,4 +14,9 @@ public interface ReasonRepository extends JpaRepository<Reason,Integer> {
 
      @Query(nativeQuery = true , value = "select * from pos_reason where status = true and is_deleted=false and id = ?")
      Reason getReasonById(int id);
+
+     @Query(nativeQuery = true , value = "select * from pos_reason pr where code = ?")
+     List<Reason> getReasonByCode(String code);
+
+
 }
