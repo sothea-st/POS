@@ -81,4 +81,10 @@ public class ProductController {
                 .body(imageData);
     }
 
+    @GetMapping("/getProductByBrandId/{brandId}")
+    public ResponseEntity<?> getProductByBrandId(@PathVariable("brandId") int brandId) {
+        List<Product> data = service.getListProductByBrandId(brandId);
+        return JavaResponse.success(data);
+    }
+
 }

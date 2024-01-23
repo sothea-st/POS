@@ -22,8 +22,8 @@ public class Product {
     @Column(name = "cat_id")
     private int catId;
     
-    @Column(name = "branch_id")
-    private int branchId;
+    @Column(name = "brand_id")
+    private int brandId;
 
     @Column(name = "flag" , length = 150)
     private String flag;
