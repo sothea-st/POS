@@ -41,7 +41,7 @@ public class Customer {
     private String gender;
     private String nationality;
     private String coupon;
-    private BigDecimal earning= BigDecimal.ZERO;
+    private BigDecimal earning;
 
     @Column(name = "status")
     private boolean status = true;

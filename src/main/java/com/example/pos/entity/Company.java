@@ -40,6 +40,9 @@ public class Company {
      @Column(name = "address")
      private String address;
 
+     @Column(name = "vattin")
+     private String vattin;
+
      private String photo;
 
      @Column(name = "create_by")

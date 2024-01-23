@@ -40,22 +40,22 @@ public class CloseShift {
      private String closeDate;
 
      @Column(name = "express", precision = 10, scale = 2)
-     private BigDecimal express=BigDecimal.ZERO;
+     private BigDecimal express;
 
      @Column(name = "khqr_mnk", precision = 10, scale = 2)
-     private BigDecimal khqrMnk = BigDecimal.ZERO;
+     private BigDecimal khqrMnk;
 
      @Column(name = "khqr_aba", precision = 10, scale = 2)
-     private BigDecimal khqrAba = BigDecimal.ZERO;
+     private BigDecimal khqrAba;
 
      @Column(name = "credit_card", precision = 10, scale = 2)
-     private BigDecimal creditCard = BigDecimal.ZERO;
+     private BigDecimal creditCard;
 
      @Column(name = "cash_khr",precision = 10,scale = 0)
-     private BigDecimal cashKhr=BigDecimal.ZERO;
+     private BigDecimal cashKhr;
 
      @Column(name = "cash_usd", precision = 10, scale = 2)
-     private BigDecimal cashUsd = BigDecimal.ZERO;
+     private BigDecimal cashUsd;
 
      @Column(name = "create_by")
      private int createBy;

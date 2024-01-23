@@ -36,6 +36,7 @@ public class ReprintService {
         map.put("companyAddres", c.getAddress());
         map.put("companyContact", c.getContact());
         map.put("companyLogo", c.getPhoto());
+        map.put("vattin", c.getVattin());
         PaymentProjection paymentData=null;
         if( paymentNo.isEmpty() ) {
             paymentData = repo.getPaymentDataWithoutPaymentNo(userId,JavaConstant.currentDate);
@@ -51,7 +52,7 @@ public class ReprintService {
         map.put("remainingUsd", paymentData.getRemaining_usd());
         map.put("remainingKhr", paymentData.getRemaining_khr());
         map.put("paymentNo", paymentData.getPayment_no());  
-        map.put("saleData", paymentData.getSale_date());
+        map.put("saleDate", paymentData.getSale_date());
         map.put("customerType", paymentData.getCustomer_type());
         List<SaleDetailProjection> dataSaleDetails = saleDetailRepo.getDataDetail(userId,JavaConstant.currentDate,paymentData.getSale_id());
         map.put("saleDetails", dataSaleDetails);

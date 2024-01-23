@@ -1,4 +1,4 @@
-package com.example.pos.entity.sourceData;
+package com.example.pos.controller.sourceDataController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pos.components.JavaResponse;
+import com.example.pos.entity.sourceData.ReturnProduct;
 import com.example.pos.service.sourceDataService.ReturnProductService;
 
 import jakarta.validation.Valid;

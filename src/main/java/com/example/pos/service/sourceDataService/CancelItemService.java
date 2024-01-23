@@ -33,7 +33,7 @@ public class CancelItemService {
           CancelItem data = new CancelItem();
           data.setCode(type);
           data.setReasonId(c.getReasonId());
-          data.setCreateBy((Integer)createBy);
+          data.setCreateBy(c.getCreateBy());
           data.setCancelTime(time);
           data.setCancelDate(date);
           repo.save(data);

@@ -45,9 +45,7 @@ public class Employee {
     @Column(name = "start_date")
     private String startDate;
 
-
-    private String fileName;
-
+    private String imageName;
 
     @NotBlank(message = JavaMessage.required)
     @NotNull(message = JavaMessage.required)

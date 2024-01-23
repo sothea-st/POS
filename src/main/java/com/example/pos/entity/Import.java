@@ -44,7 +44,7 @@ public class Import {
 
     @Column(name = "total",precision = 10,scale = 2)
     @NotNull(message = JavaMessage.required)
-    private BigDecimal total = BigDecimal.ZERO;
+    private BigDecimal total;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ImportDetail> details;

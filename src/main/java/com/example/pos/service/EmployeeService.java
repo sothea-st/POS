@@ -58,17 +58,17 @@ public class EmployeeService {
         emp.setCreateBy((Integer)createdBy);
 
         if (file == null || file.isEmpty()) {
-            emp.setFileName(JavaConstant.defaultNameImage);
+            emp.setImageName(JavaConstant.defaultNameImage);
         } else {
             // JavaStorage.storeImage(file); for save image to path assests/product in project
             String fileName = JavaStorage.setFileName(file.getOriginalFilename());
-            emp.setFileName(fileName);
+            emp.setImageName(fileName);
 
             // save information image to table pos_file
             // String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             FileStore f = new FileStore(fileName, fileName, file.getContentType(), file.getBytes());
             fileStore.save(f);
-            emp.setFileName(fileName);
+            emp.setImageName(fileName);
         }
 
         repo.save(emp);
@@ -134,19 +134,19 @@ public class EmployeeService {
         emp.setCreateBy((Integer)createdBy);
 
         if (file == null) {
-            emp.setFileName("default.jpg");
+            emp.setImageName("default.jpg");
         } else {
             if (file.isEmpty()) {
-                emp.setFileName("default.jpg");
+                emp.setImageName("default.jpg");
             } else {
                 JavaStorage.storeImage(file);
-                emp.setFileName(JavaStorage.setFileName(Objects.requireNonNull(file.getOriginalFilename())));
+                emp.setImageName(JavaStorage.setFileName(Objects.requireNonNull(file.getOriginalFilename())));
 
                 // save information image to table pos_file
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
                 FileStore f = new FileStore(JavaStorage.setFileName(file.getOriginalFilename()), fileName, file.getContentType(), file.getBytes());
                 fileStore.save(f);
-                emp.setFileName(JavaStorage.setFileName(file.getOriginalFilename()));
+                emp.setImageName(JavaStorage.setFileName(file.getOriginalFilename()));
 
             }
         }

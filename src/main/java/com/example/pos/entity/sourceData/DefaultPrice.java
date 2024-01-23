@@ -34,10 +34,10 @@ public class DefaultPrice {
      private int userId;
 
      @Column(name = "default_price_usd",precision = 10 , scale = 2)
-     private BigDecimal defaultPriceUsd= BigDecimal.ZERO;
+     private BigDecimal defaultPriceUsd;
 
      @Column(name = "defautl_price_khr",precision = 10 , scale = 0)
-     private BigDecimal defaultPriceKhr= BigDecimal.ZERO;
+     private BigDecimal defaultPriceKhr;
 
      @Column(name = "status")
      private boolean status = true;

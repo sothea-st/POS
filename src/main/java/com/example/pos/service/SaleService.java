@@ -114,6 +114,7 @@ public class SaleService {
         addPayment(paymentNo, saleId, p, userId);
         Company companyInfo = repoCompany.getInfoCompany();
         map.put("companyName", companyInfo.getCompanyName());
+        map.put("vattin", companyInfo.getVattin());
         map.put("companyContact", companyInfo.getContact());
         map.put("companyAddress", companyInfo.getAddress());
         map.put("companyLogo", companyInfo.getPhoto());
@@ -163,8 +164,6 @@ public class SaleService {
         Payment data = new Payment();
         data.setPaymentNo(paymentNo);
         data.setSaleId(saleId);
-        // data.setTotalUsd(p.getTotalUsd());
-        // data.setTotalKhr(p.getTotalKhr());
         data.setReceiveKhr(p.getReceiveKhr());
         data.setReceiveUsd(p.getReceiveUsd());
         data.setRemainingKhr(p.getRemainingKhr());
