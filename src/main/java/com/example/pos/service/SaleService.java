@@ -57,7 +57,7 @@ public class SaleService {
         HashMap<String, Object> map = new HashMap<>();
 
         Sale sale = new Sale();
-        sale.setUserId(userId);
+        sale.setUserId(s.getUserId());
         sale.setSaleDate(JavaConstant.currentDate);
         sale.setDiscount(s.getDiscount());
         sale.setSubTotal(s.getSubTotal());
