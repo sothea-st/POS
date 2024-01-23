@@ -19,15 +19,15 @@ public class ReprintController {
     private ReprintService service;
 
 
-    @GetMapping("/{paymentNo}")
-    public ResponseEntity<?> getData(@PathVariable("paymentNo") String paymentNo){
-        var data = service.readData(paymentNo);
+    @GetMapping("/{userId}/{paymentNo}")
+    public ResponseEntity<?> getData(@PathVariable("paymentNo") String paymentNo,@PathVariable("userId") int userId){
+        var data = service.readData(paymentNo,userId);
         return JavaResponse.success(data);
     }
 
-    @GetMapping 
-    public ResponseEntity<?> getData(){
-        var data = service.readData("");
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getData(@PathVariable("userId") int userId){
+        var data = service.readData("",userId);
         return JavaResponse.success(data);
     }
 

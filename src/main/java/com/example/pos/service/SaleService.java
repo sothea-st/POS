@@ -52,12 +52,13 @@ public class SaleService {
     public HashMap<String, Object> saleProduct(Sale s) {
         var createBy = session.getAttribute(JavaConstant.userId);
   
-        int userId = (Integer) createBy;
+        int userId = s.getUserId();
         // System.out.println("user id = " + userId);
         HashMap<String, Object> map = new HashMap<>();
 
         Sale sale = new Sale();
-        sale.setUserId(s.getUserId());
+        sale.setUserId(userId);
+        sale.setUserCode(s.getUserCode());
         sale.setSaleDate(JavaConstant.currentDate);
         sale.setDiscount(s.getDiscount());
         sale.setSubTotal(s.getSubTotal());
@@ -113,6 +114,7 @@ public class SaleService {
         addPayment(paymentNo, saleId, p, userId);
         Company companyInfo = repoCompany.getInfoCompany();
         map.put("companyName", companyInfo.getCompanyName());
+        map.put("vattin", companyInfo.getVattin());
         map.put("companyContact", companyInfo.getContact());
         map.put("companyAddress", companyInfo.getAddress());
         map.put("companyLogo", companyInfo.getPhoto());
@@ -162,8 +164,6 @@ public class SaleService {
         Payment data = new Payment();
         data.setPaymentNo(paymentNo);
         data.setSaleId(saleId);
-        // data.setTotalUsd(p.getTotalUsd());
-        // data.setTotalKhr(p.getTotalKhr());
         data.setReceiveKhr(p.getReceiveKhr());
         data.setReceiveUsd(p.getReceiveUsd());
         data.setRemainingKhr(p.getRemainingKhr());

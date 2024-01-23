@@ -32,10 +32,10 @@ public class ReturnDetails {
     private int qty;
 
     @Column(name="return_price",scale = 2,precision = 10)
-    private BigDecimal price = BigDecimal.ZERO;
+    private BigDecimal price ;
 
     @Column(name="return_amount",scale = 2,precision = 10)
-    private BigDecimal amount= BigDecimal.ZERO;
+    private BigDecimal amount;
 
    
 }

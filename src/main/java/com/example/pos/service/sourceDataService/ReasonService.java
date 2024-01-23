@@ -56,4 +56,8 @@ public class ReasonService {
           return obj;
      }
 
+     public List<Reason> getReasonByCode(String code) {
+          return repo.getReasonByCode(code);
+     }
+
 }

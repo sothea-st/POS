@@ -1,6 +1,5 @@
-package com.example.pos.entity.people;
+package com.example.pos.entity.sourceData;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,40 +20,37 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "pos_customer")
+@Table(name = "pos_brand")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Customer {
+public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "brand_name_en")
     @NotBlank(message = JavaMessage.required)
     @NotNull(message = JavaMessage.required)
-    private String cusName;
+    private String brandNameEn;
 
-    private String contact;
-    private String email;
+    @Column(name = "brand_name_kh")
     @NotBlank(message = JavaMessage.required)
     @NotNull(message = JavaMessage.required)
-    private String customerId;
-    private String gender;
-    private String nationality;
-    private String coupon;
-    private BigDecimal earning;
+    private String brandNameKh;
+
+    @Column(name = "create_by")
+    @NotNull(message = JavaMessage.required)
+    private Integer createBy;
+
+    @CreationTimestamp
+    @Column(name = "create_date")
+    private Date createDate;
 
     @Column(name = "status")
-    private boolean status = true;
+    private boolean status=true;
 
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
-
-    @CreationTimestamp
-    @Column(updatable = false,name = "create_date")
-    private Date createDate;
-
-    @Column(name = "create_by")
-    private int createBy;
 
 }

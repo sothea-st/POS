@@ -30,6 +30,9 @@ public class Sale {
     @Column(name = "user_id")
     private int userId;
 
+    @Column(name = "user_code")
+    private String userCode;
+
     @Column(name = "sale_date")
     @NotNull(message = JavaMessage.required)
     @NotBlank(message = JavaMessage.required)

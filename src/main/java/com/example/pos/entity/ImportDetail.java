@@ -35,10 +35,10 @@ public class ImportDetail {
     private int qtyOld=0;
 
     @Column(name = "cost",precision = 10,scale = 2)
-    private BigDecimal cost = BigDecimal.ZERO;
+    private BigDecimal cost;
 
     @Column(name = "amount",precision = 10,scale = 2)
-    private BigDecimal amount = BigDecimal.ZERO;
+    private BigDecimal amount;
 
     @Column(name = "expired_date",length = 30)
     private String expireDate;

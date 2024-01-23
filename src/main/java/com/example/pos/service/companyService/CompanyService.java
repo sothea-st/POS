@@ -36,6 +36,7 @@ public class CompanyService {
           company.setAddress(c.getAddress());
           company.setContact(c.getContact());
           company.setCreateBy((Integer)createBy);
+          company.setVattin(c.getVattin());
           if( file == null || file.isEmpty() ) {
                company.setPhoto(JavaConstant.defaultNameImage);
           } else {
@@ -75,7 +76,7 @@ public class CompanyService {
           com.setCompanyName(c.getCompanyName());
           com.setAddress(c.getAddress());
           com.setContact(c.getContact());
-
+          com.setVattin(c.getVattin());
           String photo = com.getPhoto();
           if( Objects.equals(photo,JavaConstant.defaultNameImage) ) photo = "";
 

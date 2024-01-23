@@ -11,7 +11,7 @@ import com.example.pos.util.exception.customeException.JavaNotFoundByIdGiven;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+ 
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -52,7 +52,7 @@ public class ProductService {
         pro.setWeight(p.getWeight());
         pro.setBarcode(p.getBarcode());
         pro.setDiscount(p.getDiscount());
-        pro.setBranchId(p.getBranchId());
+        pro.setBrandId(p.getBrandId());
         // pro.setDiscountPercentag(p.getDiscountPercentag().isEmpty() ? "0" : p.getDiscountPercentag());
         pro.setProductStatus(p.getProductStatus()); // for detail product in or out stock
         if (file == null || file.isEmpty()) {
@@ -153,7 +153,7 @@ public class ProductService {
         previousPro.setWeight(editProduct.getWeight());
         previousPro.setBarcode(editProduct.getBarcode());
         previousPro.setDiscount(editProduct.getDiscount());
-        previousPro.setBranchId(editProduct.getBranchId());
+        previousPro.setBrandId(editProduct.getBrandId());
         previousPro.setProductStatus(editProduct.getProductStatus());  // for detail product in or out stock
         // previousPro.setUnitTypeId(editProduct.getUnitTypeId());
         previousPro.setCatId(editProduct.getCatId());
@@ -179,6 +179,11 @@ public class ProductService {
 
     public List<Product> getProductByCatId(int catId){
         return repo.getProductByCatId(catId);
+    }
+
+
+    public List<Product> getListProductByBrandId(int brandId) {
+        return repo.getListProductByBrandId(brandId);
     }
 
 }
