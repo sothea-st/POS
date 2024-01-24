@@ -3,13 +3,14 @@ package com.example.pos.service;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.Import;
 import com.example.pos.entity.ImportDetail;
+import com.example.pos.entity.Product;
 import com.example.pos.repository.ImportDetailRepository;
 import com.example.pos.repository.ImportRepository;
+import com.example.pos.repository.ProductRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ImportService {
@@ -18,6 +19,9 @@ public class ImportService {
 
     @Autowired
     private ImportDetailRepository repoDetail;
+
+    @Autowired
+    private ProductRepository repoProduct;
 
     @Autowired
     private HttpSession session;
@@ -75,6 +79,13 @@ public class ImportService {
             details.setExpireDate(value.getExpireDate());
             details.setCreateBy((Integer)createBy);
             repoDetail.save(details);
+
+            Optional<Product> p = repoProduct.findById(productId);
+            Product pp = p.get();
+            pp.setProductStatus("In Stock");
+            pp.setCost(value.getCost());
+            repoProduct.save(pp);
+            
         }
     }
 }

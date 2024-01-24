@@ -27,5 +27,11 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     @Query(nativeQuery = true , value = "select * from pos_product where status = true and is_deleted = false and brand_id = ?")
     List<Product> getListProductByBrandId(int brandId);
+
+    @Query(nativeQuery = true , value = "select * from pos_product where status = true and is_deleted = false and pro_name_en ilike  %?%")
+    List<Product> searchProductByName(String proNameEn);
+
+    @Query(nativeQuery = true , value = "select * from pos_product where status = true and is_deleted = false and barcode like  %?%")
+    List<Product> searchProductByBarcode(String barcode);
     
 }

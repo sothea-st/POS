@@ -33,6 +33,9 @@ public class CloseShift {
      @Column(name = "user_id")
      private int userId;
 
+     @Column(name = "user_code",length = 50)
+     private String userCode;
+
      @Column(name = "close_time",length = 50)
      private String closeTime;
 

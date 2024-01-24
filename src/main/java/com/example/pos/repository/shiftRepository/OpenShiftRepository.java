@@ -19,8 +19,8 @@ public interface OpenShiftRepository extends JpaRepository<OpenShift,Integer> {
      @Query(nativeQuery = true , value = "select * from pos_open_shift pos where status = true and is_deleted = false and user_id = ? and open_date = ?")
      OpenShift getDataOpenShift(int userId , String date);
 
-     @Query(nativeQuery = true , value = "select * from pos_open_shift pos where status = true and is_deleted = false and user_id = ? and open_date = ?")
-     Optional<OpenShift> getNumberOpenShift(int userId , String date);
+     @Query(nativeQuery = true , value = "select * from pos_open_shift pos where status = true and is_deleted = false and user_code = ? and open_date = ?")
+     Optional<OpenShift> getNumberOpenShift(String userCode , String date);
 
      @Query(nativeQuery = true , value = "select * from pos_open_shift pos where user_code = ? and open_date  = ? order by id desc limit 1")
      OpenShift countOpenShift(String userCode, String date);

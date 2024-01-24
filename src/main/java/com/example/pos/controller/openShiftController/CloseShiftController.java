@@ -39,9 +39,8 @@ public class CloseShiftController {
     @PostMapping
     public ResponseEntity<?> closeShift(@RequestBody CloseShift c) {
         HashMap<String,Object> map = new HashMap<>();
-        var userId = session.getAttribute(JavaConstant.userCode);
-        OpenShift countOpenShift = repoOpen.countOpenShift((String) userId, JavaConstant.currentDate);
-
+    
+        OpenShift countOpenShift = repoOpen.countOpenShift(c.getUserCode(), JavaConstant.currentDate);
         // protect when user try to processing sale but user does not open shift first
         if (countOpenShift == null || countOpenShift.getNumberOpenShift() == 0) {
             map.put(JavaConstant.message, JavaConstant.closeOpenShfitFirst);

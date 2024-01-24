@@ -45,8 +45,8 @@ public class CloseShiftService {
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss a").format(Calendar.getInstance().getTime());
         String closeDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
         CloseShift data = new CloseShift();
-        data.setUserId((Integer) createBy);
         data.setCloseTime(timeStamp);
+        data.setUserCode(c.getUserCode());
         data.setCloseDate(closeDate);
         data.setExpress(c.getExpress());
         data.setCashKhr(c.getCashKhr());
@@ -54,10 +54,10 @@ public class CloseShiftService {
         data.setKhqrMnk(c.getKhqrMnk());
         data.setKhqrAba(c.getKhqrAba());
         data.setCreditCard(c.getCreditCard());
-        data.setCreateBy((Integer) createBy);
+        data.setCreateBy(c.getUserId());
         repo.save(data);
 
-        Optional<OpenShift> open = repoOpen.getNumberOpenShift((Integer)createBy,closeDate);
+        Optional<OpenShift> open = repoOpen.getNumberOpenShift(c.getUserCode(),closeDate);
         OpenShift obj = open.get();
         obj.setNumberOpenShift(0);
         repoOpen.save(obj);
