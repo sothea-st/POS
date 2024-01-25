@@ -41,10 +41,10 @@ public class CashierReportController {
         // OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userCode, JavaConstant.currenDate);   
         CloseShift closeShift = repoClose.getCloseShift(userCode, JavaConstant.currentDate);
         // protect when user try to processing sale but user does not open shift first
-        if (closeShift == null) {
-            map.put(JavaConstant.message, JavaConstant.msgCloseShift);
-            return JavaResponse.error(map);
-        }
+        // if (closeShift == null) {
+        //     map.put(JavaConstant.message, JavaConstant.msgCloseShift);
+        //     return JavaResponse.error(map);
+        // }
 
         return JavaResponse.success(service.cashierReport(userCode,userId));
     }
