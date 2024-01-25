@@ -59,10 +59,10 @@ public class CashierReportService {
 
    
 
-     public HashMap<String, Object> cashierReport() {
+     public HashMap<String, Object> cashierReport(String userCode , int userId) {
        
-        var userId = session.getAttribute(JavaConstant.userId);
-        int id = (Integer)userId;
+        // var userId = session.getAttribute(JavaConstant.userId);
+        int id = userId;
         // get company info
         Company company = repoCompany.getInfoCompany();
         map.put("companyName", company.getCompanyName());
@@ -76,13 +76,13 @@ public class CashierReportService {
         map.put("userName", employee.getNameEn());
 
         // get posId, openDate , openCash from openShift
-        OpenShift openShift = reposOpenShift.getDataOpenShift(id, JavaConstant.currentDate);
+        OpenShift openShift = reposOpenShift.getDataOpenShift(userCode, JavaConstant.currentDate);
         map.put("posId", openShift.getPosId());
         map.put("openDate", openShift.getOpenTime());
         map.put("openCash", openShift.getReserveUsd());
 
         // get closeCash, closeDate from CloseShift
-        CloseShift closeShift = closeShiftRepo.getCloseShift(id, JavaConstant.currentDate);
+        CloseShift closeShift = closeShiftRepo.getCloseShift(userCode, JavaConstant.currentDate);
         map.put("closeCash", closeShift.getCashUsd());
         map.put("closeDate", closeShift.getCloseTime());
 

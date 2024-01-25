@@ -4,7 +4,9 @@ import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pos.components.JavaResponse;
 import com.example.pos.constant.JavaConstant;
@@ -31,18 +33,19 @@ public class CashierReportController {
     @Autowired
     private CloseShiftRepository repoClose;
 
-    @GetMapping()
-    public ResponseEntity<?> getCashierReport(){
+    @GetMapping
+    public ResponseEntity<?> getCashierReport(@RequestParam("userCode") String userCode,@RequestParam("userId") int userId){
+     
         HashMap<String,Object> map = new HashMap<>();
-        var userId = session.getAttribute(JavaConstant.userId);
-        // OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userId, JavaConstant.currenDate);
-        CloseShift closeShift = repoClose.getCloseShift((Integer) userId, JavaConstant.currentDate);
+      
+        // OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userCode, JavaConstant.currenDate);   
+        CloseShift closeShift = repoClose.getCloseShift(userCode, JavaConstant.currentDate);
         // protect when user try to processing sale but user does not open shift first
         if (closeShift == null) {
             map.put(JavaConstant.message, JavaConstant.msgCloseShift);
             return JavaResponse.error(map);
         }
 
-        return JavaResponse.success(service.cashierReport());
+        return JavaResponse.success(service.cashierReport(userCode,userId));
     }
 }
