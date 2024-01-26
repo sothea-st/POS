@@ -36,7 +36,7 @@ public class SaleController {
         var userCode = session.getAttribute(JavaConstant.userCode);
      
         OpenShift countOpenShift = repoOpen.countOpenShift(s.getUserCode(), JavaConstant.currentDate);
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         // protect when user try to processing sale but user does not open shift first
         if (countOpenShift == null || countOpenShift.getNumberOpenShift() == 0) {
             map.put(JavaConstant.message, JavaConstant.openShift);

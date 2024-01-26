@@ -25,27 +25,18 @@ public class CashierReportController {
     private CashierReportService service;
 
     @Autowired
-    private HttpSession session;
-
-    @Autowired
-    private OpenShiftRepository repoOpen;
-
-    @Autowired
     private CloseShiftRepository repoClose;
 
     @GetMapping
-    public ResponseEntity<?> getCashierReport(@RequestParam("userCode") String userCode,@RequestParam("userId") int userId){
-     
+    public ResponseEntity<?> getCashierReport(@RequestParam("userCode") String userCode,@RequestParam("userId") int userId,@RequestParam("posId") String posId){
         HashMap<String,Object> map = new HashMap<>();
-      
         // OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userCode, JavaConstant.currenDate);   
         CloseShift closeShift = repoClose.getCloseShift(userCode, JavaConstant.currentDate);
         // protect when user try to processing sale but user does not open shift first
-        // if (closeShift == null) {
-        //     map.put(JavaConstant.message, JavaConstant.msgCloseShift);
-        //     return JavaResponse.error(map);
-        // }
-
-        return JavaResponse.success(service.cashierReport(userCode,userId));
+        if (closeShift == null) {
+            map.put(JavaConstant.message, JavaConstant.msgCloseShift);
+            return JavaResponse.error(map);
+        }
+        return JavaResponse.success(service.cashierReport(userCode,userId,posId));
     }
 }

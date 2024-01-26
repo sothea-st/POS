@@ -15,7 +15,7 @@ import com.example.pos.repository.shiftRepository.OpenShiftRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.Optional;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.*;
+
 @RequestMapping("/api/auth")
 @RestController
 @Validated
@@ -95,7 +96,7 @@ public class AuthenticationController {
         LoginResponse loginResponse = new LoginResponse().setToken(jwtToken)
                 .setExpiresIn(jwtService.getExpirationTime());
 
-      int countPosId = repoOpen.countPosId(JavaConstant.currentDate);
+        int countPosId = repoOpen.countPosId(JavaConstant.currentDate);
         countPosId++;
         String posId = "";
         if (countPosId < 10) {

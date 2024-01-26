@@ -1,7 +1,10 @@
 package com.example.pos.controller.openShiftController;
 
+import org.aspectj.apache.bcel.classfile.Module.Open;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,4 +25,13 @@ public class OpenShiftController {
           OpenShift data = service.openShift(o);
           return JavaResponse.success(data);
      }
+
+
+     @GetMapping("/{userCode}")
+     public ResponseEntity<?> getOpenShift(@PathVariable("userCode") String userCode) {
+          OpenShift data = service.getOpenShift(userCode);
+          return JavaResponse.success(data);
+     }
+
+
 }

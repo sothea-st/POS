@@ -178,25 +178,25 @@ public class SaleService {
     }
 
     String paymentNo(int count) {
-        String paymentNo = "";
+        String paymentNo = "IN-";
         if (count < 10) {
-            paymentNo = "00000000" + count;
+            paymentNo += "00000000" + count;
         } else if (count < 100) {
-            paymentNo = "0000000" + count;
+            paymentNo += "0000000" + count;
         } else if (count < 1000) {
-            paymentNo = "000000" + count;
+            paymentNo += "000000" + count;
         } else if (count < 10000) {
-            paymentNo = "00000" + count;
+            paymentNo += "00000" + count;
         } else if (count < 100000) {
-            paymentNo = "0000" + count;
+            paymentNo += "0000" + count;
         } else if (count < 1000000) {
-            paymentNo = "000" + count;
+            paymentNo += "000" + count;
         } else if (count < 10000000) {
-            paymentNo = "00" + count;
+            paymentNo += "00" + count;
         } else if (count < 100000000) {
-            paymentNo = "0" + count;
+            paymentNo += "0" + count;
         } else if (count < 1000000000) {
-            paymentNo = "" + count;
+            paymentNo += "" + count;
         }
         return paymentNo;
     }

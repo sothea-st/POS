@@ -59,7 +59,7 @@ public class CashierReportService {
 
    
 
-     public HashMap<String, Object> cashierReport(String userCode , int userId) {
+     public HashMap<String, Object> cashierReport(String userCode , int userId,String posId) {
        
         // var userId = session.getAttribute(JavaConstant.userId);
         int id = userId;
@@ -76,7 +76,7 @@ public class CashierReportService {
         map.put("userName", employee.getNameEn());
 
         // get posId, openDate , openCash from openShift
-        OpenShift openShift = reposOpenShift.getDataOpenShift(userCode, JavaConstant.currentDate);
+        OpenShift openShift = reposOpenShift.getDataOpenShift(userCode, JavaConstant.currentDate,posId);
         map.put("posId", openShift.getPosId());
         map.put("openDate", openShift.getOpenTime());
         map.put("openCash", openShift.getReserveUsd());
