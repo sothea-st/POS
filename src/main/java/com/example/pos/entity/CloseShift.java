@@ -30,8 +30,8 @@ public class CloseShift {
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private int id;
 
-     // @Column(name = "user_id")
-     // private int userId;
+     @Column(name = "user_id")
+     private int userId;
 
      @Column(name = "user_code",length = 50)
      private String userCode;
