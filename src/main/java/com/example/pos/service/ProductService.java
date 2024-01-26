@@ -177,8 +177,21 @@ public class ProductService {
         return fileDB.get().getData();
     }
 
-    public List<Product> getProductByCatId(int catId){
-        return repo.getProductByCatId(catId);
+    public List<Product> getProductByCatId(int catId,int limit){
+        List<Product> listData = repo.getProductByCatId(catId,limit);
+        if( limit == 3 ) return listData;
+       
+        List<Product> listTmp = new ArrayList<>();
+        for( int i = 0 ; i < listData.size() ; i++ ) { 
+            if( i >= limit-3  ) {
+                listTmp.add(listData.get(i));
+            }
+        }
+        return listTmp;
+    }
+
+    public int count(int catId) {
+        return repo.countProduct(catId);
     }
 
 

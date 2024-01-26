@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.*;
 import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 
@@ -38,10 +37,11 @@ public class ProductController {
         return service.getImage(imageName);
     }
 
-    @GetMapping("/getProductByCatId/{catId}")
-    public ResponseEntity<?> getProductByCatId(@PathVariable("catId") int catId) {
-        List<Product> data = service.getProductByCatId(catId);
-        return JavaResponse.success(data);
+    @GetMapping("/getProductByCatId")
+    public ResponseEntity<?> getProductByCatId(@RequestParam("catId") int catId ,@RequestParam("limit") int limit) {
+        List<Product> data = service.getProductByCatId(catId,limit);
+        int count = service.count(catId);
+        return  ResponseEntity.ok().body(Map.of("msg","success","data",data,"count",count));
     }
 
     @GetMapping
