@@ -127,8 +127,9 @@ public class CashierReportService {
         if (qtyUsdStr != null) qtyUsd = Integer.valueOf(qtyUsdStr);
 
         double amountPayUsd = 0;
-        String amountPayUsdStr = repoSale.sumAmountSaledByUsd(userId, JavaConstant.currentDate);
-        if (amountPayUsdStr != null) amountPayUsd = Double.valueOf(amountPayUsdStr);
+        String payUsd = repoSale.totalAmountABA(userId, JavaConstant.currentDate);
+        // String amountPayUsdStr = repoSale.sumAmountSaledByUsd(userId, JavaConstant.currentDate);
+        if (payUsd != null) amountPayUsd = Double.valueOf(payUsd);
 
         int qtyKhr = 0;
         String qtyKhrStr = repoSale.sumQtySaledByKhr(userId, JavaConstant.currentDate);
