@@ -87,7 +87,7 @@ public class CashierReportService {
         map.put("closeDate", closeShift.getCloseTime());
 
         // Sale summery
-        SummeryCashierReport(id);
+        SummeryCashierReport(id,posId);
         // payment summery
         paymentSummery(id);
         // discount summery
@@ -194,14 +194,14 @@ public class CashierReportService {
         map.put("summeryPayemnt", payment);
     }
 
-    public void SummeryCashierReport(int userId) {
+    public void SummeryCashierReport(int userId,String posId) {
         String paymentNoFirst = repoPay.getFirstPaymentNumber(userId,JavaConstant.currentDate);
         String paymentNoLast = repoPay.getLastPaymentNumber(userId,JavaConstant.currentDate);
         map.put("paymentNoFirst", paymentNoFirst);
         map.put("paymentNoLast", paymentNoLast);
 
         int qtyDiscount = 0;
-        String qtyDiscountStr = repoSaleDetail.totalQtyDiscount(userId,JavaConstant.currentDate);
+        String qtyDiscountStr = repoSaleDetail.totalQtyDiscount(userId,JavaConstant.currentDate,posId,JavaConstant.currentDate);
         if (qtyDiscountStr != null)
             qtyDiscount = Integer.valueOf(qtyDiscountStr);
 
