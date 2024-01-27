@@ -100,12 +100,12 @@ public class User implements UserDetails {
     @Column(name = "role_id")
     @NotNull(message = JavaMessage.required)
     @NotBlank(message = JavaMessage.required)
-    private String role;
-    public void setRole(String role){
+    private Integer role;
+    public void setRole(Integer role){
         this.role=role;
     }
 
-    public String getRole(){
+    public Integer getRole(){
         return role;
     }
 

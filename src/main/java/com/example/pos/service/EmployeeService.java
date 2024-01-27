@@ -55,7 +55,7 @@ public class EmployeeService {
         emp.setAddress(e.getAddress());
         emp.setContact(e.getContact());
         emp.setStartDate(e.getStartDate());
-        emp.setCreateBy((Integer)createdBy);
+        emp.setCreateBy(e.getCreateBy());
 
         if (file == null || file.isEmpty()) {
             emp.setImageName(JavaConstant.defaultNameImage);
@@ -91,10 +91,10 @@ public class EmployeeService {
         user.setFullName(emp.getNameEn());
         JavaConstant password = new JavaConstant();
         user.setPassword(passwordEncoder.encode(password.getDefaultPassword()));
-        user.setRole("No Role");
+        user.setRole(null);
         user.setUserCode(userCountRow);
         user.setEmpId(emp.getId());
-        user.setCreateBy((Integer)createdBy);
+        user.setCreateBy(e.getCreateBy());
         userRepo.save(user);
         return emp;
     }
@@ -118,7 +118,7 @@ public class EmployeeService {
     public Employee updateEmployee(int id,Employee e,MultipartFile file) throws IOException {
         Optional<Employee> op = repo.findById(id);
         Employee emp = op.get();
-        var createdBy = session.getAttribute(JavaConstant.userId);
+        // var createdBy = session.getAttribute(JavaConstant.userId);
         if(!e.getContact().equals(emp.getContact())) {
             boolean isExistContact = repo.existsByContact(e.getContact());
             JavaValidation.phoneAlreadyExist(isExistContact);
@@ -131,7 +131,7 @@ public class EmployeeService {
         emp.setAddress(e.getAddress());
         emp.setContact(e.getContact());
         emp.setStartDate(e.getStartDate());
-        emp.setCreateBy((Integer)createdBy);
+        emp.setCreateBy(e.getCreateBy());
 
         if (file == null) {
             emp.setImageName("default.jpg");

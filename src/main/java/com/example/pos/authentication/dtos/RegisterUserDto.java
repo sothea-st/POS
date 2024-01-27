@@ -5,7 +5,7 @@ public class RegisterUserDto {
     private String password;
     private String fullName;
 
-    private String role;
+    private Integer role;
 //    private String phone;
 
 //    public String getPhone(){
@@ -17,11 +17,11 @@ public class RegisterUserDto {
 //    }
 
 
-    public String getRole() {
+    public Integer getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Integer role) {
         this.role = role;
     }
 

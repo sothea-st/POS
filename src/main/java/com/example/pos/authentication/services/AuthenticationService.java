@@ -40,10 +40,10 @@ public class AuthenticationService {
 	public User signup(RegisterUserDto input) {
 
 		int userCount = userRepository.userCount();
-		System.out.println("user count = " + userCount);
+	 
 		String userIdStr = "";
 		userCount++;
-		System.out.println("user count after= " + userCount);
+	 
 		if( userCount < 10 ) {
 			userIdStr="000"+userCount;
 		} else if ( userCount < 100 ) {
@@ -53,7 +53,6 @@ public class AuthenticationService {
 		} else {
 			userIdStr="0"+userCount;
 		}
-
 
 		var user = new User()
 				.setFullName(input.getFullName())
