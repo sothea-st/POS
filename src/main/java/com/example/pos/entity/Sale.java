@@ -30,6 +30,9 @@ public class Sale {
     @Column(name = "user_id")
     private int userId;
 
+    @Column(name = "pos_id")
+    private String posId;
+
     @Column(name = "user_code")
     private String userCode;
 

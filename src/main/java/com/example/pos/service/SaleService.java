@@ -5,6 +5,7 @@ import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.Company;
 import com.example.pos.entity.Import;
 import com.example.pos.entity.ImportDetail;
+import com.example.pos.entity.OpenShift;
 import com.example.pos.entity.Sale;
 import com.example.pos.entity.SaleDetail;
 import com.example.pos.entity.payment.Payment;
@@ -16,6 +17,8 @@ import com.example.pos.repository.SaleRepository;
 import com.example.pos.repository.companyRepository.CompanyRepository;
 import com.example.pos.repository.paymentRepository.PaymentRepository;
 import com.example.pos.repository.peopleRepository.CustomerRepository;
+import com.example.pos.repository.shiftRepository.OpenShiftRepository;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +51,9 @@ public class SaleService {
     @Autowired
     private CustomerRepository cusRepo;
 
+    @Autowired
+    private OpenShiftRepository repoOpen;
+
     // this function will return invoice
     public HashMap<String, Object> saleProduct(Sale s) {
         var createBy = session.getAttribute(JavaConstant.userId);
@@ -55,14 +61,16 @@ public class SaleService {
         int userId = s.getUserId();
         // System.out.println("user id = " + userId);
         HashMap<String, Object> map = new HashMap<>();
-
+        String posId = repoOpen.getPosId(s.getUserCode(),JavaConstant.currentDate);
         Sale sale = new Sale();
         sale.setUserId(userId);
+        sale.setPosId(posId);
         sale.setUserCode(s.getUserCode());
         sale.setSaleDate(JavaConstant.currentDate);
         sale.setDiscount(s.getDiscount());
         sale.setSubTotal(s.getSubTotal());
         sale.setDeliveryFee(s.getDeliveryFee());
+        // sale.setTotal(s.getTotal());
         sale.setTotal(s.getTotal());
         sale.setCreateBy(userId);
 

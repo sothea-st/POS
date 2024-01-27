@@ -179,11 +179,11 @@ public class ProductService {
 
     public List<Product> getProductByCatId(int catId,int limit){
         List<Product> listData = repo.getProductByCatId(catId,limit);
-        if( limit == 3 ) return listData;
+        if( limit == 10 ) return listData;
        
         List<Product> listTmp = new ArrayList<>();
         for( int i = 0 ; i < listData.size() ; i++ ) { 
-            if( i >= limit-3  ) {
+            if( i >= limit-10  ) {
                 listTmp.add(listData.get(i));
             }
         }
