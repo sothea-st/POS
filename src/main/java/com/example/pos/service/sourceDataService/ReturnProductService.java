@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.ImportDetail;
+import com.example.pos.entity.Product;
 import com.example.pos.entity.payment.Payment;
 import com.example.pos.entity.sourceData.ReturnDetails;
 import com.example.pos.entity.sourceData.ReturnProduct;
 import com.example.pos.repository.ImportDetailRepository;
 import com.example.pos.repository.paymentRepository.PaymentRepository;
+import com.example.pos.repository.productProjection.ProductProjection;
 import com.example.pos.repository.sourceDataRepository.ReturnDetailsRepository;
 import com.example.pos.repository.sourceDataRepository.ReturnProductRepository;
 import java.util.*;
@@ -33,12 +35,12 @@ public class ReturnProductService {
     private ImportDetailRepository repoImport;
 
     public void returnProduct(ReturnProduct re) {
-        var createBy = session.getAttribute(JavaConstant.userId);
-        int id = (Integer) createBy;
+        // var createBy = session.getAttribute(JavaConstant.userId);
+        // int id = (Integer) createBy;
         String time = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a").format(Calendar.getInstance().getTime());
 
         ReturnProduct r = new ReturnProduct();
-        r.setCreateBy(id);
+        r.setCreateBy(re.getCreateBy());
         r.setPaymentNo(re.getPaymentNo());
         r.setReturnTime(time);
         r.setReturnDate(JavaConstant.currentDate);
@@ -72,5 +74,10 @@ public class ReturnProductService {
             impDetail.setQtyOld(restockQty);
             repoImport.save(impDetail);
         }
+    }
+
+    public ProductProjection searchProdcutByBarcode(String barcode){
+        ProductProjection data = repo.getProductByBarcode(barcode);
+        return data;
     }
 }

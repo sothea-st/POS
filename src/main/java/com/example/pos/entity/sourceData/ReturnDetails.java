@@ -37,5 +37,8 @@ public class ReturnDetails {
     @Column(name="return_amount",scale = 2,precision = 10)
     private BigDecimal amount;
 
+    @Column(name = "return_discount")
+    private int discount=0;
+
    
 }

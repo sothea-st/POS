@@ -31,8 +31,9 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
                         "pct.name as customer_type,pp.sale_id\r\n" + //
                         "from pos_payment pp inner join pos_sale ps on ps.id = pp.sale_id \r\n" + //
                         "inner join pos_customer_type pct on pct.id = pp.customer_type_id\r\n" + //
+                        "where ps.sale_date =?\r\n" + //
                         "order by pp.id desc limit 1")
-        PaymentProjection getPaymentDataWithoutPaymentNo();
+        PaymentProjection getPaymentDataWithoutPaymentNo(String date);
 
  
 

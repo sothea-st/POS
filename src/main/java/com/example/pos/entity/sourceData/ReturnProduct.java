@@ -46,7 +46,8 @@ public class ReturnProduct {
     private int reasonId;
 
     @Column(name = "return_amount",precision = 10,scale = 2)
-    private BigDecimal returnAmount = BigDecimal.ZERO;
+    private BigDecimal returnAmount;
+
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ReturnDetails> dataDetails;

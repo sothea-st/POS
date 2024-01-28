@@ -28,18 +28,18 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Integer id;
 
-    private String token;
-    private String expiredToken;
-    private String posId;
+    // private String token;
+    // private String expiredToken;
+    // private String posId;
 
 
-    public void setPosId(String posId){
-        this.posId = posId;
-    }
+    // public void setPosId(String posId){
+    //     this.posId = posId;
+    // }
 
-    public String getPosId(){
-        return posId;
-    }
+    // public String getPosId(){
+    //     return posId;
+    // }
 
     private Integer empId;
 
@@ -51,33 +51,33 @@ public class User implements UserDetails {
         this.empId = empId;
     }
 
-    public String getExpiredToken() {
-        return expiredToken;
-    }
+    // public String getExpiredToken() {
+    //     return expiredToken;
+    // }
 
-    public void setExpiredToken(String expired) {
-        this.expiredToken = expired;
-    }
+    // public void setExpiredToken(String expired) {
+    //     this.expiredToken = expired;
+    // }
 
     @Column(nullable = false)
     private String fullName;
 
-    public String getToken() {
-        return token;
-    }
+    // public String getToken() {
+    //     return token;
+    // }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+    // public void setToken(String token) {
+    //     this.token = token;
+    // }
 
     @Column(unique = true, length = 100, nullable = false)
 //    @Email(message = JavaMessage.invalidEmail)
     @NotBlank(message = JavaMessage.required)
     private String userCode;
 
-    @Column(unique = true, length = 100)
-    @Email(message = JavaMessage.invalidEmail)
-    private String email;
+    // @Column(unique = true, length = 100)
+    // @Email(message = JavaMessage.invalidEmail)
+    // private String email;
  
     @Column(nullable = false)
     @NotBlank(message = JavaMessage.required)
@@ -98,8 +98,6 @@ public class User implements UserDetails {
 
 
     @Column(name = "role_id")
-    @NotNull(message = JavaMessage.required)
-    @NotBlank(message = JavaMessage.required)
     private Integer role;
     public void setRole(Integer role){
         this.role=role;
@@ -206,7 +204,7 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", fullName='" + fullName + '\'' +
+                // ", fullName='" + fullName + '\'' +
                 ", userCode='" + userCode + '\'' +
                 ", password='" + password + '\'' +
                 // ", createdAt=" + createdAt +

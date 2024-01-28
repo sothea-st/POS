@@ -39,11 +39,10 @@ public class ReprintService {
         map.put("vattin", c.getVattin());
         PaymentProjection paymentData=null;
         if( paymentNo.isEmpty() ) {
-            paymentData = repo.getPaymentDataWithoutPaymentNo();
+            paymentData = repo.getPaymentDataWithoutPaymentNo(JavaConstant.currentDate);
         } else {
             paymentData = repo.getPaymentDataWithPaymentNo(paymentNo);
         }
-   
         map.put("total", paymentData.getTotal());
         map.put("receiveKhr", paymentData.getReceive_khr());
         map.put("receiveUsd", paymentData.getReceive_usd());

@@ -204,12 +204,13 @@ public class CashierReportService {
             qtyDiscount = Integer.valueOf(qtyDiscountStr);
 
         double amountDiscount = 0.00;
-        List<CalculateDiscountProjection> listDiscountQty = repoSaleDetail.totalAmountDiscount(userId,JavaConstant.currentDate,posId,JavaConstant.currentDate);
-        for ( int i = 0 ; i < listDiscountQty.size() ; i++ ) {
-            var data = listDiscountQty.get(i);
-            double sum = (data.getQty()*data.getPrice().doubleValue())/100;
-            amountDiscount += sum;
-        }
+        String listDiscountQty = repoSaleDetail.totalAmountDiscount(userId,JavaConstant.currentDate,posId,JavaConstant.currentDate);
+        if (listDiscountQty != null) amountDiscount = Double.valueOf(listDiscountQty);
+        // for ( int i = 0 ; i < listDiscountQty.size() ; i++ ) {
+        //     var data = listDiscountQty.get(i);
+        //     double sum = (data.getQty()*data.getPrice().doubleValue())/100;
+        //     amountDiscount += sum;
+        // }
     
 
         int qtySale = 0;

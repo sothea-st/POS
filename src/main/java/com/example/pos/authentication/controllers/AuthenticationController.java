@@ -10,6 +10,8 @@ import com.example.pos.components.JavaResponse;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.constant.JavaValidation;
 import com.example.pos.entity.OpenShift;
+import com.example.pos.repository.EmployeeRepository;
+import com.example.pos.repository.roleAndPermissionRepository.RoleRepository;
 import com.example.pos.repository.shiftRepository.OpenShiftRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -17,6 +19,7 @@ import jakarta.validation.Valid;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +40,12 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     @Autowired
     private OpenShiftRepository repoOpen;
+
+    @Autowired
+    private EmployeeRepository repoEmp;
+
+    @Autowired
+    private RoleRepository repoRole;
 
     public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
@@ -90,11 +99,13 @@ public class AuthenticationController {
     private HttpSession httpSession;
 
     @PostMapping("/login")
-    public ResponseEntity<User> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser);
-        LoginResponse loginResponse = new LoginResponse().setToken(jwtToken)
-                .setExpiresIn(jwtService.getExpirationTime());
+        LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
+        // authenticatedUser.setToken(jwtToken);
+        // authenticatedUser.setPosId(posId);
+        // authenticatedUser.setExpiredToken(String.valueOf(loginResponse.getExpiresIn()));
 
         int countPosId = repoOpen.countPosId(JavaConstant.currentDate);
         countPosId++;
@@ -105,13 +116,29 @@ public class AuthenticationController {
             posId = "" + countPosId;
         }
 
+        // user name 
+        String userName=null;
+        if( authenticatedUser.getEmpId() != null ) {
+            userName = repoEmp.findById(authenticatedUser.getEmpId()).get().getNameEn();
+        }
+
+        String roleName = "This account not assign role yet";
+        if( authenticatedUser.getRole() != null ) {
+            roleName = repoRole.findById(authenticatedUser.getRole()).get().getRoleName();
+        }
+    
         httpSession.setAttribute(JavaConstant.userId, authenticatedUser.getId());
         httpSession.setAttribute(JavaConstant.userCode, authenticatedUser.getUserCode());
-
-        authenticatedUser.setToken(jwtToken);
-        authenticatedUser.setPosId(posId);
-        authenticatedUser.setExpiredToken(String.valueOf(loginResponse.getExpiresIn()));
-        return ResponseEntity.ok(authenticatedUser);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", authenticatedUser.getId());
+        map.put("empId", authenticatedUser.getEmpId());
+        map.put("userCode", authenticatedUser.getUserCode());
+        map.put("roleId", authenticatedUser.getRole());
+        map.put("roleName", roleName);
+        map.put("token", jwtToken);
+        map.put("posId", posId);
+        map.put("userName", userName);
+        return ResponseEntity.ok().body(map);
     }
 
 }
