@@ -27,9 +27,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query(nativeQuery = true,value = "select * from pos_user where status = true and is_deleted=false and id=?")
     User getUserById(int id);
-
-
-
  
 
 }

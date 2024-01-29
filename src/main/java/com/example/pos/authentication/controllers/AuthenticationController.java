@@ -100,6 +100,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody LoginUserDto loginUserDto) {
+      
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser);
         LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
@@ -123,6 +124,7 @@ public class AuthenticationController {
         }
 
         String roleName = "This account not assign role yet";
+        
         if( authenticatedUser.getRole() != null ) {
             roleName = repoRole.findById(authenticatedUser.getRole()).get().getRoleName();
         }

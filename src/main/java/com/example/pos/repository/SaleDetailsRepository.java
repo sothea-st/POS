@@ -19,9 +19,10 @@ public interface SaleDetailsRepository extends JpaRepository<SaleDetail, Integer
                         " where ps.user_id = ? and ps.sale_date = ? and psd.sale_id = ?")
         List<SaleDetailProjection> getDataDetail(int userId , String date , int saleId);
 
-        @Query(nativeQuery = true, value = "select sum((psd.qty*psd.price)/100) as dis from pos_sale ps \r\n" + //
-                        "inner join pos_sale_details psd on psd.sale_id = ps.id  \r\n" + //
+        @Query(nativeQuery = true, value = "select sum( ( ( pp.price * psd.discount  )/100 )*psd.qty  )   from pos_sale ps\r\n" + //
+                        "inner join pos_sale_details psd on psd.sale_id = ps.id \r\n" + //
                         "inner join pos_open_shift pos on pos.pos_id = ps.pos_id \r\n" + //
+                        "inner join pos_product pp on pp.id = psd.pro_id \r\n" + //
                         "where ps.user_id = ? and ps.sale_date = ? and psd.discount = ?\r\n" + //
                         "and  pos.pos_id = ? and pos.open_date = ?")
         String totalAmount(int userId, String date, int discount,String posId , String openDate);
@@ -56,12 +57,12 @@ public interface SaleDetailsRepository extends JpaRepository<SaleDetail, Integer
                         "    pos.open_date = ?")
         String totalQtyDiscount(int userId, String date,String posId,String opneDate);
 
-        @Query(nativeQuery = true, value = "select sum(((psd.discount * psd.price) /100)*psd.qty)  as disAmount from pos_sale ps \r\n" + //
-                        " inner join pos_sale_details psd  on psd.sale_id = ps.id \r\n" + //
-                        " inner join pos_open_shift pos on pos.pos_id = ps.pos_id\r\n" + //
-                        " where ps.user_id  = ? and \r\n" + //
-                        " ps.sale_date = ? and  psd.discount > 0 and \r\n" + //
-                        "pos.pos_id = ? and pos.open_date = ?")
+        @Query(nativeQuery = true, value = "select sum(((psd.discount * pp.price) /100)*psd.qty)  as disAmount from pos_sale ps\r\n" + //
+                        "   inner join pos_sale_details psd  on psd.sale_id = ps.id\r\n" + //
+                        "   inner join pos_open_shift pos on pos.pos_id = ps.pos_id\r\n" + //
+                        "   inner join pos_product pp on pp.id = psd.pro_id \r\n" + //
+                        "   where ps.user_id  = ? and ps.sale_date = ? and \r\n" + //
+                        "   psd.discount > 0 and  pos.pos_id = ? and pos.open_date = ?")
         String totalAmountDiscount(int userID, String date,String posId,String openDate);
 
         @Query(nativeQuery = true, value = "select sum(prd.retur_qty)  from pos_sale ps\r\n" + //

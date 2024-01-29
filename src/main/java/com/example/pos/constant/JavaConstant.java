@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import java.math.*;
 public class JavaConstant {
     public static String userId = "idUser";
+    public static String admin = "Admin";
     public static String statusCode = "statusCode";
     public static long status = 405;
     public static String userCode = "userCode";

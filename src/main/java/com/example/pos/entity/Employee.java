@@ -22,6 +22,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @NotBlank(message = JavaMessage.required)
     @NotNull(message = JavaMessage.required)
     @Column(name = "name_kh")
