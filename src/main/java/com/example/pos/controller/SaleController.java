@@ -32,7 +32,7 @@ public class SaleController {
     private OpenShiftRepository repoOpen;
 
     @PostMapping 
-    public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s) {
+    public ResponseEntity<?> saleProduct(@Valid @RequestBody Sale s) throws Exception {
         var userCode = session.getAttribute(JavaConstant.userCode);
      
         OpenShift countOpenShift = repoOpen.countOpenShift(s.getUserCode(), JavaConstant.currentDate);

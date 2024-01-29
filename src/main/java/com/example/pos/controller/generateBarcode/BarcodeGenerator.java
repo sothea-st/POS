@@ -9,6 +9,12 @@ import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
 import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
+
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+
+import io.jsonwebtoken.io.IOException;
+
 public class BarcodeGenerator {
     public BufferedImage generateEAN13BarcodeImage(final String barcodeText) throws Exception {
         final Barcode barcode = BarcodeFactory.createEAN13(barcodeText);
@@ -34,15 +40,16 @@ public class BarcodeGenerator {
     public BufferedImage generateCode128BarCodeImage(final String barcodeText) throws Exception {
         final Barcode barcode = BarcodeFactory.createCode128(barcodeText);
         barcode.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-
         return BarcodeImageHandler.getImage(barcode);
     }
 
-    public static BufferedImage generateUSPSBarcodeImage(final String barcodeText) throws Exception {
+    public BufferedImage generateUSPSBarcodeImage(final String barcodeText) throws Exception {
         final Barcode barcode = BarcodeFactory.createUSPS(barcodeText);
-        barcode.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 22));
+        barcode.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
         return BarcodeImageHandler.getImage(barcode);
     }
+
+
 
     public BufferedImage generateSCC14ShippingCodeBarcodeImage(final String barcodeText) throws Exception {
         final Barcode barcode = BarcodeFactory.createSCC14ShippingCode(barcodeText);
@@ -70,5 +77,11 @@ public class BarcodeGenerator {
         barcode.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 
         return BarcodeImageHandler.getImage(barcode);
+    }
+
+    public static byte[] bufferedImageToByteArray(BufferedImage image, String format) throws IOException, java.io.IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, format, baos);
+        return baos.toByteArray();
     }
 }

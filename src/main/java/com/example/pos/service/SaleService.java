@@ -4,6 +4,7 @@ import com.example.pos.authentication.repositories.UserRepository;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.controller.generateBarcode.BarcodeGenerator;
 import com.example.pos.entity.Company;
+import com.example.pos.entity.FileStore;
 import com.example.pos.entity.Import;
 import com.example.pos.entity.ImportDetail;
 import com.example.pos.entity.OpenShift;
@@ -12,6 +13,7 @@ import com.example.pos.entity.SaleDetail;
 import com.example.pos.entity.payment.Payment;
 import com.example.pos.entity.people.Customer;
 import com.example.pos.entity.projection.SaleDetailProjection;
+import com.example.pos.repository.FileStoreRepository;
 import com.example.pos.repository.ImportDetailRepository;
 import com.example.pos.repository.SaleDetailsRepository;
 import com.example.pos.repository.SaleRepository;
@@ -22,7 +24,10 @@ import com.example.pos.repository.shiftRepository.OpenShiftRepository;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ssl.SslProperties.Bundles.Watch.File;
 import org.springframework.stereotype.Service;
+
+import java.awt.image.BufferedImage;
 import java.text.*;
 import java.util.*;
 
@@ -58,14 +63,17 @@ public class SaleService {
     @Autowired
     BarcodeGenerator barcodeGenerator;
 
+    @Autowired
+    private FileStoreRepository fileStore;
+
     // this function will return invoice
-    public HashMap<String, Object> saleProduct(Sale s) {
+    public HashMap<String, Object> saleProduct(Sale s) throws Exception {
         var createBy = session.getAttribute(JavaConstant.userId);
-  
+
         int userId = s.getUserId();
         // System.out.println("user id = " + userId);
         HashMap<String, Object> map = new HashMap<>();
-        String posId = repoOpen.getPosId(s.getUserCode(),JavaConstant.currentDate);
+        String posId = repoOpen.getPosId(s.getUserCode(), JavaConstant.currentDate);
         Sale sale = new Sale();
         sale.setUserId(userId);
         sale.setPosId(posId);
@@ -140,7 +148,7 @@ public class SaleService {
         map.put("receiveKhr", p.getReceiveKhr());
         map.put("changeUSd", p.getChangeUsd());
         map.put("changeKhr", p.getChangeKhr());
-        List<SaleDetailProjection> listProjection = repoDetail.getDataDetail(userId,JavaConstant.currentDate,saleId);
+        List<SaleDetailProjection> listProjection = repoDetail.getDataDetail(userId, JavaConstant.currentDate, saleId);
         map.put("saleDetails", listProjection);
         return map;
     }
@@ -172,7 +180,7 @@ public class SaleService {
         return cusId;
     }
 
-    public void addPayment(String paymentNo, int saleId, Payment p, int createBy) {
+    public void addPayment(String paymentNo, int saleId, Payment p, int createBy) throws Exception {
         Payment data = new Payment();
         data.setPaymentNo(paymentNo);
         data.setSaleId(saleId);
@@ -188,8 +196,11 @@ public class SaleService {
         data.setCreateBy(createBy);
         payRepo.save(data);
 
-
-        // BufferedImage barcode = barcodeGenerator.generateUSPSBarcodeImage(paymentNo).toByteArray();
+        BufferedImage barcode = barcodeGenerator.generateUSPSBarcodeImage(paymentNo);
+        byte[] bytes = BarcodeGenerator.bufferedImageToByteArray(barcode, "jpg");
+        // save information image to table pos_file
+        FileStore f = new FileStore(paymentNo, paymentNo,"image/jpeg",bytes);
+        fileStore.save(f);
     }
 
     String paymentNo(int count) {
