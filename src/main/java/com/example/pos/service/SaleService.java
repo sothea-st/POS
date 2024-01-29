@@ -2,6 +2,7 @@ package com.example.pos.service;
 
 import com.example.pos.authentication.repositories.UserRepository;
 import com.example.pos.constant.JavaConstant;
+import com.example.pos.controller.generateBarcode.BarcodeGenerator;
 import com.example.pos.entity.Company;
 import com.example.pos.entity.Import;
 import com.example.pos.entity.ImportDetail;
@@ -53,6 +54,9 @@ public class SaleService {
 
     @Autowired
     private OpenShiftRepository repoOpen;
+
+    @Autowired
+    BarcodeGenerator barcodeGenerator;
 
     // this function will return invoice
     public HashMap<String, Object> saleProduct(Sale s) {
@@ -183,6 +187,9 @@ public class SaleService {
         data.setSourceId(p.getSourceId());
         data.setCreateBy(createBy);
         payRepo.save(data);
+
+
+        // BufferedImage barcode = barcodeGenerator.generateUSPSBarcodeImage(paymentNo).toByteArray();
     }
 
     String paymentNo(int count) {
