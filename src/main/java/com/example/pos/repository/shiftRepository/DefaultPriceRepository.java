@@ -10,8 +10,8 @@ import lombok.val;
 
 @Repository
 public interface DefaultPriceRepository extends JpaRepository<DefaultPrice,Integer> {
-     @Query(nativeQuery = true , value = "select id,default_price_usd ,defautl_price_khr  from pos_default_price where status = true and is_deleted = false order by id desc")
-     List<DefaultPriceProjection> getListDefaultPrice();
+     @Query(nativeQuery = true , value = "select *  from pos_default_price where status = true and is_deleted = false order by id desc")
+     List<DefaultPrice> getListDefaultPrice();
 
 
      @Query(nativeQuery = true , value = "select id,default_price_usd ,defautl_price_khr from pos_default_price where status = true and is_deleted = false and id = ? ")

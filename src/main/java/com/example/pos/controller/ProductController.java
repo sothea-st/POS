@@ -2,6 +2,8 @@ package com.example.pos.controller;
 
 import com.example.pos.components.JavaResponse;
 import com.example.pos.entity.Product;
+import com.example.pos.entity.models.ProductModel;
+import com.example.pos.repository.productProjection.ProductProjection;
 import com.example.pos.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,7 @@ public class ProductController {
 
     @GetMapping("/getProductByCatId")
     public ResponseEntity<?> getProductByCatId(@RequestParam("catId") int catId ,@RequestParam("limit") int limit) {
-        List<Product> data = service.getProductByCatId(catId,limit);
+        List<ProductModel> data = service.getProductByCatId(catId,limit);
         int count = service.count(catId);
         return  ResponseEntity.ok().body(Map.of("msg","success","data",data,"count",count));
     }
@@ -83,7 +85,7 @@ public class ProductController {
 
     @GetMapping("/getProductByBrandId/{brandId}")
     public ResponseEntity<?> getProductByBrandId(@PathVariable("brandId") int brandId) {
-        List<Product> data = service.getListProductByBrandId(brandId);
+        List<ProductModel> data = service.getListProductByBrandId(brandId);
         return JavaResponse.success(data);
     }
 

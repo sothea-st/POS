@@ -42,7 +42,7 @@ public class DefaultPriceController {
 
      @GetMapping
      public ResponseEntity<?> getListDefaultPrice(){
-          List<DefaultPriceProjection> data = service.getListDefaultPrice();
+          List<DefaultPrice> data = service.getListDefaultPrice();
           return JavaResponse.success(data);
      }
 

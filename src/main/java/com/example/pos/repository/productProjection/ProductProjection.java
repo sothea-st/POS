@@ -12,9 +12,10 @@ public interface ProductProjection {
      String getBarcode();
      String getPro_name_kh();
      String getPro_name_en();
-     BigDecimal getCost();
-     BigDecimal getPrice();
+     double getCost();
+     double getPrice();
      String getProduct_status();
      int getDiscount();
-     // String 
+     String getCode_out_stock();
+     String getCode_expired();
 }

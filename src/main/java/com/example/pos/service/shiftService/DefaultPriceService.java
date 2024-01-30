@@ -30,7 +30,7 @@ public class DefaultPriceService {
           return dp;
      }
 
-     public List<DefaultPriceProjection> getListDefaultPrice(){
+     public List<DefaultPrice> getListDefaultPrice(){
           return repo.getListDefaultPrice();
      }
 
@@ -49,6 +49,7 @@ public class DefaultPriceService {
      }
 
      public DefaultPrice updateDefaultPrice(int id , DefaultPrice d) {
+          System.out.println("fffffffff = " + d.getDefaultPriceKhr());
           Optional<DefaultPrice> data = repo.findById(id);
           DefaultPrice dp = data.get();
           dp.setDefaultPriceKhr(d.getDefaultPriceKhr());
