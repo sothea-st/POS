@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.sourceData.DefaultPrice;
+import com.example.pos.projections.defaultPriceProjection.DefaultPriceProjection;
 import com.example.pos.repository.shiftRepository.DefaultPriceRepository;
 import com.example.pos.util.exception.customeException.JavaNotFoundByIdGiven;
 
@@ -16,26 +17,25 @@ public class DefaultPriceService {
      @Autowired
      private DefaultPriceRepository repo;
 
-     @Autowired
-     private HttpSession session;
+ 
 
      public DefaultPrice addDefaultPrice(DefaultPrice d) {
-          Object createBy =session.getAttribute(JavaConstant.userId);
+          
           DefaultPrice dp = new DefaultPrice();
           dp.setUserId(d.getUserId());
           dp.setDefaultPriceKhr(d.getDefaultPriceKhr());
           dp.setDefaultPriceUsd(d.getDefaultPriceUsd());
-          dp.setCreateBy((Integer)createBy);
+          dp.setCreateBy(d.getCreateBy());
           repo.save(dp);
           return dp;
      }
 
-     public List<DefaultPrice> getListDefaultPrice(){
+     public List<DefaultPriceProjection> getListDefaultPrice(){
           return repo.getListDefaultPrice();
      }
 
-     public DefaultPrice getDefaultPriceById(int id) {
-          DefaultPrice dp = repo.getDefaultPriceById(id);
+     public DefaultPriceProjection getDefaultPriceById(int id) {
+          DefaultPriceProjection dp = repo.getDefaultPriceById(id);
           if( dp == null ) throw new JavaNotFoundByIdGiven();
           return dp;
      }
@@ -53,7 +53,7 @@ public class DefaultPriceService {
           DefaultPrice dp = data.get();
           dp.setDefaultPriceKhr(d.getDefaultPriceKhr());
           dp.setDefaultPriceUsd(d.getDefaultPriceUsd());
-          dp.setUserId(d.getUserId());
+          dp.setCreateBy(d.getCreateBy());
           repo.save(dp);
           return dp;
      }

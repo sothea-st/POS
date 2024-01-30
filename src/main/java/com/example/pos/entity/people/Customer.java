@@ -43,6 +43,9 @@ public class Customer {
     private String coupon;
     private BigDecimal earning;
 
+    @Column(name = "customer_type_id")
+    private int customerTypeId;
+
     @Column(name = "status")
     private boolean status = true;
 

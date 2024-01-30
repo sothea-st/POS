@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class DefaultPrice {
      private int id;
 
      @Column(name = "user_id")
-     private int userId;
+     private Integer userId;
 
      @Column(name = "default_price_usd",precision = 10 , scale = 2)
      private BigDecimal defaultPriceUsd;

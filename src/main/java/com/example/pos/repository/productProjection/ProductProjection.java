@@ -16,4 +16,5 @@ public interface ProductProjection {
      BigDecimal getPrice();
      String getProduct_status();
      int getDiscount();
+     // String 
 }

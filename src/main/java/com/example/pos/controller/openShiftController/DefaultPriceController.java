@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pos.components.JavaResponse;
+import com.example.pos.constant.JavaMessage;
 import com.example.pos.entity.sourceData.DefaultPrice;
+import com.example.pos.projections.defaultPriceProjection.DefaultPriceProjection;
 import com.example.pos.service.shiftService.DefaultPriceService;
 import java.util.*;
 import jakarta.validation.Valid;
@@ -26,25 +28,33 @@ public class DefaultPriceController {
      private DefaultPriceService service;
 
      @PostMapping
-     public ResponseEntity<?> addDefaultPrice(@Valid @ModelAttribute DefaultPrice d) {
+     public ResponseEntity<?> addDefaultPrice(@Valid @RequestBody DefaultPrice d) {
+
+          HashMap<String,String> error = new HashMap<>();
+          if( d.getCreateBy() == 0 ) error.put("createBy", JavaMessage.required);
+          if( d.getDefaultPriceKhr() == null ) error.put("defaultPriceKhr", JavaMessage.required);
+          if( d.getDefaultPriceUsd() == null ) error.put("defaultPriceUsd", JavaMessage.required);
+          if( !error.isEmpty() ) return JavaResponse.error(error);
+
           DefaultPrice data = service.addDefaultPrice(d);
           return JavaResponse.success(data);
      }
 
      @GetMapping
      public ResponseEntity<?> getListDefaultPrice(){
-          List<DefaultPrice> data = service.getListDefaultPrice();
+          List<DefaultPriceProjection> data = service.getListDefaultPrice();
           return JavaResponse.success(data);
      }
 
      @GetMapping("/{id}")
      public ResponseEntity<?> getDefaltPriceById(@PathVariable("id") int id) {
-          DefaultPrice data = service.getDefaultPriceById(id);
+          DefaultPriceProjection data = service.getDefaultPriceById(id);
           return JavaResponse.success(data);
      }
      
      @PutMapping("/{id}")
      public ResponseEntity<?> updateDefaultPrice(@PathVariable("id") int id , @RequestBody DefaultPrice d) {
+         
           DefaultPrice data = service.updateDefaultPrice(id, d);
           return JavaResponse.success(data);
      }

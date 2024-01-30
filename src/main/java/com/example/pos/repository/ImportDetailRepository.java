@@ -18,6 +18,9 @@ public interface ImportDetailRepository extends JpaRepository<ImportDetail,Integ
     @Query(nativeQuery = true,value = "select * from pos_import_detail pid where status =true and is_deleted =false and  pro_id =? order by id desc limit 1")
     Optional<ImportDetail> findByImpId(int proId);
 
+    @Query(nativeQuery = true , value = "select qty_old  from pos_import_detail pid where pro_id = 14 order by id desc limit 1")
+    int getQty(int proId);
+
     
 
 }

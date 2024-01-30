@@ -6,6 +6,7 @@ import com.example.pos.constant.JavaValidation;
 import com.example.pos.entity.FileStore;
 import com.example.pos.entity.Product;
 import com.example.pos.repository.FileStoreRepository;
+import com.example.pos.repository.ImportDetailRepository;
 import com.example.pos.repository.ProductRepository;
 import com.example.pos.util.exception.customeException.JavaNotFoundByIdGiven;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +29,10 @@ public class ProductService {
     @Autowired
     private HttpSession session;
 
+
+    @Autowired
+    private ImportDetailRepository repoImp;
+
     public Product addProduct(Product p, MultipartFile file , MultipartFile flagFile) throws IOException {
       
         boolean proNameKh = repo.existsByProNameKh(p.getProNameKh());
@@ -36,7 +41,7 @@ public class ProductService {
         boolean proNameEn = repo.existsByProNameEn(p.getProNameEn());
         JavaValidation.checkDataAlreadyExists(proNameEn);
 
-        Object idUser = session.getAttribute(JavaConstant.userId);
+        // Object idUser = session.getAttribute(JavaConstant.userId);
 
         Product pro = new Product();
         pro.setCatId(p.getCatId());
@@ -48,7 +53,7 @@ public class ProductService {
         // pro.setCostKhr(p.getCostKhr());
         // pro.setPriceKhr(p.getPriceKhr());
         pro.setNote(p.getNote());
-        pro.setCreateBy((Integer) idUser);
+        pro.setCreateBy(p.getCreateBy());
         pro.setWeight(p.getWeight());
         pro.setBarcode(p.getBarcode());
         pro.setDiscount(p.getDiscount());
@@ -100,6 +105,13 @@ public class ProductService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("count", repo.countRow());
         map.put("result", repo.getProduct());
+        
+        for( int i = 0 ; i < repo.getProduct().size() ; i++ ) {
+            var data = repo.getProduct().get(i);
+            int qty = repoImp.getQty(data.getId());
+        }
+
+      
         return map;
     }
 

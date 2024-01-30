@@ -26,7 +26,7 @@ public class ImportService {
     @Autowired
     private HttpSession session;
     public void addImport(Import imp ) {
-        var createBy = session.getAttribute(JavaConstant.userId);
+       
         Import data = new Import();
 
         int count = repo.countRecord();
@@ -51,7 +51,7 @@ public class ImportService {
         data.setImpDate(imp.getImpDate());
         data.setDiscount(imp.getDiscount());
         data.setTotal(imp.getTotal());
-        data.setCreateBy((Integer)createBy);
+        data.setCreateBy(imp.getCreateBy());
         repo.save(data);
 
         List<ImportDetail> listDetail = imp.getDetails();
@@ -77,7 +77,7 @@ public class ImportService {
             details.setCost(value.getCost());
             details.setAmount(value.getAmount());
             details.setExpireDate(value.getExpireDate());
-            details.setCreateBy((Integer)createBy);
+            details.setCreateBy(imp.getCreateBy());
             repoDetail.save(details);
 
             Optional<Product> p = repoProduct.findById(productId);
