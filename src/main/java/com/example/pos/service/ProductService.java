@@ -113,8 +113,8 @@ public class ProductService {
             Integer qty = repoImp.getQty(data.getId());
             if (qty == null)
                 qty = 0;
-                ProductModel p = proModel(data, qty);
-                list.add(p);
+            ProductModel p = proModel(data, qty);
+            list.add(p);
         }
 
         map.put("count", repo.countRow());
@@ -241,16 +241,24 @@ public class ProductService {
         return listModel;
     }
 
-    public ProductModel proModel(ProductProjection data,int qty) {
+    public ProductModel proModel(ProductProjection data, int qty) {
         ProductModel p = new ProductModel(
                 data.getBrand_id(),
-                data.getPro_name_kh(), data.getPro_image_name(),
-                data.getProduct_status(), data.getProduct_status(),
-                data.getId(), data.getFlag(), data.getDiscount(),
-                data.getCost(), data.getPrice(),
-                data.getWeight(), data.getBarcode(),
-                data.getCat_id(), data.getCode_expired(),
-                data.getCode_out_stock(), qty);
+                data.getPro_name_kh(),
+                data.getPro_image_name(),
+                data.getProduct_status(),
+                data.getPro_name_en(),
+                data.getId(),
+                data.getFlag(),
+                data.getDiscount(),
+                data.getCost(),
+                data.getPrice(),
+                data.getWeight(),
+                data.getBarcode(),
+                data.getCat_id(),
+                data.getCode_expired(),
+                data.getCode_out_stock(),
+                qty);
         return p;
     }
 
