@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pos.components.JavaResponse;
 import com.example.pos.entity.Product;
+import com.example.pos.entity.models.ProductModel;
 import com.example.pos.service.searchByBarcodeOrNameService.SearchByBarcodeOrNameService;
 import java.util.*;
 @RestController
@@ -18,7 +19,7 @@ public class SearchByBarcodeOrNameController {
 
     @GetMapping
     public ResponseEntity<?> search(@RequestParam("code") String code,@RequestParam("valueSearch") String valueSearch) {
-        List<Product> data = service.search(code,valueSearch);
+        List<ProductModel> data = service.search(code,valueSearch);
         return JavaResponse.success(data);
     }
 }
