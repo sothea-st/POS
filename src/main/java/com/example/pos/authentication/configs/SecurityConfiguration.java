@@ -33,6 +33,7 @@ public class SecurityConfiguration {
         http.csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers("/api/publi/**").permitAll()
                 .requestMatchers("/api/auth/**")
                 .permitAll()
                 .anyRequest()
@@ -46,18 +47,18 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
+    // @Bean
+    // CorsConfigurationSource corsConfigurationSource() {
+    //     CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:8005"));
-        configuration.setAllowedMethods(List.of("GET","POST"));
-        configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
+    //     configuration.setAllowedOrigins(List.of("http://localhost:8005"));
+    //     configuration.setAllowedMethods(List.of("GET","POST"));
+    //     configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration("/**",configuration);
+    //     source.registerCorsConfiguration("/**",configuration);
 
-        return source;
-    }
+    //     return source;
+    // }
 }
