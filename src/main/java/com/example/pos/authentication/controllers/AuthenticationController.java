@@ -123,7 +123,7 @@ public class AuthenticationController {
             userName = repoEmp.findById(authenticatedUser.getEmpId()).get().getNameEn();
         }
 
-        String roleName = "This account not assign role yet";
+        String roleName = "This account not assign role yet.They can not use any function in system!";
         
         if( authenticatedUser.getRole() != null ) {
             roleName = repoRole.findById(authenticatedUser.getRole()).get().getRoleName();
