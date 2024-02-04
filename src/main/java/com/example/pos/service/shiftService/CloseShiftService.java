@@ -41,7 +41,7 @@ public class CloseShiftService {
     private OpenShiftRepository repoOpen;
 
     public CloseShift closeShift(CloseShift c) {
-        var createBy = session.getAttribute(JavaConstant.userId);
+      
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss a").format(Calendar.getInstance().getTime());
         String closeDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
         CloseShift data = new CloseShift();
@@ -55,6 +55,7 @@ public class CloseShiftService {
         data.setKhqrAba(c.getKhqrAba());
         data.setCreditCard(c.getCreditCard());
         data.setCreateBy(c.getUserId());
+        data.setPosId(c.getPosId());
         repo.save(data);
 
         Optional<OpenShift> open = repoOpen.getNumberOpenShift(c.getUserCode(),closeDate);

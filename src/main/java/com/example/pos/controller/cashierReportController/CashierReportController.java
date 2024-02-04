@@ -31,7 +31,7 @@ public class CashierReportController {
     public ResponseEntity<?> getCashierReport(@RequestParam("userCode") String userCode,@RequestParam("userId") int userId,@RequestParam("posId") String posId){
         HashMap<String,Object> map = new HashMap<>();
         // OpenShift countOpenShift = repoOpen.countOpenShift((Integer) userCode, JavaConstant.currenDate);   
-        CloseShift closeShift = repoClose.getCloseShift(userCode, JavaConstant.currentDate);
+        CloseShift closeShift = repoClose.getCloseShift(userCode, JavaConstant.currentDate,posId);
         // protect when user try to processing sale but user does not open shift first
         if (closeShift == null) {
             map.put(JavaConstant.message, JavaConstant.msgCloseShift);

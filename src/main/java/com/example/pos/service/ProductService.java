@@ -197,10 +197,11 @@ public class ProductService {
 
     public List<ProductModel> getProductByCatId(int catId, int limit) {
         List<ProductProjection> listData = repo.getProductByCatId(catId, limit);
+        System.out.println("limit = " + limit);
         List<ProductModel> list = new ArrayList<>();
         if (limit == 10) {
             for (int i = 0; i < listData.size(); i++) {
-                var data = repo.getProduct().get(i);
+                var data =listData.get(i);
                 Integer qty = repoImp.getQty(data.getId());
                 if (qty == null)
                     qty = 0;
@@ -212,7 +213,7 @@ public class ProductService {
 
         for (int i = 0; i < listData.size(); i++) {
             if (i >= limit - 10) {
-                var data = repo.getProduct().get(i);
+                var data =listData.get(i);
                 Integer qty = repoImp.getQty(data.getId());
                 if (qty == null)
                     qty = 0;

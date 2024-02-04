@@ -58,7 +58,7 @@ public class CashierReportService {
    
 
      public HashMap<String, Object> cashierReport(String userCode , int userId,String posId) {
-       
+        DecimalFormat dm = new DecimalFormat("#,###0.00");
         // var userId = session.getAttribute(JavaConstant.userId);
         int id = userId;
         // get company info
@@ -75,13 +75,29 @@ public class CashierReportService {
 
         // get posId, openDate , openCash from openShift
         OpenShift openShift = reposOpenShift.getDataOpenShift(userCode, JavaConstant.currentDate,posId);
+        double convertKh = openShift.getReserveKhr().doubleValue()/JavaConstant.exchangeRate;
+        double totalOpen = convertKh + openShift.getReserveUsd().doubleValue();
+        BigDecimal tOpen = new BigDecimal(totalOpen);
+        tOpen = tOpen.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         map.put("posId", openShift.getPosId());
         map.put("openDate", openShift.getOpenTime());
-        map.put("openCash", openShift.getReserveUsd());
+        map.put("openCash",tOpen);
 
         // get closeCash, closeDate from CloseShift
-        CloseShift closeShift = closeShiftRepo.getCloseShift(userCode, JavaConstant.currentDate);
-        map.put("closeCash", closeShift.getCashUsd());
+        CloseShift closeShift = closeShiftRepo.getCloseShift(userCode, JavaConstant.currentDate,posId);
+
+        double _cashKhr = closeShift.getCashKhr().doubleValue() / JavaConstant.exchangeRate;
+        double _cashUsd = closeShift.getCashUsd().doubleValue();
+        double _creditCart = closeShift.getCreditCard().doubleValue();
+        double _express = closeShift.getExpress().doubleValue();
+        double _khqrAba = closeShift.getKhqrAba().doubleValue();
+        double _khqrMnk = closeShift.getKhqrMnk().doubleValue();
+
+        double totalClose = _cashKhr + _cashUsd + _creditCart + _express + _khqrAba + _khqrMnk;
+        BigDecimal tClose = new BigDecimal(totalClose);
+        tClose = tClose.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+
+        map.put("closeCash",tClose);
         map.put("closeDate", closeShift.getCloseTime());
 
         // Sale summery

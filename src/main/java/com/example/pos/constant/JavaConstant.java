@@ -20,6 +20,7 @@ public class JavaConstant {
     public static String message = "msg";
     public static String msgCloseShift = "You have to close shift first to get report cashier!";
     public static String closeOpenShfitFirst = "You have to open shift first to close shift!";
+    public static double exchangeRate=4200;
     public String getDefaultPassword() {
         return defaultPassword;
     }
