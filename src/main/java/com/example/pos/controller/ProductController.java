@@ -83,10 +83,11 @@ public class ProductController {
                 .body(imageData);
     }
 
-    @GetMapping("/getProductByBrandId/{brandId}")
-    public ResponseEntity<?> getProductByBrandId(@PathVariable("brandId") int brandId) {
-        List<ProductModel> data = service.getListProductByBrandId(brandId);
-        return JavaResponse.success(data);
+    @GetMapping("/getProductByBrandId")
+    public ResponseEntity<?> getProductByBrandId(@RequestParam("brandId") int brandId ,@RequestParam("limit") int limit) {
+        List<ProductModel> data = service.getListProductByBrandId(brandId,limit);
+        int count = service.countProductByBrandId(brandId);
+        return  ResponseEntity.ok().body(Map.of("msg","success","data",data,"count",count));
     }
 
 }

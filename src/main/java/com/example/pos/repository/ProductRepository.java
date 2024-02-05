@@ -33,18 +33,21 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             "pc.brand_id ,pc.pro_name_en ,pc.pro_name_kh ,pc.cost,pc.price , \r\n" + //
             "pc.product_status ,pc.discount ,pc.code_out_stock ,pc.code_expired  \r\n" + //
             "from pos_product pc where pc.status=true and pc.is_deleted=false\r\n" + //
-            "and cat_id = ? order by id desc limit ?")
+            "and pc.cat_id = ? order by id desc limit ?")
     List<ProductProjection> getProductByCatId(int catId,int limit);
 
     @Query(nativeQuery = true , value = " select count(*) from pos_product pp where status = true and is_deleted = false and cat_id = ?")
     int countProduct(int catId);
 
+    @Query(nativeQuery = true , value = " select count(*) from pos_product pp where status = true and is_deleted = false and brand_id = ?")
+    int countProductByBrandId(int brandId);
+
     @Query(nativeQuery = true , value = "select pc.id,pc.barcode,pc.cat_id ,pc.brand_id ,pc.flag ,pc.weight ,pc.pro_image_name , \r\n" + //
-            "pc.brand_id ,pc.pro_name_en ,pc.pro_name_kh ,pc.cost,pc.price , \r\n" + //
-            "pc.product_status ,pc.discount ,pc.code_out_stock ,pc.code_expired \r\n" + //
-            "from pos_product pc where pc.status=true and pc.is_deleted=false \r\n" + //
-            "and pc.brand_id = ? order by pc.id desc")
-    List<ProductProjection> getListProductByBrandId(int brandId);
+                        "pc.brand_id ,pc.pro_name_en ,pc.pro_name_kh ,pc.cost,pc.price , \r\n" + //
+                        "pc.product_status ,pc.discount ,pc.code_out_stock ,pc.code_expired  \r\n" + //
+                        "from pos_product pc where pc.status=true and pc.is_deleted=false\r\n" + //
+                        "and pc.brand_id  = ? order by id desc limit ?")
+    List<ProductProjection> getListProductByBrandId(int brandId,int limit);
 
     @Query(nativeQuery = true , value = "select pc.id,pc.barcode,pc.cat_id ,pc.brand_id ,pc.flag ,pc.weight ,pc.pro_image_name , \r\n" + //
                     " pc.brand_id ,pc.pro_name_en ,pc.pro_name_kh ,pc.cost,pc.price ,  \r\n" + //

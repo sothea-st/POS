@@ -197,11 +197,11 @@ public class ProductService {
 
     public List<ProductModel> getProductByCatId(int catId, int limit) {
         List<ProductProjection> listData = repo.getProductByCatId(catId, limit);
-        System.out.println("limit = " + limit);
+
         List<ProductModel> list = new ArrayList<>();
-        if (limit == 10) {
+        if (limit == 3) {
             for (int i = 0; i < listData.size(); i++) {
-                var data =listData.get(i);
+                var data = listData.get(i);
                 Integer qty = repoImp.getQty(data.getId());
                 if (qty == null)
                     qty = 0;
@@ -213,7 +213,7 @@ public class ProductService {
 
         for (int i = 0; i < listData.size(); i++) {
             if (i >= limit - 10) {
-                var data =listData.get(i);
+                var data = listData.get(i);
                 Integer qty = repoImp.getQty(data.getId());
                 if (qty == null)
                     qty = 0;
@@ -228,9 +228,26 @@ public class ProductService {
         return repo.countProduct(catId);
     }
 
-    public List<ProductModel> getListProductByBrandId(int brandId) {
-        List<ProductProjection> list = repo.getListProductByBrandId(brandId);
+    public int countProductByBrandId(int brandId) {
+        return repo.countProductByBrandId(brandId);
+    }
+
+    public List<ProductModel> getListProductByBrandId(int brandId, int limit) {
+        List<ProductProjection> list = repo.getListProductByBrandId(brandId, limit);
         List<ProductModel> listModel = new ArrayList<>();
+
+        if (limit == 3) {
+            for (int i = 0; i < list.size(); i++) {
+                var data = list.get(i);
+                Integer qty = repoImp.getQty(data.getId());
+                if (qty == null)
+                    qty = 0;
+                ProductModel p = proModel(data, qty);
+                listModel.add(p);
+            }
+            return listModel;
+        }
+
         for (int i = 0; i < list.size(); i++) {
             var data = list.get(i);
             Integer qty = repoImp.getQty(data.getId());
