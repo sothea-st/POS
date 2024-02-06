@@ -212,7 +212,8 @@ public class ProductService {
         }
 
         for (int i = 0; i < listData.size(); i++) {
-            if (i >= limit - 10) {
+
+            if (i >= limit - 3) {
                 var data = listData.get(i);
                 Integer qty = repoImp.getQty(data.getId());
                 if (qty == null)
@@ -233,12 +234,14 @@ public class ProductService {
     }
 
     public List<ProductModel> getListProductByBrandId(int brandId, int limit) {
-        List<ProductProjection> list = repo.getListProductByBrandId(brandId, limit);
+    
+        List<ProductProjection> listD = repo.getProductByBrandId(brandId, limit);
+
         List<ProductModel> listModel = new ArrayList<>();
 
         if (limit == 3) {
-            for (int i = 0; i < list.size(); i++) {
-                var data = list.get(i);
+            for (int i = 0; i < listD.size(); i++) {
+                var data = listD.get(i);
                 Integer qty = repoImp.getQty(data.getId());
                 if (qty == null)
                     qty = 0;
@@ -248,13 +251,15 @@ public class ProductService {
             return listModel;
         }
 
-        for (int i = 0; i < list.size(); i++) {
-            var data = list.get(i);
-            Integer qty = repoImp.getQty(data.getId());
-            if (qty == null)
-                qty = 0;
-            ProductModel p = proModel(data, qty);
-            listModel.add(p);
+        for (int i = 0; i < listD.size(); i++) {
+            if (i >= limit - 3) {
+                var data = listD.get(i);
+                Integer qty = repoImp.getQty(data.getId());
+                if (qty == null)
+                    qty = 0;
+                ProductModel p = proModel(data, qty);
+                listModel.add(p);
+            }
         }
         return listModel;
     }
