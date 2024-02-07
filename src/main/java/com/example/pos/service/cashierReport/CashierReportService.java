@@ -93,7 +93,7 @@ public class CashierReportService {
         double _khqrAba = closeShift.getKhqrAba().doubleValue();
         double _khqrMnk = closeShift.getKhqrMnk().doubleValue();
 
-        double totalClose = _cashKhr + _cashUsd + _creditCart + _express + _khqrAba + _khqrMnk;
+        double totalClose = totalOpen + _cashKhr + _cashUsd + _creditCart + _express + _khqrAba + _khqrMnk;
         BigDecimal tClose = new BigDecimal(totalClose);
         tClose = tClose.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
@@ -145,7 +145,9 @@ public class CashierReportService {
         if (qtyUsdStr != null)
             qtyUsd = Integer.valueOf(qtyUsdStr);
 
+
         double amountPayUsd = dCloseShift.getCashUsd().doubleValue();
+
         // String amountPayUsdStr = repoSale.sumAmountSaledByUsd(userId, JavaConstant.currentDate, posId,
         //         JavaConstant.currentDate);
         // if (amountPayUsdStr != null)
@@ -221,12 +223,13 @@ public class CashierReportService {
         // if (amountCreditStr != null)
         //     amountCredit = Double.valueOf(amountCreditStr);
 
-        amountPayUsd = JavaConstant.getTwoPrecision(amountPayUsd);
-        amountPayKhr = JavaConstant.getTwoPrecision(amountPayKhr);
-        amountMnk = JavaConstant.getTwoPrecision(amountMnk);
-        amountAba = JavaConstant.getTwoPrecision(amountAba);
-        amountExpress = JavaConstant.getTwoPrecision(amountExpress);
-        amountCredit = JavaConstant.getTwoPrecision(amountCredit);
+        // amountPayUsd = JavaConstant.getTwoPrecision(amountPayUsd);
+ 
+        // amountPayKhr = JavaConstant.getTwoPrecision(amountPayKhr);
+        // amountMnk = JavaConstant.getTwoPrecision(amountMnk);
+        // amountAba = JavaConstant.getTwoPrecision(amountAba);
+        // amountExpress = JavaConstant.getTwoPrecision(amountExpress);
+        // amountCredit = JavaConstant.getTwoPrecision(amountCredit);
 
         ArrayList<SummeryCashierReport> payment = new ArrayList<>();
         payment.add(new SummeryCashierReport("RED ANT EXPRESS", qtyExpress, BigDecimal.valueOf(amountExpress)));
