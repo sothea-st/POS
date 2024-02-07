@@ -32,8 +32,15 @@ public class JavaConstant {
     public static String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 
     public static double getTwoPrecision(double amount){
-        double value = new BigDecimal(amount).setScale(2, RoundingMode.DOWN).doubleValue();
-        return value;
+        String value = String.valueOf(amount);
+        if (value.length() > 4) {
+            String data = value.substring(0, 4);
+            double d = Double.parseDouble(data);
+            return d;
+       }
+       return Double.parseDouble(value);
+        // double value = new BigDecimal(amount).setScale(2, RoundingMode.DOWN).doubleValue();
+        // return value;
     }
  
 

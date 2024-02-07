@@ -77,11 +77,12 @@ public class CashierReportService {
         OpenShift openShift = reposOpenShift.getDataOpenShift(userCode, JavaConstant.currentDate, posId);
         double convertKh = openShift.getReserveKhr().doubleValue() / JavaConstant.exchangeRate;
         double totalOpen = convertKh + openShift.getReserveUsd().doubleValue();
-        BigDecimal tOpen = new BigDecimal(totalOpen);
-        tOpen = tOpen.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        totalOpen = JavaConstant.getTwoPrecision(totalOpen);
+        // BigDecimal tOpen = new BigDecimal(totalOpen);
+        // tOpen = tOpen.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         map.put("posId", openShift.getPosId());
         map.put("openDate", openShift.getOpenTime());
-        map.put("openCash", tOpen);
+        map.put("openCash", totalOpen);
 
         // get closeCash, closeDate from CloseShift
         CloseShift closeShift = closeShiftRepo.getCloseShift(userCode, JavaConstant.currentDate, posId);
@@ -94,10 +95,9 @@ public class CashierReportService {
         double _khqrMnk = closeShift.getKhqrMnk().doubleValue();
 
         double totalClose = totalOpen + _cashKhr + _cashUsd + _creditCart + _express + _khqrAba + _khqrMnk;
-        BigDecimal tClose = new BigDecimal(totalClose);
-        tClose = tClose.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-
-        map.put("closeCash", tClose);
+      
+        totalClose = JavaConstant.getTwoPrecision(totalClose);
+        map.put("closeCash", totalClose);
         map.put("closeDate", closeShift.getCloseTime());
 
         // Sale summery
@@ -106,7 +106,6 @@ public class CashierReportService {
         paymentSummery(id, posId,userCode);
         // discount summery
         discountSummery(id, posId);
-
         return map;
     }
 
@@ -167,6 +166,9 @@ public class CashierReportService {
             qtyKhr = Integer.valueOf(qtyKhrStr);
 
         double amountPayKhr = dCloseShift.getCashKhr().doubleValue()/JavaConstant.exchangeRate;
+      
+      
+     
         // String amountPayKhrStr = repoSale.sumAmountSaledByKhr(userId, JavaConstant.currentDate, posId,
         //         JavaConstant.currentDate);
         // if (amountPayKhrStr != null)
@@ -223,13 +225,12 @@ public class CashierReportService {
         // if (amountCreditStr != null)
         //     amountCredit = Double.valueOf(amountCreditStr);
 
-        // amountPayUsd = JavaConstant.getTwoPrecision(amountPayUsd);
- 
-        // amountPayKhr = JavaConstant.getTwoPrecision(amountPayKhr);
-        // amountMnk = JavaConstant.getTwoPrecision(amountMnk);
-        // amountAba = JavaConstant.getTwoPrecision(amountAba);
-        // amountExpress = JavaConstant.getTwoPrecision(amountExpress);
-        // amountCredit = JavaConstant.getTwoPrecision(amountCredit);
+        amountPayUsd = JavaConstant.getTwoPrecision(amountPayUsd);
+        amountPayKhr = JavaConstant.getTwoPrecision(amountPayKhr);
+        amountMnk = JavaConstant.getTwoPrecision(amountMnk);
+        amountAba = JavaConstant.getTwoPrecision(amountAba);
+        amountExpress = JavaConstant.getTwoPrecision(amountExpress);
+        amountCredit = JavaConstant.getTwoPrecision(amountCredit);
 
         ArrayList<SummeryCashierReport> payment = new ArrayList<>();
         payment.add(new SummeryCashierReport("RED ANT EXPRESS", qtyExpress, BigDecimal.valueOf(amountExpress)));
