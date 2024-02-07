@@ -166,7 +166,7 @@ public class CashierReportService {
         if (qtyKhrStr != null)
             qtyKhr = Integer.valueOf(qtyKhrStr);
 
-        double amountPayKhr = dCloseShift.getCashKhr().doubleValue();
+        double amountPayKhr = dCloseShift.getCashKhr().doubleValue()/JavaConstant.exchangeRate;
         // String amountPayKhrStr = repoSale.sumAmountSaledByKhr(userId, JavaConstant.currentDate, posId,
         //         JavaConstant.currentDate);
         // if (amountPayKhrStr != null)
