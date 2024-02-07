@@ -139,28 +139,24 @@ public class CashierReportService {
     }
 
     public void paymentSummery(int userId, String posId,String userCode) {
-        DecimalFormat df = new DecimalFormat("#.##");
-
-
-
+        CloseShift dCloseShift = closeShiftRepo.getCloseShift(userCode, JavaConstant.currentDate, posId);
         int qtyUsd = 0;
         String qtyUsdStr = repoSale.sumQtySaledByUsd(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate);
         if (qtyUsdStr != null)
             qtyUsd = Integer.valueOf(qtyUsdStr);
 
-        double amountPayUsd = 0;
-        String amountPayUsdStr = repoSale.sumAmountSaledByUsd(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
-        if (amountPayUsdStr != null)
-            amountPayUsd = Double.valueOf(amountPayUsdStr);
+        double amountPayUsd = dCloseShift.getCashUsd().doubleValue();
+        // String amountPayUsdStr = repoSale.sumAmountSaledByUsd(userId, JavaConstant.currentDate, posId,
+        //         JavaConstant.currentDate);
+        // if (amountPayUsdStr != null)
+        //     amountPayUsd = Double.valueOf(amountPayUsdStr);
 
         OpenShift o = reposOpenShift.getDataOpenShift(userCode, JavaConstant.currentDate, posId);
         double moneyKh = o.getReserveKhr().doubleValue()/JavaConstant.exchangeRate;
         double moneyUs = o.getReserveUsd().doubleValue();
 
-        double _amountUsd = moneyKh + moneyUs + amountPayUsd;
-        _amountUsd = JavaConstant.getTwoPrecision(_amountUsd);
-
+        // double _amountUsd = moneyKh + moneyUs + amountPayUsd;
+        // _amountUsd = JavaConstant.getTwoPrecision(_amountUsd);
 
 
         int qtyKhr = 0;
@@ -168,11 +164,11 @@ public class CashierReportService {
         if (qtyKhrStr != null)
             qtyKhr = Integer.valueOf(qtyKhrStr);
 
-        double amountPayKhr = 0;
-        String amountPayKhrStr = repoSale.sumAmountSaledByKhr(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
-        if (amountPayKhrStr != null)
-            amountPayKhr = Double.valueOf(amountPayKhrStr) * 4200;
+        double amountPayKhr = dCloseShift.getCashKhr().doubleValue();
+        // String amountPayKhrStr = repoSale.sumAmountSaledByKhr(userId, JavaConstant.currentDate, posId,
+        //         JavaConstant.currentDate);
+        // if (amountPayKhrStr != null)
+        //     amountPayKhr = Double.valueOf(amountPayKhrStr) * 4200;
 
         // ============================================================
         int qtyAba = 0;
@@ -180,22 +176,22 @@ public class CashierReportService {
         if (qtyAbaStr != null)
             qtyAba = Integer.valueOf(qtyAbaStr);
 
-        double amountAba = 0;
-        String amountAbaStr = repoSale.totalAmountABA(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
-        if (amountAbaStr != null)
-            amountAba = Double.valueOf(amountAbaStr);
+        double amountAba = dCloseShift.getKhqrAba().doubleValue();
+        // String amountAbaStr = repoSale.totalAmountABA(userId, JavaConstant.currentDate, posId,
+        //         JavaConstant.currentDate);
+        // if (amountAbaStr != null)
+        //     amountAba = Double.valueOf(amountAbaStr);
 
         int qtyMnk = 0;
         String qtyMnkStr = repoSale.totalCountQtyMNK(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate);
         if (qtyMnkStr != null)
             qtyMnk = Integer.valueOf(qtyMnkStr);
 
-        double amountMnk = 0;
-        String amountMnkStr = repoSale.totalAmountMNK(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
-        if (amountMnkStr != null)
-            amountMnk = Double.valueOf(amountMnkStr);
+        double amountMnk = dCloseShift.getKhqrMnk().doubleValue();
+        // String amountMnkStr = repoSale.totalAmountMNK(userId, JavaConstant.currentDate, posId,
+        //         JavaConstant.currentDate);
+        // if (amountMnkStr != null)
+        //     amountMnk = Double.valueOf(amountMnkStr);
 
         // ===============================================================
 
@@ -205,11 +201,13 @@ public class CashierReportService {
         if (qtyExpressStr != null)
             qtyExpress = Integer.valueOf(qtyExpressStr);
 
-        double amountExpress = 0;
-        String amountExpressStr = repoSale.totalAmountExpress(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
-        if (amountExpressStr != null)
-            amountExpress = Double.valueOf(amountExpressStr);
+
+      
+        double amountExpress =  dCloseShift.getExpress().doubleValue();
+        // String amountExpressStr = repoSale.totalAmountExpress(userId, JavaConstant.currentDate, posId,
+        //         JavaConstant.currentDate);
+        // if (amountExpressStr != null)
+        //     amountExpress = Double.valueOf(amountExpressStr);
 
         int qtyCredit = 0;
         String qtyCreditStr = repoSale.totalCountQtyCredit(userId, JavaConstant.currentDate, posId,
@@ -217,11 +215,11 @@ public class CashierReportService {
         if (qtyCreditStr != null)
             qtyCredit = Integer.valueOf(qtyCreditStr);
 
-        double amountCredit = 0;
-        String amountCreditStr = repoSale.totalAmountCredit(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
-        if (amountCreditStr != null)
-            amountCredit = Double.valueOf(amountCreditStr);
+        double amountCredit = dCloseShift.getCreditCard().doubleValue();
+        // String amountCreditStr = repoSale.totalAmountCredit(userId, JavaConstant.currentDate, posId,
+        //         JavaConstant.currentDate);
+        // if (amountCreditStr != null)
+        //     amountCredit = Double.valueOf(amountCreditStr);
 
         amountPayUsd = JavaConstant.getTwoPrecision(amountPayUsd);
         amountPayKhr = JavaConstant.getTwoPrecision(amountPayKhr);
@@ -232,7 +230,7 @@ public class CashierReportService {
 
         ArrayList<SummeryCashierReport> payment = new ArrayList<>();
         payment.add(new SummeryCashierReport("RED ANT EXPRESS", qtyExpress, BigDecimal.valueOf(amountExpress)));
-        payment.add(new SummeryCashierReport("CASH (USD)", qtyUsd, BigDecimal.valueOf(_amountUsd)));
+        payment.add(new SummeryCashierReport("CASH (USD)", qtyUsd, BigDecimal.valueOf(amountPayUsd)));
         payment.add(new SummeryCashierReport("CASH (KHR)", qtyKhr, BigDecimal.valueOf(amountPayKhr)));
         payment.add(new SummeryCashierReport("KHQR-MNK", qtyMnk, BigDecimal.valueOf(amountMnk)));
         payment.add(new SummeryCashierReport("KHQR-ABA", qtyAba, BigDecimal.valueOf(amountAba)));
