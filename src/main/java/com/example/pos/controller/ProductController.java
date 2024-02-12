@@ -1,8 +1,10 @@
 package com.example.pos.controller;
 
 import com.example.pos.components.JavaResponse;
+import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.Product;
 import com.example.pos.entity.models.ProductModel;
+import com.example.pos.repository.ProductRepository;
 import com.example.pos.repository.productProjection.ProductProjection;
 import com.example.pos.service.ProductService;
 import jakarta.validation.Valid;
@@ -22,7 +24,8 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 public class ProductController {
     @Autowired
     private ProductService service;
-
+    @Autowired
+    private ProductRepository repo;
 
     @PostMapping
     public ResponseEntity<?> addProduct(@Valid @ModelAttribute Product product ,
@@ -43,13 +46,15 @@ public class ProductController {
     public ResponseEntity<?> getProductByCatId(@RequestParam("catId") int catId ,@RequestParam("limit") int limit) {
         List<ProductModel> data = service.getProductByCatId(catId,limit);
         int count = service.count(catId);
-        return  ResponseEntity.ok().body(Map.of("msg","success","data",data,"count",count));
+        return  ResponseEntity.ok().body(Map.of("msg",JavaConstant.success,"data",data,"count",count));
     }
 
     @GetMapping
     public ResponseEntity<?> getProduct(@RequestParam("limit") int limit){
-        Map<String, Object> data = service.getProduct(limit);
-        return JavaResponse.success(data);
+        HashMap<String, Object> map = new HashMap<>();
+        int count = repo.countRow();
+        List<ProductModel> data = service.getProduct(limit);
+        return  ResponseEntity.ok().body(Map.of("msg",JavaConstant.success,"data",data,"count",count));
     }
 
     @PostMapping("/{id}")
@@ -87,7 +92,7 @@ public class ProductController {
     public ResponseEntity<?> getProductByBrandId(@RequestParam("brandId") int brandId ,@RequestParam("limit") int limit) {
         List<ProductModel> data = service.getListProductByBrandId(brandId,limit);
         int count = service.countProductByBrandId(brandId);
-        return  ResponseEntity.ok().body(Map.of("msg","success","data",data,"count",count));
+        return  ResponseEntity.ok().body(Map.of("msg",JavaConstant.success,"data",data,"count",count));
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.http.HttpSession;
 import java.math.*;
 public class JavaConstant {
+    public static String success = "success";
     public static String userId = "idUser";
     public static String admin = "Admin";
     public static String statusCode = "statusCode";

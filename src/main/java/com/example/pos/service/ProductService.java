@@ -104,8 +104,8 @@ public class ProductService {
         return Base64.getDecoder().decode(base64); // decode string base64
     }
 
-    public Map<String, Object> getProduct(int limit) {
-        HashMap<String, Object> map = new HashMap<>();
+    public List<ProductModel> getProduct(int limit) {
+     
         List<ProductModel> list = new ArrayList<>();
         List<ProductProjection> lPro = repo.getProduct(limit);
         for (int i = 0; i < lPro.size(); i++) {
@@ -117,10 +117,10 @@ public class ProductService {
             list.add(p);
         }
 
-        map.put("count", repo.countRow());
+        // map.put("count", repo.countRow());
         // map.put("result", repo.getProduct());
-        map.put("result", list);
-        return map;
+        // map.put("result", list);
+        return list;
     }
 
     public Product editProduct(int id, Product editProduct, MultipartFile file, MultipartFile flag) throws IOException {
