@@ -104,12 +104,12 @@ public class ProductService {
         return Base64.getDecoder().decode(base64); // decode string base64
     }
 
-    public Map<String, Object> getProduct() {
+    public Map<String, Object> getProduct(int limit) {
         HashMap<String, Object> map = new HashMap<>();
         List<ProductModel> list = new ArrayList<>();
-
-        for (int i = 0; i < repo.getProduct().size(); i++) {
-            var data = repo.getProduct().get(i);
+        List<ProductProjection> lPro = repo.getProduct(limit);
+        for (int i = 0; i < lPro.size(); i++) {
+            var data = lPro.get(i);
             Integer qty = repoImp.getQty(data.getId());
             if (qty == null)
                 qty = 0;

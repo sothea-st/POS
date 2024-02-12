@@ -47,8 +47,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getProduct(){
-        Map<String, Object> data = service.getProduct();
+    public ResponseEntity<?> getProduct(@RequestParam("limit") int limit){
+        Map<String, Object> data = service.getProduct(limit);
         return JavaResponse.success(data);
     }
 
