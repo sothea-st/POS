@@ -101,15 +101,15 @@ public class CashierReportService {
         map.put("closeDate", closeShift.getCloseTime());
 
         // Sale summery
-        SummeryCashierReport(id, posId);
+        SummeryCashierReport(id, posId,userCode);
         // payment summery
         paymentSummery(id, posId,userCode);
         // discount summery
-        discountSummery(id, posId);
+        discountSummery(id, posId,userCode);
         return map;
     }
 
-    public void discountSummery(int userId, String posId) {
+    public void discountSummery(int userId, String posId,String userCode) {
         List<Integer> listDiscount = new ArrayList<>();
         listDiscount.add(10);
         listDiscount.add(15);
@@ -120,13 +120,13 @@ public class CashierReportService {
         for (int i = 0; i < listDiscount.size(); i++) {
             int disQty = 0;
             String disStr = repoSaleDetail.totalQty(userId, JavaConstant.currentDate, listDiscount.get(i), posId,
-                    JavaConstant.currentDate);
+                    JavaConstant.currentDate,userCode);
             if (disStr != null)
                 disQty = Integer.valueOf(disStr);
 
             double disAmount = 0;
             String disAmountStr = repoSaleDetail.totalAmount(userId, JavaConstant.currentDate, listDiscount.get(i),
-                    posId, JavaConstant.currentDate);
+                    posId, JavaConstant.currentDate,userCode);
             if (disAmountStr != null)
                 disAmount = Double.valueOf(disAmountStr);
 
@@ -140,93 +140,57 @@ public class CashierReportService {
     public void paymentSummery(int userId, String posId,String userCode) {
         CloseShift dCloseShift = closeShiftRepo.getCloseShift(userCode, JavaConstant.currentDate, posId);
         int qtyUsd = 0;
-        String qtyUsdStr = repoSale.sumQtySaledByUsd(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate);
+        String qtyUsdStr = repoSale.sumQtySaledByUsd(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate,userCode);
         if (qtyUsdStr != null)
             qtyUsd = Integer.valueOf(qtyUsdStr);
 
 
         double amountPayUsd = dCloseShift.getCashUsd().doubleValue();
 
-        // String amountPayUsdStr = repoSale.sumAmountSaledByUsd(userId, JavaConstant.currentDate, posId,
-        //         JavaConstant.currentDate);
-        // if (amountPayUsdStr != null)
-        //     amountPayUsd = Double.valueOf(amountPayUsdStr);
-
-        OpenShift o = reposOpenShift.getDataOpenShift(userCode, JavaConstant.currentDate, posId);
-        double moneyKh = o.getReserveKhr().doubleValue()/JavaConstant.exchangeRate;
-        double moneyUs = o.getReserveUsd().doubleValue();
-
-        // double _amountUsd = moneyKh + moneyUs + amountPayUsd;
-        // _amountUsd = JavaConstant.getTwoPrecision(_amountUsd);
-
-
         int qtyKhr = 0;
-        String qtyKhrStr = repoSale.sumQtySaledByKhr(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate);
+        String qtyKhrStr = repoSale.sumQtySaledByKhr(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate,userCode);
         if (qtyKhrStr != null)
             qtyKhr = Integer.valueOf(qtyKhrStr);
 
         double amountPayKhr = dCloseShift.getCashKhr().doubleValue()/JavaConstant.exchangeRate;
-      
-      
-     
-        // String amountPayKhrStr = repoSale.sumAmountSaledByKhr(userId, JavaConstant.currentDate, posId,
-        //         JavaConstant.currentDate);
-        // if (amountPayKhrStr != null)
-        //     amountPayKhr = Double.valueOf(amountPayKhrStr) * 4200;
 
-        // ============================================================
         int qtyAba = 0;
-        String qtyAbaStr = repoSale.totalCountQtyABA(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate);
+        String qtyAbaStr = repoSale.totalCountQtyABA(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate,userCode);
         if (qtyAbaStr != null)
             qtyAba = Integer.valueOf(qtyAbaStr);
 
         double amountAba = dCloseShift.getKhqrAba().doubleValue();
-        // String amountAbaStr = repoSale.totalAmountABA(userId, JavaConstant.currentDate, posId,
-        //         JavaConstant.currentDate);
-        // if (amountAbaStr != null)
-        //     amountAba = Double.valueOf(amountAbaStr);
 
         int qtyMnk = 0;
-        String qtyMnkStr = repoSale.totalCountQtyMNK(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate);
+        String qtyMnkStr = repoSale.totalCountQtyMNK(userId, JavaConstant.currentDate, posId, JavaConstant.currentDate,userCode);
         if (qtyMnkStr != null)
             qtyMnk = Integer.valueOf(qtyMnkStr);
 
         double amountMnk = dCloseShift.getKhqrMnk().doubleValue();
-        // String amountMnkStr = repoSale.totalAmountMNK(userId, JavaConstant.currentDate, posId,
-        //         JavaConstant.currentDate);
-        // if (amountMnkStr != null)
-        //     amountMnk = Double.valueOf(amountMnkStr);
-
-        // ===============================================================
-
+ 
         int qtyExpress = 0;
         String qtyExpressStr = repoSale.totalCountQtyExpress(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
+                JavaConstant.currentDate,userCode);
         if (qtyExpressStr != null)
             qtyExpress = Integer.valueOf(qtyExpressStr);
 
-
-      
         double amountExpress =  dCloseShift.getExpress().doubleValue();
-        // String amountExpressStr = repoSale.totalAmountExpress(userId, JavaConstant.currentDate, posId,
-        //         JavaConstant.currentDate);
-        // if (amountExpressStr != null)
-        //     amountExpress = Double.valueOf(amountExpressStr);
 
         int qtyCredit = 0;
         String qtyCreditStr = repoSale.totalCountQtyCredit(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
+                JavaConstant.currentDate,userCode);
         if (qtyCreditStr != null)
             qtyCredit = Integer.valueOf(qtyCreditStr);
 
         double amountCredit = dCloseShift.getCreditCard().doubleValue();
-        // String amountCreditStr = repoSale.totalAmountCredit(userId, JavaConstant.currentDate, posId,
-        //         JavaConstant.currentDate);
-        // if (amountCreditStr != null)
-        //     amountCredit = Double.valueOf(amountCreditStr);
-
+ 
+        System.out.println("usd before = " + amountPayUsd);
         amountPayUsd = JavaConstant.getTwoPrecision(amountPayUsd);
+        System.out.println("usd after = " + amountPayUsd);
+
+        System.out.println("khr before = " + amountPayKhr);
         amountPayKhr = JavaConstant.getTwoPrecision(amountPayKhr);
+        System.out.println("khr after = " + amountPayKhr);
         amountMnk = JavaConstant.getTwoPrecision(amountMnk);
         amountAba = JavaConstant.getTwoPrecision(amountAba);
         amountExpress = JavaConstant.getTwoPrecision(amountExpress);
@@ -242,7 +206,7 @@ public class CashierReportService {
         map.put("summeryPayemnt", payment);
     }
 
-    public void SummeryCashierReport(int userId, String posId) {
+    public void SummeryCashierReport(int userId, String posId,String userCode) {
         String paymentNoFirst = repoPay.getFirstPaymentNumber(userId, JavaConstant.currentDate);
         String paymentNoLast = repoPay.getLastPaymentNumber(userId, JavaConstant.currentDate);
         map.put("paymentNoFirst", paymentNoFirst);
@@ -250,13 +214,13 @@ public class CashierReportService {
 
         int qtyDiscount = 0;
         String qtyDiscountStr = repoSaleDetail.totalQtyDiscount(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
+                JavaConstant.currentDate,userCode);
         if (qtyDiscountStr != null)
             qtyDiscount = Integer.valueOf(qtyDiscountStr);
 
         double amountDiscount = 0.00;
         String listDiscountQty = repoSaleDetail.totalAmountDiscount(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
+                JavaConstant.currentDate,userCode);
         if (listDiscountQty != null)
             amountDiscount = Double.valueOf(listDiscountQty);
         // for ( int i = 0 ; i < listDiscountQty.size() ; i++ ) {
@@ -267,13 +231,13 @@ public class CashierReportService {
 
         int qtySale = 0;
         String qtySaleStr = repoSaleDetail.totalQtySale(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
+                JavaConstant.currentDate,userCode);
         if (qtySaleStr != null)
             qtySale = Integer.valueOf(qtySaleStr);
 
         double amount = 0;
         String amountStr = repoSaleDetail.totalAmount(userId, JavaConstant.currentDate, posId,
-                JavaConstant.currentDate);
+                JavaConstant.currentDate,userCode);
         if (amountStr != null)
             amount = Double.valueOf(amountStr);
 
@@ -291,7 +255,9 @@ public class CashierReportService {
 
         ArrayList<SummeryCashierReport> summery = new ArrayList<>();
 
+    
         amount = JavaConstant.getTwoPrecision(amount);
+ 
         returnAmount = JavaConstant.getTwoPrecision(returnAmount);
         amountDiscount = JavaConstant.getTwoPrecision(amountDiscount);
         summery.add(new SummeryCashierReport("Sales", qtySale, BigDecimal.valueOf(amount)));
