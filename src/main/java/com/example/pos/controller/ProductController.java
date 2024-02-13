@@ -3,6 +3,7 @@ import com.example.pos.components.JavaResponse;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.Product;
 import com.example.pos.entity.models.ProductModel;
+import com.example.pos.entity.models.UpdateProductDiscount;
 import com.example.pos.repository.ProductRepository;
 import com.example.pos.service.ProductService;
 import jakarta.validation.Valid;
@@ -93,9 +94,9 @@ public class ProductController {
     }
 
     @PostMapping("/discount")
-    public ResponseEntity<?> updateDis(@RequestParam("id")int id,@RequestParam("discount") int discount ) {
-        Product data = service.updateDiscount(id, discount);
-        return JavaResponse.success(data);
+    public ResponseEntity<?> updateDis(@RequestBody UpdateProductDiscount data) {
+        Product datas = service.updateDiscount(data.getId(), data.getDiscount());
+        return JavaResponse.success(datas);
     }
 
 

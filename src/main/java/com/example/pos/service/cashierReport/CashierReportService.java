@@ -184,13 +184,8 @@ public class CashierReportService {
 
         double amountCredit = dCloseShift.getCreditCard().doubleValue();
  
-        System.out.println("usd before = " + amountPayUsd);
         amountPayUsd = JavaConstant.getTwoPrecision(amountPayUsd);
-        System.out.println("usd after = " + amountPayUsd);
-
-        System.out.println("khr before = " + amountPayKhr);
         amountPayKhr = JavaConstant.getTwoPrecision(amountPayKhr);
-        System.out.println("khr after = " + amountPayKhr);
         amountMnk = JavaConstant.getTwoPrecision(amountMnk);
         amountAba = JavaConstant.getTwoPrecision(amountAba);
         amountExpress = JavaConstant.getTwoPrecision(amountExpress);
@@ -223,11 +218,6 @@ public class CashierReportService {
                 JavaConstant.currentDate,userCode);
         if (listDiscountQty != null)
             amountDiscount = Double.valueOf(listDiscountQty);
-        // for ( int i = 0 ; i < listDiscountQty.size() ; i++ ) {
-        // var data = listDiscountQty.get(i);
-        // double sum = (data.getQty()*data.getPrice().doubleValue())/100;
-        // amountDiscount += sum;
-        // }
 
         int qtySale = 0;
         String qtySaleStr = repoSaleDetail.totalQtySale(userId, JavaConstant.currentDate, posId,
@@ -257,7 +247,6 @@ public class CashierReportService {
 
     
         amount = JavaConstant.getTwoPrecision(amount);
- 
         returnAmount = JavaConstant.getTwoPrecision(returnAmount);
         amountDiscount = JavaConstant.getTwoPrecision(amountDiscount);
         summery.add(new SummeryCashierReport("Sales", qtySale, BigDecimal.valueOf(amount)));
