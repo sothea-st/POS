@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+
 @Service
 public class ProductService {
     @Autowired
@@ -285,4 +286,12 @@ public class ProductService {
         return p;
     }
 
+
+    public Product updateDiscount(int id,int discount){
+        Optional<Product> p = repo.getProductByOptionalId(id);
+        Product data = p.get();
+        data.setDiscount(discount);
+        repo.save(data);
+        return data;
+    }
 }

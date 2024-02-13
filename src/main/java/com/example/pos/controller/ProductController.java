@@ -1,11 +1,9 @@
 package com.example.pos.controller;
-
 import com.example.pos.components.JavaResponse;
 import com.example.pos.constant.JavaConstant;
 import com.example.pos.entity.Product;
 import com.example.pos.entity.models.ProductModel;
 import com.example.pos.repository.ProductRepository;
-import com.example.pos.repository.productProjection.ProductProjection;
 import com.example.pos.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.*;
 import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
@@ -94,5 +91,12 @@ public class ProductController {
         int count = service.countProductByBrandId(brandId);
         return  ResponseEntity.ok().body(Map.of("msg",JavaConstant.success,"data",data,"count",count));
     }
+
+    @PostMapping("/discount")
+    public ResponseEntity<?> updateDis(@RequestParam("id")int id,@RequestParam("discount") int discount ) {
+        Product data = service.updateDiscount(id, discount);
+        return JavaResponse.success(data);
+    }
+
 
 }

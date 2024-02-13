@@ -2,11 +2,10 @@ package com.example.pos.repository;
 
 import com.example.pos.entity.Product;
 import com.example.pos.repository.productProjection.ProductProjection;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +29,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
         @Query(nativeQuery = true, value = "select * from pos_product where status=true and is_deleted=false and id=?")
         Product getProductById(int id);
+
+        @Query(nativeQuery = true, value = "select * from pos_product where status=true and is_deleted=false and id=?")
+        Optional<Product> getProductByOptionalId(int id);
 
         @Query(nativeQuery = true, value = "select pc.id,pc.barcode,pc.cat_id ,pc.brand_id ,pc.flag ,pc.weight ,pc.pro_image_name , \r\n"
                         + //
@@ -68,4 +70,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
                         " and pc.barcode like  %?%")
         List<ProductProjection> searchProductByBarcode(String barcode);
 
+
+        
 }
