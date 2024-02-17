@@ -11,9 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,11 +23,10 @@ import java.util.Objects;
  
 @Configuration
 @EnableWebSecurity
+
 public class SecurityConfiguration  {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-
 
     public SecurityConfiguration(
             JwtAuthenticationFilter jwtAuthenticationFilter,
@@ -38,7 +39,6 @@ public class SecurityConfiguration  {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-       
         http.csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -56,18 +56,29 @@ public class SecurityConfiguration  {
         return http.build();
     }
 
+
+
+    
     // @Bean
     // CorsConfigurationSource corsConfigurationSource() {
     //     CorsConfiguration configuration = new CorsConfiguration();
-
-    //     configuration.setAllowedOrigins(List.of("http://localhost:8005"));
-    //     configuration.setAllowedMethods(List.of("GET","POST"));
+    //     configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+    //     configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE"));
     //     configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
-
     //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
     //     source.registerCorsConfiguration("/**",configuration);
-
     //     return source;
+
+    //     // CorsConfiguration configuration = new CorsConfiguration();
+    //     // configuration.addAllowedOrigin("http://localhost:3000"); // Replace with your React app's URL
+    //     // configuration.addAllowedMethod("*");
+    //     // configuration.addAllowedHeader("*");
+    //     // configuration.setAllowCredentials(true);
+    //     // UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     // source.registerCorsConfiguration("/**", configuration);
+    //     // return source;
+
     // }
+
+ 
 }

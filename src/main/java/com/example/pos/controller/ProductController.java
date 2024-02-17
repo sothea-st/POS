@@ -19,6 +19,7 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 
 @RestController
 @RequestMapping("/api/product")
+@CrossOrigin(origins = "http://localhost:3000") 
 public class ProductController {
     @Autowired
     private ProductService service;
@@ -55,6 +56,9 @@ public class ProductController {
         return  ResponseEntity.ok().body(Map.of("msg",JavaConstant.success,"data",data,"count",count));
     }
 
+
+
+    
     @PostMapping("/{id}")
     public ResponseEntity<?> editProduct(@PathVariable("id") int id , @ModelAttribute Product p,
                                          @RequestParam(value = "file",required = false) MultipartFile file,
@@ -70,13 +74,11 @@ public class ProductController {
         return JavaResponse.success(data);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable("id")int id , @RequestBody Product p){
         service.deleteProduct(id,p);
         return JavaResponse.deleteSuccess(id);
     }
-
 
     @GetMapping("/readFileById/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable String id) throws IOException {
