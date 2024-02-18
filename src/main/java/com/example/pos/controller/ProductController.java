@@ -19,7 +19,7 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 
 @RestController
 @RequestMapping("/api/product")
-@CrossOrigin(origins = "http://localhost:3000") 
+// @CrossOrigin(origins = "http://localhost:3000") 
 public class ProductController {
     @Autowired
     private ProductService service;
