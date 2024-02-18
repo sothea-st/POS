@@ -14,36 +14,57 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demotest.entity.Product;
-import com.example.demotest.repository.ProductRepo;
-import com.example.demotest.service.ProductService;
+// import com.example.demotest.entity.Product;
+// import com.example.demotest.repository.ProductRepo;
+// import com.example.demotest.service.ProductService;
 
-import jakarta.validation.Valid;
-import net.bytebuddy.utility.JavaConstant;
+// import jakarta.validation.Valid;
+// import net.bytebuddy.utility.JavaConstant;
 import java.util.*;
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
-     @Autowired
-     private ProductService service;
-     @Autowired
-     private ProductRepo repo;
+    //  @Autowired
+    //  private ProductService service;
+    //  @Autowired
+    //  private ProductRepo repo;
 
-     @PostMapping
-    public ResponseEntity<?> addProduct(@Valid @ModelAttribute Product product ,
-                                        @RequestParam(value = "flagFile",required = false)MultipartFile flagFile,
-                                        @RequestParam(value = "file",required = false)MultipartFile file
-                                        ) throws IOException {
 
-        Product data = service.addProduct(product,file,flagFile);
-           return  ResponseEntity.ok().body(Map.of("msg","Success","data",data));
+    //  @PostMapping
+    // public ResponseEntity<?> addProduct(@Valid @ModelAttribute Product product ,
+    //                                     @RequestParam(value = "flagFile",required = false)MultipartFile flagFile,
+    //                                     @RequestParam(value = "file",required = false)MultipartFile file
+    //                                     ) throws IOException {
+
+    //     Product data = service.addProduct(product,file,flagFile);
+    //        return  ResponseEntity.ok().body(Map.of("msg","Success","data",data));
+    // }
+
+
+    // @GetMapping
+    // public ResponseEntity<?> getProduct(){
+    //     List<Product> data = service.getProd();
+    //     return  ResponseEntity.ok().body(Map.of("msg","Success","data",data));
+    // }
+
+    @GetMapping("/hello")
+    public ResponseEntity<?> getProductHello(){
+        return  ResponseEntity.ok().body(Map.of("msg","Success","data","200 data"));
     }
 
+    @GetMapping("/v1")
+    public ResponseEntity<?> getV1(){
+        return  ResponseEntity.ok().body(Map.of("msg","Success","data","hello v1 data"));
+    }
 
-    @GetMapping
-    public ResponseEntity<?> getProduct(){
-        List<Product> data = service.getProd();
-        return  ResponseEntity.ok().body(Map.of("msg","Success","data",data));
+    @GetMapping("/v1/map")
+    public ResponseEntity<?> getV1Map(){
+        HashMap<String,Object> map = new HashMap<>();
+
+        map.put("id", 1);
+        map.put("name", "Sothea");
+
+         return  ResponseEntity.ok().body(Map.of("msg","Success","data",map));
     }
 
 }

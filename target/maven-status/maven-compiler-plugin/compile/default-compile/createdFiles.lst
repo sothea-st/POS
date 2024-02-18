@@ -1,11 +1,3 @@
 com\example\demotest\controller\ProductController.class
-com\example\demotest\service\ProductService.class
-com\example\demotest\entity\Image$ImageBuilder.class
-com\example\demotest\DemoTestApplication.class
-com\example\demotest\entity\Product.class
-com\example\demotest\controller\ImageController.class
-com\example\demotest\service\ImageService.class
-com\example\demotest\entity\Image.class
 com\example\demotest\ImageUtils.class
-com\example\demotest\repository\ProductRepo.class
-com\example\demotest\repository\ImageRepository.class
+com\example\demotest\DemoTestApplication.class
